@@ -2,8 +2,8 @@ defmodule Perspective.DomainPool.Processor do
   use Agent
   alias Perspective.DomainPool.ProcessorSupervisor
 
-  defmodule State, do: defstruct identifiers: [], queue: [], started_at: DateTime.utc_now()
-  defmodule Action, do: defstruct data: %{}
+  defmodule(State, do: defstruct(identifiers: [], queue: [], started_at: DateTime.utc_now()))
+  defmodule(Action, do: defstruct(data: %{}))
 
   ## API
 
@@ -18,7 +18,6 @@ defmodule Perspective.DomainPool.Processor do
     end)
   end
 
-
   ## BOOT
 
   def start_link(%State{} = state) do
@@ -28,7 +27,6 @@ defmodule Perspective.DomainPool.Processor do
   def start_link do
     Agent.start_link(fn -> %State{} end)
   end
-
 
   # def checkout(identifiers) do
   #   pid = Agent.start(fn -> identifiers end)

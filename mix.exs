@@ -11,7 +11,7 @@ defmodule Perspective.MixProject do
       source_url: "https://github.com/backmath/perspective",
       description: description(),
       package: package(),
-      deps: deps(),
+      deps: deps()
     ]
   end
 

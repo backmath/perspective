@@ -11,9 +11,12 @@ defmodule Perspective.DomainPool.Registry.Test do
   test "can be started idempotently, logs if already started" do
     # Registry already started in setup_all
 
-    assert capture_log(fn ->
+    test = fn ->
       Subject.start_link()
-    end) =~ "The registry Elixir.Perspective.DomainPool.Registry has already been started"
+    end
+
+    assert capture_log(test) =~
+             "The registry Elixir.Perspective.DomainPool.Registry has already been started"
   end
 
   test "can register pid" do

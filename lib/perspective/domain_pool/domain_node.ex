@@ -4,7 +4,7 @@ defmodule Perspective.DomainPool.DomainNode do
   @registry Perspective.DomainPool.Registry
 
   def register(id, data) do
-    start_link([id: id, data: data, registry: @registry])
+    start_link(id: id, data: data, registry: @registry)
   end
 
   def data(id) do
@@ -19,9 +19,11 @@ defmodule Perspective.DomainPool.DomainNode do
     {:found, agent} = find_agent_by_id(id)
 
     update_node = fn ->
-      :ok = Agent.update(agent, fn old ->
-        Map.merge(old, data)
+      :ok =
+        Agent.update(agent, fn old ->
+          Map.merge(old, data)
         end)
+
       {:ok, id}
     end
 
@@ -36,11 +38,13 @@ defmodule Perspective.DomainPool.DomainNode do
     {:found, agent} = find_agent_by_id(id)
 
     checkout_node = fn ->
-      :ok = Agent.update(agent, fn old ->
-        Map.merge(old, %{
-          checked_out_by: pid,
-        })
+      :ok =
+        Agent.update(agent, fn old ->
+          Map.merge(old, %{
+            checked_out_by: pid
+          })
         end)
+
       {:ok, {:checked_out_by, pid}}
     end
 
@@ -57,7 +61,7 @@ defmodule Perspective.DomainPool.DomainNode do
     checkin = fn ->
       Agent.update(agent, fn old ->
         old
-          |> Map.put(:checked_out_by, nil)
+        |> Map.put(:checked_out_by, nil)
       end)
 
       {:ok, id}
@@ -86,7 +90,7 @@ defmodule Perspective.DomainPool.DomainNode do
     {:found, agent}
   end
 
-  defp start_link([id: id, data: data, registry: registry]) do
+  defp start_link(id: id, data: data, registry: registry) do
     name = {:via, Registry, {registry, id}}
 
     case Agent.start_link(fn -> data end, name: name) do

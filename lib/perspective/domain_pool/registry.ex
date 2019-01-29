@@ -2,7 +2,7 @@ defmodule Perspective.DomainPool.Registry do
   alias Registry, as: ExRegistry
   require Logger
 
-  def start_link([keys: keys, name: name]) do
+  def start_link(keys: keys, name: name) do
     case ExRegistry.start_link(keys: keys, name: name) do
       {:ok, pid} -> {:ok, pid}
       {:error, {:already_started, pid}} -> already_started(pid)
@@ -15,7 +15,8 @@ defmodule Perspective.DomainPool.Registry do
   end
 
   def start_link do
-    [init_values | _tail] = child_spec()
+    [init_values | _tail] =
+      child_spec()
       |> Map.fetch!(:start)
       |> elem(2)
 
@@ -25,7 +26,7 @@ defmodule Perspective.DomainPool.Registry do
   def child_spec do
     %{
       id: __MODULE__,
-      start: { __MODULE__, :start_link, [[keys: :unique, name: __MODULE__]] }
+      start: {__MODULE__, :start_link, [[keys: :unique, name: __MODULE__]]}
     }
   end
 end

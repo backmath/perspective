@@ -3,12 +3,12 @@ defmodule Perspective.DomainPool.DomainNode.Test do
   alias Perspective.DomainPool.DomainNode, as: Subject
 
   setup_all do
-    {:ok, _pid} = Perspective.DomainPool.Registry.start_link
+    {:ok, _pid} = Perspective.DomainPool.Registry.start_link()
     :ok
   end
 
   setup do
-    random_id = :crypto.strong_rand_bytes(4) |> Base.encode64
+    random_id = :crypto.strong_rand_bytes(4) |> Base.encode64()
 
     {:ok, random_id: random_id}
   end
@@ -82,7 +82,8 @@ defmodule Perspective.DomainPool.DomainNode.Test do
     assert {:ok, id} = Subject.checkin(id, pid1)
   end
 
-  test "when a process that checks out a node dies, the domain node is automatically checked back in", %{random_id: id} do
+  test "when a process that checks out a node dies, the domain node is automatically checked back in",
+       %{random_id: id} do
     {:ok, id} = Subject.register(id, %{abc: 123})
     pid = spawn(fn -> nil end)
     assert {:ok, {:checked_out_by, pid}} = Subject.checkout(id, pid)
@@ -92,6 +93,5 @@ defmodule Perspective.DomainPool.DomainNode.Test do
   end
 
   test "missing node" do
-
   end
 end
