@@ -1,12 +1,17 @@
 defmodule BackMath.ToDo do
-  defstruct [:id, :name]
+  use Perspective.DomainNode
+  defstruct id: "", name: ""
 
-  defprotocol BackMath.ToDoAdded.Appliable do
-    def apply(node, event)
+  def new do
+    %BackMath.ToDo{}
   end
 
-  # defimpl BackMath.ToDoRemoved.Appliable do
-  #   def apply(node, event) do
-  #   end
-  # end
+  def apply_event(_node, %BackMath.ToDoAdded{} = event) do
+    struct = %BackMath.ToDo{
+      id: event.id,
+      name: event.name
+    }
+
+    {:ok, struct}
+  end
 end

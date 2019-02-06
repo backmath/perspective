@@ -6,4 +6,12 @@ defmodule BackMath.AddToDo.Test do
 
     assert %BackMath.AddToDo{name: "Hello"} == result
   end
+
+  test "transforms into an event" do
+    event =
+      %BackMath.AddToDo{name: "Hello"}
+      |> Perspective.ActionTransformer.transform()
+
+    assert %BackMath.ToDoAdded{name: "Hello"} = event
+  end
 end
