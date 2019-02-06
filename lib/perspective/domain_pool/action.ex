@@ -1,9 +1,13 @@
 defmodule Perspective.Action do
   defmacro transform(agent, do: block) do
-    type = __CALLER__.module()
+    calling_module = __CALLER__.module()
 
     quote do
-      def transform(%unquote(type){} = unquote(agent)), do: unquote(block)
+      def transform(%unquote(calling_module){} = unquote(agent)), do: unquote(block)
+
+      defimpl Perspective.ActionTransformer, for: unquote(calling_module) do
+        def transform(%unquote(calling_module){} = unquote(agent)), do: unquote(block)
+      end
 
       def transform(%wrong_type{} = action) do
         raise(Perspective.Action.WrongActionTypeError, [wrong_type, __MODULE__])
@@ -22,7 +26,6 @@ defmodule Perspective.Action do
       end
 
       defoverridable transform: 1
-      # @callback transform(any) :: any
     end
   end
 
@@ -39,9 +42,9 @@ defmodule Perspective.Action do
   defmodule UndefinedTransformationFunction do
     defexception [:message]
 
-    def exception(value) do
+    def exception(calling_module) do
       %__MODULE__{
-        message: "You have not defined a transformation function for #{value}"
+        message: "You have not defined a transformation function for #{calling_module}"
       }
     end
   end
