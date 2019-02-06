@@ -27,7 +27,8 @@ defmodule Perspective.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:uuid, "~> 1.1"}
+      {:uuid, "~> 1.1"},
+      {:vex, "~> 0.7.0"}
     ]
   end
 

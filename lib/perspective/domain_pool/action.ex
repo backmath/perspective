@@ -20,6 +20,7 @@ defmodule Perspective.Action do
 
     quote do
       import Perspective.Action
+      use Vex.Struct
 
       def transform(_action) do
         raise Perspective.Action.UndefinedTransformationFunction, unquote(calling_module)

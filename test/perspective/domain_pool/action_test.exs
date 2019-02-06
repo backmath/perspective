@@ -46,4 +46,9 @@ defmodule Perspective.ActionTest do
       end
     )
   end
+
+  test "an action 'uses' vex struct" do
+    action = %Perspective.ActionTestExample{id: "abc-123"}
+    assert Vex.valid?(action)
+  end
 end
