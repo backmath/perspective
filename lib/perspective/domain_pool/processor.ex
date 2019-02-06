@@ -1,7 +1,5 @@
-defmodule Perspective.ActionProcessor do
-  def run(data) do
-    action = BackMath.AddToDo.new(data)
-
+defmodule Perspective.Processor do
+  def run(action) do
     domain_nodes = Perspective.DomainNodeFetcher.nodes_for_action(action)
 
     event = Perspective.ActionTransformer.transform(action)
