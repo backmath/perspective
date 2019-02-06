@@ -21,7 +21,7 @@ defmodule Perspective.ActionTest do
   test "transformation macro" do
     action = %Perspective.ActionTestExample{id: "abc-123"}
 
-    assert {:ok, %{some: :transformation, data: action}} == Subject.do_transform(action)
+    assert {:ok, %{some: :transformation, data: action}} == Subject.transform(action)
   end
 
   test "transformation fails with wrong type" do
@@ -30,7 +30,7 @@ defmodule Perspective.ActionTest do
       "You have supplied Elixir.Perspective.NonCompliantExample, but this module only accepts Elixir.Perspective.ActionTestExample",
       fn ->
         action = %Perspective.NonCompliantExample{}
-        Perspective.ActionTestExample.do_transform(action)
+        Perspective.ActionTestExample.transform(action)
       end
     )
   end
@@ -42,7 +42,7 @@ defmodule Perspective.ActionTest do
       Perspective.Action.UndefinedTransformationFunction,
       "You have not defined a transformation function for Elixir.Perspective.NonCompliantExample",
       fn ->
-        Perspective.NonCompliantExample.do_transform(action)
+        Perspective.NonCompliantExample.transform(action)
       end
     )
   end

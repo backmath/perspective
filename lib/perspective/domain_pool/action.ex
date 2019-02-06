@@ -3,9 +3,9 @@ defmodule Perspective.Action do
     type = __CALLER__.module()
 
     quote do
-      def do_transform(%unquote(type){} = unquote(agent)), do: unquote(block)
+      def transform(%unquote(type){} = unquote(agent)), do: unquote(block)
 
-      def do_transform(%wrong_type{} = action) do
+      def transform(%wrong_type{} = action) do
         raise(Perspective.Action.WrongActionTypeError, [wrong_type, __MODULE__])
       end
     end
@@ -17,12 +17,12 @@ defmodule Perspective.Action do
     quote do
       import Perspective.Action
 
-      def do_transform(_action) do
+      def transform(_action) do
         raise Perspective.Action.UndefinedTransformationFunction, unquote(calling_module)
       end
 
-      defoverridable do_transform: 1
-      # @callback do_transform(any) :: any
+      defoverridable transform: 1
+      # @callback transform(any) :: any
     end
   end
 
