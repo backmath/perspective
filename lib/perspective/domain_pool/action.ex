@@ -15,6 +15,12 @@ defmodule Perspective.Action do
     end
   end
 
+  defmacro defaction(keys) when is_list(keys) do
+    quote do
+      defstruct unquote(keys)
+    end
+  end
+
   defmacro __using__(_opts) do
     calling_module = __CALLER__.module
 

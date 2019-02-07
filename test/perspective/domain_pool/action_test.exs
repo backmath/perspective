@@ -1,7 +1,7 @@
 defmodule Perspective.ActionTestExample do
   use Perspective.Action
 
-  defstruct [:id, :name]
+  defaction(id: "", name: "")
 
   transform(action) do
     {:ok, %{some: :transformation, data: action}}
@@ -50,5 +50,10 @@ defmodule Perspective.ActionTest do
   test "an action 'uses' vex struct" do
     action = %Perspective.ActionTestExample{id: "abc-123"}
     assert Vex.valid?(action)
+  end
+
+  test "defaction creates a struct with extra keys" do
+    action = %Perspective.ActionTestExample{id: "abc-123"}
+    assert action |> Map.keys() |> IO.inspect()
   end
 end
