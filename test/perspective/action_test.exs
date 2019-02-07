@@ -11,7 +11,7 @@ end
 defmodule Perspective.NonCompliantExample do
   use Perspective.Action
 
-  defaction([:id, :name])
+  defaction(id: "", name: "")
 end
 
 defmodule Perspective.ActionTest do
@@ -44,11 +44,23 @@ defmodule Perspective.ActionTest do
     assert Vex.valid?(action)
   end
 
-  test "defaction creates a struct with an additional :agent key" do
+  test "defaction creates a struct with additional [:actor, :request, :request_date, :references] keys" do
     keys =
       %Perspective.ActionTestExample{id: "abc-123"}
       |> Map.keys()
 
-    assert Enum.member?(keys, :agent)
+    assert Enum.member?(keys, :actor)
+    assert Enum.member?(keys, :request)
+    assert Enum.member?(keys, :request_date)
+    assert Enum.member?(keys, :references)
+  end
+
+  test "defaction throws a helpful message if provided a non-keyword-list" do
+    assert_raise(ArgumentError, fn ->
+      defmodule Example do
+        use Perspective.Action
+        defaction([:id])
+      end
+    end)
   end
 end
