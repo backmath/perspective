@@ -155,7 +155,7 @@ A domain event is used to transform the all respective domain nodes. It will oft
 An action processor is responsible for coordinating several procedures with respect to the given action request. Once a processor is next in queue (to be elaborated in the next section), the following are coordinated in sequence:
 
 - The processor fetches the domain nodes for each reference from the domain pool
-- The processor authenticates the action
+- The processor authenticates the action # No, authentcation happens before the action is generated
 - The processor authorizes the action against each node
 - The processor transforms the action into an event
 - The event is applied to each domain node
@@ -184,10 +184,10 @@ You
 Requests:
 
 {
-  "type": "BackMath.AddToDo.V0",
+  "action": "BackMath.AddToDo.V0",
   "requestID": "request:e008852b-9cbe-4262-bbd1-ad19c4b52de3",
-  "authenticationToken": "9fabcb909:c87b32c26d8ce:0383a21d84abf4",
-  "agent":  "user:bbe22817-5205-47d5-bdca-e4d270e13277",
+  "actor":  "user:bbe22817-5205-47d5-bdca-e4d270e13277",
+  "date": "2019-02-07T17:57:06Z"
   "references": {
     "parent": "todo:469e2610-4949-458e-8b94-6153b2fe17a7"
   },
@@ -195,3 +195,5 @@ Requests:
     "title": "A sub-todo, attached and indendently doable"
   }
 }
+
+Once dispatched, an action can never be remembered or stored. Only events persist.
