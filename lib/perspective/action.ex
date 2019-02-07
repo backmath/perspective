@@ -1,4 +1,6 @@
 defmodule Perspective.Action do
+  alias Perspective.Action.{WrongActionType, UndefinedTransformationFunction}
+
   defmacro transform(agent, do: block) do
     calling_module = __CALLER__.module()
 
@@ -10,7 +12,7 @@ defmodule Perspective.Action do
       end
 
       def transform(%wrong_type{} = action) do
-        raise(Perspective.Action.WrongActionTypeError, [wrong_type, __MODULE__])
+        raise(WrongActionType, {action, unquote(calling_module)})
       end
     end
   end
@@ -29,30 +31,10 @@ defmodule Perspective.Action do
       use Vex.Struct
 
       def transform(_action) do
-        raise Perspective.Action.UndefinedTransformationFunction, unquote(calling_module)
+        raise UndefinedTransformationFunction, unquote(calling_module)
       end
 
       defoverridable transform: 1
-    end
-  end
-
-  defmodule WrongActionTypeError do
-    defexception [:message]
-
-    def exception([value, calling_module]) do
-      %__MODULE__{
-        message: "You have supplied #{value}, but this module only accepts #{calling_module}"
-      }
-    end
-  end
-
-  defmodule UndefinedTransformationFunction do
-    defexception [:message]
-
-    def exception(calling_module) do
-      %__MODULE__{
-        message: "You have not defined a transformation function for #{calling_module}"
-      }
     end
   end
 end

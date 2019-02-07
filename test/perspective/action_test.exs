@@ -25,26 +25,18 @@ defmodule Perspective.ActionTest do
   end
 
   test "transformation fails with wrong type" do
-    assert_raise(
-      Perspective.Action.WrongActionTypeError,
-      "You have supplied Elixir.Perspective.NonCompliantExample, but this module only accepts Elixir.Perspective.ActionTestExample",
-      fn ->
-        action = %Perspective.NonCompliantExample{}
-        Perspective.ActionTestExample.transform(action)
-      end
-    )
+    assert_raise(Perspective.Action.WrongActionType, fn ->
+      action = %Perspective.NonCompliantExample{}
+      Perspective.ActionTestExample.transform(action)
+    end)
   end
 
   test "transformation fails with a missing definition" do
     action = %Perspective.NonCompliantExample{id: "abc-123"}
 
-    assert_raise(
-      Perspective.Action.UndefinedTransformationFunction,
-      "You have not defined a transformation function for Elixir.Perspective.NonCompliantExample",
-      fn ->
-        Perspective.NonCompliantExample.transform(action)
-      end
-    )
+    assert_raise(Perspective.Action.UndefinedTransformationFunction, fn ->
+      Perspective.NonCompliantExample.transform(action)
+    end)
   end
 
   test "an action 'uses' vex struct" do

@@ -1,7 +1,7 @@
 defmodule BackMath.AddToDo do
   use Perspective.Action
 
-  defstruct [:name]
+  defaction([:name])
 
   validates(:name, presence: true)
 
