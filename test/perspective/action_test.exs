@@ -11,7 +11,7 @@ end
 defmodule Perspective.NonCompliantExample do
   use Perspective.Action
 
-  defstruct [:id, :name]
+  defaction([:id, :name])
 end
 
 defmodule Perspective.ActionTest do
@@ -44,8 +44,11 @@ defmodule Perspective.ActionTest do
     assert Vex.valid?(action)
   end
 
-  test "defaction creates a struct with extra keys" do
-    action = %Perspective.ActionTestExample{id: "abc-123"}
-    assert action |> Map.keys() |> IO.inspect()
+  test "defaction creates a struct with an additional :agent key" do
+    keys =
+      %Perspective.ActionTestExample{id: "abc-123"}
+      |> Map.keys()
+
+    assert Enum.member?(keys, :agent)
   end
 end

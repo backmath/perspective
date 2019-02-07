@@ -18,8 +18,10 @@ defmodule Perspective.Action do
   end
 
   defmacro defaction(keys) when is_list(keys) do
+    key_set = [:agent | keys]
+
     quote do
-      defstruct unquote(keys)
+      defstruct unquote(key_set)
     end
   end
 
