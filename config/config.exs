@@ -1,6 +1,27 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
+
+config :perspective, Web.Endpoint,
+  url: [host: "${HOST}"],
+  http: [port: "8000"],
+  secret_key_base: "${SECRET_KEY_BASE}",
+  server: true,
+  check_origin: [
+    # What should go here?
+  ],
+  # code_reloader: true,
+  # live_reload: [
+  #   patterns: [
+  #     ~r{lib/.*(ex)$},
+  #   ]
+  # ],
+  # reloadable_compilers: [:gettext, :phoenix, :elixir],
+  # reloadable_apps: [:perspective, :web],
+  pubsub: [name: Web.PubSub, adapter: Phoenix.PubSub.PG2]
+
+config :perspective, Web.PubSub, pubsub: [name: Web.PubSub, adapter: Phoenix.PubSub.PG2]
+
+config :phoenix, :json_library, Jason
+config :phoenix, :format_encoders, json: Jason
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -14,7 +35,7 @@ use Mix.Config
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:perspective, :key)
+#     Application.get_env(:Perspective, :key)
 #
 # You can also configure a 3rd-party app:
 #

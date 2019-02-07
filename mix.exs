@@ -12,7 +12,8 @@ defmodule Perspective.MixProject do
       description: description(),
       package: package(),
       deps: deps(),
-      consolidate_protocols: Mix.env() != :test
+      consolidate_protocols: Mix.env() != :test,
+      compilers: [:phoenix] ++ Mix.compilers()
     ]
   end
 
@@ -27,9 +28,14 @@ defmodule Perspective.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:distillery, "~> 2.0"},
+      {:jason, "~> 1.1"},
+      {:phoenix_live_reload, "~> 1.2"},
+      {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix, "~> 1.4.0"},
+      {:plug_cowboy, "~> 2.0"},
       {:uuid, "~> 1.1"},
-      {:vex, "~> 0.7.0"},
-      {:phoenix, "~> 1.4.0"}
+      {:vex, "~> 0.7.0"}
     ]
   end
 
