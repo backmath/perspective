@@ -3,9 +3,7 @@ defmodule BackMath.AddToDo do
 
   defstruct [:name]
 
-  def new(data) do
-    struct(__MODULE__, data)
-  end
+  validates(:name, presence: true)
 
   transform(action) do
     %BackMath.ToDoAdded{
