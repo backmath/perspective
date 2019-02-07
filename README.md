@@ -166,6 +166,7 @@ Once the event store receives the new event, the action request is considered co
 
 Should any procedure fail, the the action request is rejected and reports any errors.
 
+Applying events happen AFTER side-effects, if any.
 <!-- - Syntatic validation occurs (should be moved to another space, action requests should be assumed to be syntactically correct by this step) -->
 
 ### The Processor Queue
@@ -173,3 +174,24 @@ Should any procedure fail, the the action request is rejected and reports any er
 Once an action request is recieved, an action processor is created for the request. To ensure sequentiality, each processor is queued according to each referenced domain node. The action processor is added to a keyed queue and may not begin operations until all the processers in queue for that key before it have completed processing. When referencing multiple domain nodes, all processors for the referenced domain nodes must complete processing before the
 
 The referenced somethings are all checked out of the domain pool. The event is applied to each of the referenced identifiable somethings and is checked into the domain. If the event
+
+### Code Organization
+
+Seperate concerns into three categories: data, transformation, supervision and access.
+
+
+You
+Requests:
+
+{
+  "type": "BackMath.AddToDo.V0",
+  "requestID": "request:e008852b-9cbe-4262-bbd1-ad19c4b52de3",
+  "authenticationToken": "9fabcb909:c87b32c26d8ce:0383a21d84abf4",
+  "agent":  "user:bbe22817-5205-47d5-bdca-e4d270e13277",
+  "references": {
+    "parent": "todo:469e2610-4949-458e-8b94-6153b2fe17a7"
+  },
+  "data": {
+    "title": "A sub-todo, attached and indendently doable"
+  }
+}
