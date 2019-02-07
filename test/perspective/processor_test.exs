@@ -4,8 +4,8 @@ defmodule Perspective.Processor.Test do
   test "example run" do
     action = %BackMath.AddToDo{name: "Test Perspective.Processor.run"}
 
-    {:ok, [node]} = Perspective.Processor.run(action)
+    assert {:ok, action} == Perspective.Processor.run(action)
 
-    assert %BackMath.ToDo{name: "Test Perspective.Processor.run"} = node
+    assert %BackMath.ToDoAdded{name: "Test Perspective.Processor.run"} = Perspective.EventChain.last()
   end
 end

@@ -4,6 +4,10 @@ defmodule Perspective.Processor do
 
     event = Perspective.ActionTransformer.transform(action)
 
-    Perspective.MultiNodeEventApplier.apply_event_to_domain_nodes(domain_nodes, event)
+    {:ok, _nodes} = Perspective.MultiNodeEventApplier.apply_event_to_domain_nodes(domain_nodes, event)
+
+    Perspective.EventChain.apply_event(event)
+
+    {:ok, action}
   end
 end
