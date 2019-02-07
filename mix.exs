@@ -19,7 +19,7 @@ defmodule Perspective.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :phoenix],
       mod: {Perspective.Application, []}
     ]
   end
@@ -28,7 +28,8 @@ defmodule Perspective.MixProject do
   defp deps do
     [
       {:uuid, "~> 1.1"},
-      {:vex, "~> 0.7.0"}
+      {:vex, "~> 0.7.0"},
+      {:phoenix, "~> 1.4.0"}
     ]
   end
 
