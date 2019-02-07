@@ -27,7 +27,7 @@ defmodule Perspective.DomainPool do
     end
   end
 
-  def start do
+  def start_link(_) do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 end
