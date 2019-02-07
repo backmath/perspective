@@ -1,6 +1,6 @@
 defmodule Perspective.DomainNodeFetcher do
   def nodes_for_action(%BackMath.AddToDo{} = _action) do
-    [BackMath.ToDo.new()]
+    [%BackMath.ToDo{}]
   end
 
   def nodes_for_action(%type{} = _action) do

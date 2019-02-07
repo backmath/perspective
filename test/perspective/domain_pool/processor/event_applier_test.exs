@@ -10,7 +10,7 @@ defmodule Perspective.MultiNodeEventApplier.Test do
   end
 
   test "non-empty run" do
-    domain_nodes = [BackMath.ToDo.new()]
+    domain_nodes = [%BackMath.ToDo{}]
     event = %BackMath.ToDoAdded{id: "abc-123", name: "Something ToDo"}
 
     expected = {:ok, [%BackMath.ToDo{id: "abc-123", name: "Something ToDo"}]}

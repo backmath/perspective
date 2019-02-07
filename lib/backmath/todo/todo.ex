@@ -1,10 +1,7 @@
 defmodule BackMath.ToDo do
   use Perspective.DomainNode
-  defstruct id: "", name: ""
 
-  def new do
-    %BackMath.ToDo{}
-  end
+  defstruct id: "", name: ""
 
   def apply_event(_node, %BackMath.ToDoAdded{} = event) do
     struct = %BackMath.ToDo{
