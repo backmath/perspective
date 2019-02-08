@@ -17,6 +17,18 @@ defmodule Perspective.EventChain do
     end)
   end
 
+  def list() do
+    Agent.get(__MODULE__, fn events -> events end)
+  end
+
+  def load(data) when is_list(data) do
+    unless Mix.env() == :test do
+      raise "Woah, definitely do NOT run this in production"
+    end
+
+    Agent.update(__MODULE__, fn _ -> data end)
+  end
+
   def start_link(_) do
     Agent.start_link(fn -> [] end, name: __MODULE__)
   end

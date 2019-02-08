@@ -1,6 +1,10 @@
 defmodule Perspective.EventChain.Test do
   use ExUnit.Case
 
+  setup do
+    Perspective.EventChain.load([])
+  end
+
   test "you can add events to the event chain" do
     event = %BackMath.ToDoAdded{}
 
@@ -21,5 +25,17 @@ defmodule Perspective.EventChain.Test do
     ]
 
     assert expected == Perspective.EventChain.since("event:def")
+  end
+
+  test "you can stream all of the events" do
+    Perspective.EventChain.apply_event(%BackMath.ToDoAdded{id: "event:abc"})
+    Perspective.EventChain.apply_event(%BackMath.ToDoAdded{id: "event:def"})
+
+    expected = [
+      %BackMath.ToDoAdded{id: "event:def"},
+      %BackMath.ToDoAdded{id: "event:abc"}
+    ]
+
+    assert expected == Perspective.EventChain.list()
   end
 end
