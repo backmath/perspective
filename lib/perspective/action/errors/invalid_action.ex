@@ -1,5 +1,5 @@
 defmodule Perspective.Action.InvalidAction do
-  defexception [action: %{}, errors: []]
+  defexception action: %{}, errors: []
 
   def exception({action, errors}) do
     %__MODULE__{

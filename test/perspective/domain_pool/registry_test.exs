@@ -15,8 +15,7 @@ defmodule Perspective.DomainPool.Registry.Test do
       Subject.start_link()
     end
 
-    assert capture_log(test) =~
-             "The registry Elixir.Perspective.DomainPool.Registry has already been started"
+    assert capture_log(test) =~ "The registry Elixir.Perspective.DomainPool.Registry has already been started"
   end
 
   test "can register pid" do

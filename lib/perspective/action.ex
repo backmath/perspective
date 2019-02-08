@@ -18,14 +18,14 @@ defmodule Perspective.Action do
   end
 
   defmacro defaction(keys) when is_list(keys) do
-
     unless Keyword.keyword?(keys) do
-      values = keys
-        |> Enum.map(&(":#{&1}"))
+      values =
+        keys
+        |> Enum.map(&":#{&1}")
         |> Enum.join(", ")
         |> (fn string ->
-          "[#{string}]"
-        end).()
+              "[#{string}]"
+            end).()
 
       raise ArgumentError, "defaction expects a keyword list, but was provided: #{values}"
     end
