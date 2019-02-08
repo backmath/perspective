@@ -1,3 +1,3 @@
 use Mix.Config
 
-config :perspective, Perspective.EventChainBackup, path: "./storage/prod/"
+config :perspective, Perspective.EventChainStorage, path: "./storage/prod/"

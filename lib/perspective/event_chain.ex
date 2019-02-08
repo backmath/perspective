@@ -30,6 +30,10 @@ defmodule Perspective.EventChain do
   end
 
   def start_link(_) do
-    Agent.start_link(fn -> [] end, name: __MODULE__)
+    Agent.start_link(fn -> file_data() end, name: __MODULE__)
+  end
+
+  def file_data do
+    Perspective.EventChainStorage.read()
   end
 end

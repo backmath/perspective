@@ -1,4 +1,4 @@
-defmodule Perspective.EventChainBackup.Test do
+defmodule Perspective.EventChainStorage.Test do
   use ExUnit.Case
 
   setup do
@@ -8,7 +8,7 @@ defmodule Perspective.EventChainBackup.Test do
 
   test "backup saves an copy to the filesystem" do
     Perspective.EventChain.load([%BackMath.ToDoAdded{}])
-    Perspective.EventChainBackup.save(test_file())
+    Perspective.EventChainStorage.save(test_file())
 
     assert "[{\"event\":\"Elixir.BackMath.ToDoAdded\",\"id\":null,\"name\":null}]" == File.read!(test_file())
   end
@@ -18,6 +18,6 @@ defmodule Perspective.EventChainBackup.Test do
   end
 
   defp test_path do
-    "./storage/test/tmp/Perspective.EventChainBackup/"
+    "./storage/test/tmp/Perspective.EventChainStorage/"
   end
 end
