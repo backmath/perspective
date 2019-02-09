@@ -1,4 +1,4 @@
-defmodule Perspective.EventChainStorageWorker do
+defmodule Perspective.EventChainStorageEventReactor do
   use GenServer
 
   def start_link(data) do
@@ -13,7 +13,7 @@ defmodule Perspective.EventChainStorageWorker do
   end
 
   # Needs a test
-  def handle_info(data, state) do
+  def handle_info(_data, state) do
     Perspective.EventChainStorage.save()
     {:noreply, state}
   end

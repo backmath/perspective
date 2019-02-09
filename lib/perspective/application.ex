@@ -7,7 +7,7 @@ defmodule Perspective.Application do
     children = [
       {Perspective.DomainPoolSupervisor, []},
       {Perspective.EventChainSupervisor, []},
-      {Perspective.EventChainStorageWorker, []}
+      {Perspective.EventChainStorageSupervisor, []}
     ]
 
     opts = [strategy: :one_for_one, name: Perspective.Application]
