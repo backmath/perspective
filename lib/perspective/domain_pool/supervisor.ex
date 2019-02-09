@@ -7,7 +7,8 @@ defmodule Perspective.DomainPoolSupervisor do
 
   def init(_args) do
     children = [
-      {Perspective.DomainPool, :ok}
+      {Perspective.DomainPool, :ok},
+      supervisor(Phoenix.PubSub.PG2, [Perspective.DomainPoolNotifications, []])
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
