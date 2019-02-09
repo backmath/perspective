@@ -13,6 +13,9 @@ defmodule Perspective.EventChainStorage.Test do
     assert "[{\"event\":\"Elixir.BackMath.ToDoAdded\",\"id\":null,\"name\":null}]" == File.read!(test_file())
   end
 
+  test "applying events to the chain triggers something" do
+  end
+
   defp test_file do
     "#{test_path()}event-chain.json"
   end
