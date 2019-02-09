@@ -2,9 +2,12 @@ defmodule Perspective.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
+
     children = [
       {Perspective.DomainPoolSupervisor, []},
-      {Perspective.EventChainSupervisor, []}
+      {Perspective.EventChainSupervisor, []},
+      {Perspective.EventChainStorageWorker, []}
     ]
 
     opts = [strategy: :one_for_one, name: Perspective.Application]
