@@ -7,8 +7,9 @@ defmodule Perspective.EventChainSupervisor do
 
   def init(_args) do
     children = [
+      supervisor(Phoenix.PubSub.PG2, [Perspective.EventChainNotifications, []]),
       {Perspective.EventChain, :ok},
-      supervisor(Phoenix.PubSub.PG2, [Perspective.EventChainNotifications, []])
+      {Perspective.EventChainStorageSupervisor, []}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
