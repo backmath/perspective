@@ -2,7 +2,15 @@ defmodule Perspective.EventChainNotifications do
   def subscribe() do
   end
 
-  def emit("new_event", event) do
-    Phoenix.PubSub.broadcast(__MODULE__, "new_event", event)
+  defmodule NewEvent do
+    defstruct [:event]
+  end
+
+  def emit("NewEvent", event) do
+    event = %NewEvent{
+      event: event
+    }
+
+    Phoenix.PubSub.broadcast(__MODULE__, "NewEvent", event)
   end
 end
