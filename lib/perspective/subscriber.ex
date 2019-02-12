@@ -17,18 +17,4 @@ defmodule Perspective.Subscriber do
       end
     end
   end
-
-  defmacro subscribe(notifications_module, topic, do: block) do
-    # Perspective.Subscriber.start_link({notifications_module, topic})
-    quote do
-      def handle_info(unquote(topic), state), do: block
-    end
-  end
-
-  # defmacro handle(message, state, do: block) do
-  #   quote do
-  #     def handle(unquote(message), unquote(state)), do: unquote(block)
-  #     def handle_info(unquote(message), unquote(state)), do: unquote(block)
-  #   end
-  # end
 end
