@@ -17,6 +17,6 @@ defmodule Perspective.DomainPool.Test do
   end
 
   test "a missing domain node yields an error" do
-    assert {:error, %Perspective.NodeNotFound{id: "missing"}} == Perspective.DomainPool.get("missing")
+    assert {:error, %Perspective.DomainPool.NodeNotFound{id: "missing"}} == Perspective.DomainPool.get("missing")
   end
 end

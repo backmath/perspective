@@ -1,4 +1,4 @@
-defmodule Perspective.NodeNotFound do
+defmodule Perspective.DomainPool.NodeNotFound do
   defexception [:id]
 
   def exception(value) do

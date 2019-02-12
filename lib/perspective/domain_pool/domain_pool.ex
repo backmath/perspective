@@ -4,7 +4,7 @@ defmodule Perspective.DomainPool do
   def get(node_id) do
     Agent.get(__MODULE__, fn nodes -> Map.get(nodes, node_id) end)
     |> case do
-      nil -> {:error, %Perspective.NodeNotFound{id: node_id}}
+      nil -> {:error, %Perspective.DomainPool.NodeNotFound{id: node_id}}
       node -> {:ok, node}
     end
   end
