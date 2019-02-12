@@ -13,7 +13,8 @@ defmodule Perspective.MixProject do
       package: package(),
       deps: deps(),
       consolidate_protocols: Mix.env() != :test,
-      compilers: [:phoenix] ++ Mix.compilers()
+      compilers: [:phoenix] ++ Mix.compilers(),
+      test_paths: ["lib/", "test/"]
     ]
   end
 
