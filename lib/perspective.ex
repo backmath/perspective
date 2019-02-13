@@ -9,7 +9,7 @@ defmodule Perspective do
   defp generate_request(data), do: Perspective.Request.from(data)
 
   defp authorize_request(request, token) do
-    Perspective.Authorizer.authorize(token)
+    Perspective.Authorizer.authorize(request, token)
     |> case do
       {:ok, _request} -> {:ok, request}
     end
@@ -22,12 +22,5 @@ defmodule Perspective do
   defp register_request(request) do
     # Perspective.RequestRegistry.register(request)
     request
-  end
-end
-
-defmodule Perspective.Authorizer do
-  def authorize(request, token) do
-    # Does token and data actor_id match?
-    {:ok, request}
   end
 end
