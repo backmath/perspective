@@ -3,9 +3,9 @@ defmodule Perspective.Application do
 
   def start(_type, _args) do
     children = [
+      {Perspective.Notifications.Supervisor, []},
       {Perspective.DomainPoolSupervisor, []},
-      {Perspective.EventChainSupervisor, []},
-      {Perspective.Notifications.Supervisor, []}
+      {Perspective.EventChainSupervisor, []}
     ]
 
     opts = [strategy: :one_for_one, name: Perspective.Application]
