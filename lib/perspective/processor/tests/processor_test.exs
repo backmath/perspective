@@ -8,7 +8,7 @@ defmodule Perspective.Processor.Test do
   end
 
   defp action_request do
-    Perspective.Request.from(%{
+    Perspective.RequestGenerator.from(%{
       request: "request:abc-123",
       actor: "user:john-adams",
       action: "BackMath.AddToDo",

@@ -19,7 +19,7 @@ defmodule Perspective.Request.Test do
       }
     }
 
-    result = Perspective.Request.from(data) |> remove_date
+    result = Perspective.RequestGenerator.from(data) |> remove_date
 
     assert result == expected
   end
@@ -32,7 +32,7 @@ defmodule Perspective.Request.Test do
       data: %{}
     }
 
-    result = Perspective.Request.from(data)
+    result = Perspective.RequestGenerator.from(data)
 
     assert {:error, %Perspective.Request.MissingAction{action_name: "Non.Existent.Action"}} == result
   end

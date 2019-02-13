@@ -6,7 +6,7 @@ defmodule Perspective do
     |> dispatch_request()
   end
 
-  defp generate_request(data), do: Perspective.Request.from(data)
+  defp generate_request(data), do: Perspective.RequestGenerator.from(data)
 
   defp authorize_request(request, token) do
     Perspective.Authorizer.authorize(request, token)

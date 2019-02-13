@@ -1,4 +1,4 @@
-defmodule Perspective.Request do
+defmodule Perspective.RequestGenerator do
   def from(%{request: request, actor: actor} = data) do
     try do
       convert(data)

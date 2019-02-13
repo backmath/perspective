@@ -14,6 +14,6 @@ defmodule Perspective.Dispatcher.Test do
         name: "Demonstrate how to generate an action from a data struct"
       }
     }
-    |> Perspective.Request.from()
+    |> Perspective.RequestGenerator.from()
   end
 end
