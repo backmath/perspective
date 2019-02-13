@@ -6,7 +6,7 @@ defmodule Perspective.EventChainStorageEventReactor do
   end
 
   def init(_data) do
-    Phoenix.PubSub.subscribe(Perspective.EventChainNotifications, "NewEvent")
+    Perspective.Notifications.subscribe(%Perspective.EventChain.NewEvent{})
 
     initial_state = %{}
     {:ok, initial_state}

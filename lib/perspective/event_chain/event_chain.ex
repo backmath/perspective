@@ -3,7 +3,9 @@ defmodule Perspective.EventChain do
 
   def apply_event(event) do
     Agent.update(__MODULE__, fn events -> [event | events] end)
-    Perspective.EventChainNotifications.emit("NewEvent", event)
+
+    %Perspective.EventChain.NewEvent{event: event}
+    |> Perspective.Notifications.emit()
   end
 
   def last() do
