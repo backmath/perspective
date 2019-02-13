@@ -25,4 +25,3 @@ defmodule Perspective.Request do
     end
   end
 end
-
