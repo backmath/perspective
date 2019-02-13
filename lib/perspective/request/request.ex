@@ -16,34 +16,13 @@ defmodule Perspective.Request do
     |> Map.put(:action, action)
   end
 
-  defmodule MissingAction do
-    defexception action_name: ""
-
-    def exception(action_name) do
-      %__MODULE__{
-        action_name: action_name
-      }
-    end
-
-    def message(%__MODULE__{action_name: action_name}) do
-      "The action (#{action_name}) could not be found"
-    end
-  end
-
   defp struct_from_action_name(action_name, data) do
     try do
       struct_name = String.to_existing_atom("Elixir.#{action_name}")
       struct(struct_name, data)
     rescue
-      _error in ArgumentError -> raise MissingAction, action_name
+      _error in ArgumentError -> raise Perspective.Request.MissingAction, action_name
     end
   end
 end
 
-defmodule Perspective.ActionRequest do
-  defstruct request: "", actor: "", date: "", action: %{}
-end
-
-defmodule Perspective.QueryRequest do
-  defstruct request: "", actor: "", date: "", query: %{}
-end
