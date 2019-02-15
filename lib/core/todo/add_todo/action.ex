@@ -1,7 +1,7 @@
 defmodule Core.AddToDo do
   use Perspective.Action
 
-  defaction(name: "")
+  defstruct name: ""
 
   validates(:name, presence: true)
 

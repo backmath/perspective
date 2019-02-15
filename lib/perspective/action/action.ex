@@ -17,26 +17,6 @@ defmodule Perspective.Action do
     end
   end
 
-  defmacro defaction(keys) when is_list(keys) do
-    unless Keyword.keyword?(keys) do
-      values =
-        keys
-        |> Enum.map(&":#{&1}")
-        |> Enum.join(", ")
-        |> (fn string ->
-              "[#{string}]"
-            end).()
-
-      raise ArgumentError, "defaction expects a keyword list, but was provided: #{values}"
-    end
-
-    key_set = [actor: "", request: "", request_date: "", references: Macro.escape(%{})] |> Keyword.merge(keys)
-
-    quote do
-      defstruct unquote(key_set)
-    end
-  end
-
   defmacro __using__(_opts) do
     calling_module = __CALLER__.module
 

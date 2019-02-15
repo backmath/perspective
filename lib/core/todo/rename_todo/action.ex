@@ -1,7 +1,7 @@
 defmodule Core.RenameToDo do
   use Perspective.Action
 
-  defaction(id: "", name: "")
+  defstruct id: "", name: ""
 
   validates(:id, presence: true)
   validates(:name, presence: true)

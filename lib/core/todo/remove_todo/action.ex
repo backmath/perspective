@@ -1,7 +1,7 @@
 defmodule Core.RemoveToDo do
   use Perspective.Action
 
-  defaction(id: "")
+  defstruct id: ""
 
   validates(:id, presence: true)
 
