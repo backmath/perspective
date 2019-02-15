@@ -26,15 +26,23 @@ The domain pool uses in-memory processes to store and retrieve data and asynchro
 
 From the developer's view, the domain pool is something you save and fetch canonical representations of your domain's state. It should never be modified directly, only by action request. It has the strongest guarantee of consistency within the system.
 
+## Domain Projections
+
+Computed validations. These should be used sparingly.
+
 ## Perspectives
 
 Now with our domain pool and its domain nodes, we can create projections off of this state into **perspectives**.  Perspectives are reactionary computations from the domain state. In the case of a financial ledger, each transaction would be represented by a domain node, and the current balance of your ledger would be represented in a **perspective**.
 
 Whenever the domain pool is modified, any perspectives that reference the affected domain nodes will update with the new application data. Perspectives may be read by **query requests**, but can only by modified as a **domain reaction**.
 
-## The Event Store
+## The Event Chain
 
-The event store is the least complex, but most powerful part of the system. It stores the received-order events and backs them up to a long-term, persistent blockchain.
+The event chain is the least complex, but most powerful part of the system. It stores the received-order events and backs them up to a long-term, persistent blockchain.
+
+## Event Chain Storage
+
+Event Chain storage saves chunks of the event change in approximately 10MB files. Each file is encrypted with the encryption key referenced in configuration. The files are numerically ordered.
 
 ## Changing the System
 
@@ -174,6 +182,33 @@ Applying events happen AFTER side-effects, if any.
 Once an action request is recieved, an action processor is created for the request. To ensure sequentiality, each processor is queued according to each referenced domain node. The action processor is added to a keyed queue and may not begin operations until all the processers in queue for that key before it have completed processing. When referencing multiple domain nodes, all processors for the referenced domain nodes must complete processing before the
 
 The referenced somethings are all checked out of the domain pool. The event is applied to each of the referenced identifiable somethings and is checked into the domain. If the event
+
+## Authentication
+
+An authorization JWT token is sent in the header. Along with any action request, the "actor" key must be specified and typically is the user identifation token "user:abc-123", for example. During authentication, the JWT is decoded for authorization. If the action request actor token does not match.
+
+## Action Request Authorization
+
+Each action must specify the "actor" id. Within the authentication token is the user claim. If the actor id and user claim do not match, the action request is rejected. While not strictly necessary, it makes processing actons simpler internally and it provides a sanity check for each action's authentication.
+
+## Domain Node Authorization
+
+An action request will often reference existing domain nodes. For example, if a user tracks their time toward a task, you may wish restrict access to modifying that after a certain period of time. Although, perhaps an administrative account may have the correct access. Permission to access this domain node has a user-based logic, and is controlled by each domain node.
+
+## Which data should go into domain nodes and which into perspectives?
+
+That's hard to say, as it's highly context dependent. A general rule to follow: if the information is required to perform domain node authorization, it should be in a domain node.
+
+Say in the case of a ledger, a user's account is running low and they attempt to make a purchase. Since they do not have a sufficient balance the purchase should be rejected. In this scenerio, we have a user node and many transaction nodes and need something to compute the relationship into a balance.
+Computed validators
+
+With a user account node and many transaction nodes, we need something to tell us the sum
+
+Validation Nodes
+
+All data from a perspective must first be represented by a domain node. Projecting directly from the event chain is highly discouraged. If information is found in a projection that was not first in a domain node, it becomes a defacto domain node. It's better to make that information explicit.
+
+Node information in a perspective may be available without first a domain node representation.
 
 ### Code Organization
 
