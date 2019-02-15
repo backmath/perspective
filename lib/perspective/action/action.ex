@@ -43,6 +43,9 @@ defmodule Perspective.Action do
     quote do
       import Perspective.Action
       use Vex.Struct
+      use Perspective.ModuleRegistry
+      register_module(Perspective.Action)
+      # @todo, add a test for module registration
 
       def transform(_action) do
         raise UndefinedTransformationFunction, unquote(calling_module)
