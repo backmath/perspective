@@ -3,6 +3,7 @@ defmodule Web.Socket do
 
   channel("home://important_things", Web.Channel)
   channel("home://time", Web.TimeChannel)
+  channel("perspective://requests", Web.RequestsChannel)
 
   def connect(params, socket, connect_info) do
     IO.inspect(params)
