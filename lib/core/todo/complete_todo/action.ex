@@ -1,4 +1,4 @@
-defmodule BackMath.CompleteToDo do
+defmodule Core.CompleteToDo do
   use Perspective.Action
 
   defaction(id: "")
@@ -6,7 +6,7 @@ defmodule BackMath.CompleteToDo do
   validates(:id, presence: true)
 
   transform(action) do
-    %BackMath.ToDoCompleted{
+    %Core.ToDoCompleted{
       id: action.id,
       date: DateTime.utc_now() |> DateTime.to_iso8601()
     }

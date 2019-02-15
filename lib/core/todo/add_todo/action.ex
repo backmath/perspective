@@ -1,4 +1,4 @@
-defmodule BackMath.AddToDo do
+defmodule Core.AddToDo do
   use Perspective.Action
 
   defaction(name: "")
@@ -6,7 +6,7 @@ defmodule BackMath.AddToDo do
   validates(:name, presence: true)
 
   transform(action) do
-    %BackMath.ToDoAdded{
+    %Core.ToDoAdded{
       id: UUID.uuid4(),
       name: action.name
     }

@@ -1,4 +1,4 @@
-defmodule BackMath.RemoveToDo do
+defmodule Core.RemoveToDo do
   use Perspective.Action
 
   defaction(id: "")
@@ -6,7 +6,7 @@ defmodule BackMath.RemoveToDo do
   validates(:id, presence: true)
 
   transform(action) do
-    %BackMath.ToDoRemoved{
+    %Core.ToDoRemoved{
       id: action.id
     }
   end

@@ -1,4 +1,4 @@
-# defmodule BackMath.AddRenameCompleteTest do
+# defmodule Core.AddRenameCompleteTest do
 #   use ExUnit.Case
 
 #   test "lifecycle event" do
@@ -15,6 +15,6 @@
 #   end
 
 #   defp load_data() do
-#     File.read!("./test/backmath/lifecycle_tests/todo/add_rename_complete_test.json")
+#     File.read!("./test/Core/lifecycle_tests/todo/add_rename_complete_test.json")
 #   end
 # end

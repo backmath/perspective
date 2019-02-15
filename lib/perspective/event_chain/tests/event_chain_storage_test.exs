@@ -7,10 +7,10 @@ defmodule Perspective.EventChainStorage.Test do
   end
 
   test "backup saves an copy to the filesystem" do
-    Perspective.EventChain.load([%BackMath.ToDoAdded{}])
+    Perspective.EventChain.load([%Core.ToDoAdded{}])
     Perspective.EventChainStorage.save(test_file())
 
-    assert "[{\"event\":\"Elixir.BackMath.ToDoAdded\",\"id\":null,\"name\":null}]" == File.read!(test_file())
+    assert "[{\"event\":\"Elixir.Core.ToDoAdded\",\"id\":null,\"name\":null}]" == File.read!(test_file())
   end
 
   test "applying events to the chain triggers something" do

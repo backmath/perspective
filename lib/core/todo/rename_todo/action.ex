@@ -1,4 +1,4 @@
-defmodule BackMath.RenameToDo do
+defmodule Core.RenameToDo do
   use Perspective.Action
 
   defaction(id: "", name: "")
@@ -7,7 +7,7 @@ defmodule BackMath.RenameToDo do
   validates(:name, presence: true)
 
   transform(action) do
-    %BackMath.ToDoRenamed{
+    %Core.ToDoRenamed{
       id: action.id,
       name: action.name
     }

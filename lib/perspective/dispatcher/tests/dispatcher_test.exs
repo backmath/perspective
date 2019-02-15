@@ -7,7 +7,7 @@ defmodule Perspective.Dispatcher.Test do
 
   def example_request do
     %{
-      action: "BackMath.AddToDo",
+      action: "Core.AddToDo",
       request: "request:e008852b-9cbe-4262-bbd1-ad19c4b52de3",
       actor: "user:bbe22817-5205-47d5-bdca-e4d270e13277",
       data: %{

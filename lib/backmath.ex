@@ -1,2 +1,2 @@
-defmodule BackMath do
+defmodule Core do
 end

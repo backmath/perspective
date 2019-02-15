@@ -1,10 +1,10 @@
-defmodule BackMath.ToDo do
+defmodule Core.ToDo do
   use Perspective.DomainNode
 
   defstruct id: "", name: "", completed: false
 
-  def apply_event(_todo, %BackMath.ToDoAdded{} = event) do
-    %BackMath.ToDo{}
+  def apply_event(_todo, %Core.ToDoAdded{} = event) do
+    %Core.ToDo{}
     |> Map.put(:id, event.id)
     |> Map.put(:name, event.name)
     |> case do
@@ -12,7 +12,7 @@ defmodule BackMath.ToDo do
     end
   end
 
-  def apply_event(todo, %BackMath.ToDoRenamed{} = event) do
+  def apply_event(todo, %Core.ToDoRenamed{} = event) do
     todo
     |> Map.put(:name, event.name)
     |> case do
@@ -20,7 +20,7 @@ defmodule BackMath.ToDo do
     end
   end
 
-  def apply_event(todo, %BackMath.ToDoCompleted{} = _event) do
+  def apply_event(todo, %Core.ToDoCompleted{} = _event) do
     todo
     |> Map.put(:completed, true)
     |> case do

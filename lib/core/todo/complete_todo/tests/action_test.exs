@@ -1,10 +1,10 @@
-defmodule BackMath.CompleteToDo.Test do
+defmodule Core.CompleteToDo.Test do
   use ExUnit.Case
 
   test "transforms into an event" do
-    event = BackMath.CompleteToDo.transform(valid_action())
+    event = Core.CompleteToDo.transform(valid_action())
 
-    assert %BackMath.ToDoCompleted{
+    assert %Core.ToDoCompleted{
              id: "todo:abc-123",
              date: event_date
            } = event
@@ -19,17 +19,17 @@ defmodule BackMath.CompleteToDo.Test do
     result =
       valid_action()
       |> Map.put(:id, "")
-      |> BackMath.CompleteToDo.valid?()
+      |> Core.CompleteToDo.valid?()
 
     assert false == result
   end
 
   test "the valid action is indeed valid" do
-    assert BackMath.CompleteToDo.valid?(valid_action())
+    assert Core.CompleteToDo.valid?(valid_action())
   end
 
   defp valid_action do
-    %BackMath.CompleteToDo{
+    %Core.CompleteToDo{
       id: "todo:abc-123"
     }
   end

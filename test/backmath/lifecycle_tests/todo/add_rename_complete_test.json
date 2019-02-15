@@ -2,7 +2,7 @@
   {
     "request": "request:abc-123",
     "actor": "user:john-adams-def-456",
-    "action": "BackMath.AddToDo",
+    "action": "Core.AddToDo",
     "data": {
       "name": "Demonstrate how to Add a ToDo"
     }
@@ -10,7 +10,7 @@
   {
     "request": "request:def-456",
     "actor": "user:john-adams",
-    "action": "BackMath.RenameToDo",
+    "action": "Core.RenameToDo",
     "data": {
       "id": "todo:[todo_id_placeholder]",
       "name": "Demonstrate how to Rename a ToDo"
@@ -19,7 +19,7 @@
   {
     "request": "request:ghi-789",
     "actor": "user:john-adams",
-    "action": "BackMath.CompleteToDo",
+    "action": "Core.CompleteToDo",
     "data": {
       "id": "todo:[todo_id_placeholder]"
     }

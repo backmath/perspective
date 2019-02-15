@@ -3,7 +3,7 @@ defmodule Perspective.Request.Test do
 
   test "it converts a data set to an action request" do
     data = %{
-      action: "BackMath.AddToDo",
+      action: "Core.AddToDo",
       request: "request:abc-123",
       actor: "user:john-adams",
       data: %{
@@ -14,7 +14,7 @@ defmodule Perspective.Request.Test do
     expected = %Perspective.ActionRequest{
       actor: "user:john-adams",
       request: "request:abc-123",
-      action: %BackMath.AddToDo{
+      action: %Core.AddToDo{
         name: "Demonstrate how to generate an action from a data struct"
       }
     }

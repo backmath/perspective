@@ -2,9 +2,9 @@ defmodule Perspective.DomainNodeFetcher.Test do
   use ExUnit.Case
   alias Perspective.DomainNodeFetcher, as: Subject
 
-  test "nodes for the action BackMath.AddToDo returns an empty node" do
-    result = Subject.nodes_for_action(%BackMath.AddToDo{})
-    assert [%BackMath.ToDo{}] = result
+  test "nodes for the action Core.AddToDo returns an empty node" do
+    result = Subject.nodes_for_action(%Core.AddToDo{})
+    assert [%Core.ToDo{}] = result
   end
 
   defstruct example: true

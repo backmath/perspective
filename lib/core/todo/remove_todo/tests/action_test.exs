@@ -1,27 +1,27 @@
-defmodule BackMath.RemoveToDo.Test do
+defmodule Core.RemoveToDo.Test do
   use ExUnit.Case
 
   test "transforms into an event" do
-    event = BackMath.RemoveToDo.transform(valid_action())
+    event = Core.RemoveToDo.transform(valid_action())
 
-    assert %BackMath.ToDoRemoved{id: "todo:abc-123"} = event
+    assert %Core.ToDoRemoved{id: "todo:abc-123"} = event
   end
 
   test "id is required" do
     result =
       valid_action()
       |> Map.put(:id, "")
-      |> BackMath.RemoveToDo.valid?()
+      |> Core.RemoveToDo.valid?()
 
     assert false == result
   end
 
   test "the valid action is indeed valid" do
-    assert BackMath.RemoveToDo.valid?(valid_action())
+    assert Core.RemoveToDo.valid?(valid_action())
   end
 
   defp valid_action do
-    %BackMath.RemoveToDo{
+    %Core.RemoveToDo{
       id: "todo:abc-123"
     }
   end

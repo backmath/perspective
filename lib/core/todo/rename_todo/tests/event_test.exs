@@ -1,8 +1,8 @@
-defmodule BackMath.ToDoAdded.Test do
+defmodule Core.ToDoRenamed.Test do
   use ExUnit.Case
 
   test "builds a struct" do
-    assert %BackMath.ToDoAdded{
+    assert %Core.ToDoRenamed{
       id: "123",
       name: "Hello"
     }
