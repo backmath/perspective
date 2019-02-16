@@ -6,7 +6,8 @@ defmodule Perspective.Application do
       {Perspective.Notifications.Supervisor, []},
       {Perspective.DomainPoolSupervisor, []},
       {Perspective.EventChainSupervisor, []},
-      {Core.System.SystemTime, []}
+      {Core.System.SystemTime, []},
+      {Core.Services.Supervisor, []}
     ]
 
     opts = [strategy: :one_for_one, name: Perspective.Application]
