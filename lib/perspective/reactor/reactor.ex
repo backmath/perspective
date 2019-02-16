@@ -9,7 +9,7 @@ defmodule Perspective.Reactor do
         raise "Update (#{event.__struct__}) has no matching function"
       end
 
-      def handle_info(data, state) do
+      def handle_info(%_{} = data, state) do
         new_state = update(data, state)
         {:noreply, new_state}
       end
@@ -33,10 +33,10 @@ defmodule Perspective.Reactor do
   end
 
   defmacro update({_, _, [{_, _, [struct, _]}, _]} = event, state, do: block) do
-    struct_name = Macro.expand_once(struct, __CALLER__)
+    event_struct_type = Macro.expand_once(struct, __CALLER__)
 
     quote do
-      @updateable_events [unquote(struct_name) | @updateable_events]
+      @updateable_events [unquote(event_struct_type) | @updateable_events]
       def update(unquote(event), unquote(state)), do: unquote(block)
     end
   end
@@ -49,20 +49,23 @@ defmodule Perspective.Reactor do
       use GenServer
 
       def init(_data) do
-        unquote(updateable_events)
-        |> Enum.each(fn event ->
-          Perspective.Notifications.subscribe(struct(event, []))
-        end)
+        subscribe_to(unquote(updateable_events))
 
         {:ok, initial_state()}
       end
 
-      def start_link(data) do
-        GenServer.start_link(unquote(calling_module), data, name: unquote(calling_module))
+      def start_link(_data) do
+        GenServer.start_link(unquote(calling_module), nil, name: unquote(calling_module))
       end
 
       def start do
         start_link(nil)
+      end
+
+      defp subscribe_to(updateable_events) do
+        Enum.each(updateable_events, fn event ->
+          Perspective.Notifications.subscribe(struct(event, []))
+        end)
       end
     end
   end

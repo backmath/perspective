@@ -26,7 +26,7 @@ defmodule Perspective.Reactor.Test do
   end
 
   test "start a reactor and update to events" do
-    agent = Example.start()
+    Example.start()
 
     assert [:a] = Example.get()
 
