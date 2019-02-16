@@ -1,7 +1,3 @@
-defmodule Core.System.SystemTimeUpdated do
-  defstruct time: DateTime.utc_now()
-end
-
 defmodule Core.System.SystemTime do
   use Perspective.Projection
 
@@ -13,7 +9,7 @@ defmodule Core.System.SystemTime do
     }
   end
 
-  update(%Core.System.SystemTimeUpdated{} = event, _state) do
+  update(%Core.Services.SystemClock.Update{} = event, _state) do
     %{
       time: event.time
     }

@@ -6,13 +6,8 @@ defmodule Core.System.SystemTime.Test do
 
     new_time = DateTime.utc_now()
 
-    Perspective.Notifications.emit(%Core.System.SystemTimeUpdated{time: new_time})
+    Perspective.Notifications.emit(%Core.Services.SystemClock.Update{time: new_time})
 
     assert %{time: new_time} == Core.System.SystemTime.get()
   end
-
-  # test "a missing function " do
-  #   %{bad: :input}
-  #   |> Core.System.SystemTime.update()
-  # end
 end
