@@ -6,18 +6,23 @@ defmodule Core.Services.SystemClock do
   end
 
   initial_state do
-    schedule_clock(DateTime.utc_now())
-    nil
+    schedule_next_update()
+
+    %{
+      time: DateTime.utc_now()
+    }
   end
 
-  def handle_info(:tick, _state) do
+  update(%Update{time: time} = _event, _state) do
+    schedule_next_update()
+
+    %{
+      time: time
+    }
+  end
+
+  defp schedule_next_update do
     time = DateTime.utc_now()
-    schedule_clock(time)
-    Perspective.Notifications.emit(%Update{time: time})
-    {:noreply, nil}
-  end
-
-  defp schedule_clock(time) do
     Process.send_after(self(), :tick, time_until_next_even_five(time))
   end
 
@@ -26,5 +31,11 @@ defmodule Core.Services.SystemClock do
     microseconds = 1_000_000 - elem(time.microsecond, 0)
     milliseconds_to_wait = seconds * 1000 + microseconds / 1000
     round(milliseconds_to_wait)
+  end
+
+  def handle_info(:tick, state) do
+    time = DateTime.utc_now()
+    Perspective.Notifications.emit(%Update{time: time})
+    {:noreply, state}
   end
 end

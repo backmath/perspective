@@ -6,9 +6,7 @@ defmodule Core.System.ProjectionsSupervisor do
   end
 
   def init(_init_arg) do
-    children = [
-      {Core.System.SystemTime, []}
-    ]
+    children = []
 
     Supervisor.init(children, strategy: :one_for_one)
   end

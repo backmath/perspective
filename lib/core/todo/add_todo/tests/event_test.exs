@@ -14,6 +14,6 @@ defmodule Core.ToDoAdded.Test do
       name: "Hello"
     }
 
-    result = Core.ToDoAdded.Applier.apply_to(%Core.ToDo{}, event)
+    _result = Core.ToDoAdded.Applier.apply_to(%Core.ToDo{}, event)
   end
 end
