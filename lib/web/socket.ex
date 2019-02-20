@@ -1,8 +1,7 @@
 defmodule Web.Socket do
   use Phoenix.Socket
 
-  # channel("home://important_things", Web.Channel)
-  channel(Core.System.SystemTime.Channel.path(), Core.System.SystemTime.Channel)
+  channel(Core.Projections.SystemTime.Channel.path(), Core.Projections.SystemTime.Channel)
 
   def connect(params, socket, connect_info) do
     IO.inspect(params)
