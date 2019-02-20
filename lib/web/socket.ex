@@ -1,7 +1,7 @@
 defmodule Web.Socket do
-  use Phoenix.Socket
+  use Perspective.Socket
 
-  channel(Core.Projections.SystemTime.Channel.path(), Core.Projections.SystemTime.Channel)
+  projection(Core.Projections.SystemTime)
 
   def connect(params, socket, connect_info) do
     IO.inspect(params)
