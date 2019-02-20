@@ -8,6 +8,6 @@ defmodule Perspective.Projection.Test do
 
   test "projections generate a channel" do
     assert "something" == Example.Channel.path()
-    assert [Core.System.SystemTime.Channel] == Perspective.ModuleRegistry.list(Perspective.ProjectionChannel)
+    assert [Core.Projections.SystemTime.Channel] == Perspective.ModuleRegistry.list(Perspective.ProjectionChannel)
   end
 end

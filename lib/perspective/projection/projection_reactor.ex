@@ -19,14 +19,15 @@ defmodule Perspective.ProjectionReactor do
     data = module.get
 
     channels_for_reactor(module)
-    |> Enum.each(fn channel ->
-      Web.Endpoint.broadcast!(channel.path(), "update", data)
+    |> Enum.each(fn {path, _channel, _reactor} ->
+      Web.Endpoint.broadcast!(path, "update", data)
     end)
 
     {:noreply, state}
   end
 
   defp channels_for_reactor(module) do
-    [Core.Projections.SystemTime.Channel]
+    Perspective.ProjectionRegistry.projections()
+    |> Enum.filter(fn {_path, _channel, reactor} -> reactor == module end)
   end
 end
