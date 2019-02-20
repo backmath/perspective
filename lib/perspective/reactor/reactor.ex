@@ -1,5 +1,7 @@
 defmodule Perspective.Reactor do
   defmacro __using__(_) do
+    calling_module = __CALLER__.module
+
     quote do
       import Perspective.Reactor
       @before_compile Perspective.Reactor
@@ -11,6 +13,9 @@ defmodule Perspective.Reactor do
 
       def handle_info(%_{} = data, state) do
         new_state = update(data, state)
+
+        emit_reactor_update()
+
         {:noreply, new_state}
       end
 
@@ -20,6 +25,14 @@ defmodule Perspective.Reactor do
 
       def handle_call(:state, _from, state) do
         {:reply, state, state}
+      end
+
+      def emit_reactor_update do
+        %Perspective.Reactor.ReactorUpdated{
+          module: unquote(calling_module),
+          pid: self()
+        }
+        |> Perspective.Notifications.emit()
       end
 
       defoverridable(update: 2)
