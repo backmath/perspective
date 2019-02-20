@@ -21,11 +21,6 @@ defmodule Perspective.Projection do
           {:reply, {:ok, message}, socket}
         end
 
-        def handle_in("update", message, socket) do
-          broadcast!(socket, "update", message)
-          {:noreply, socket}
-        end
-
         def handle_in(unknown, payload, socket) do
           raise "You've attempted to use #{__MODULE__} with #{unknown}. Please fix"
         end
