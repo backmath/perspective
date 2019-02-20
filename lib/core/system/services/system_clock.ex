@@ -1,7 +1,7 @@
 defmodule Core.Services.SystemClock do
   use Perspective.Reactor
 
-  defmodule Update do
+  defmodule NewTime do
     defstruct time: DateTime.utc_now()
   end
 
@@ -13,7 +13,7 @@ defmodule Core.Services.SystemClock do
     }
   end
 
-  update(%Update{time: time} = _event, _state) do
+  update(%NewTime{time: time} = _event, _state) do
     schedule_next_update()
 
     %{
@@ -35,7 +35,7 @@ defmodule Core.Services.SystemClock do
 
   def handle_info(:tick, state) do
     time = DateTime.utc_now()
-    Perspective.Notifications.emit(%Update{time: time})
+    Perspective.Notifications.emit(%NewTime{time: time})
     {:noreply, state}
   end
 end
