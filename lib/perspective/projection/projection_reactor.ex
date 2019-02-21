@@ -15,8 +15,13 @@ defmodule Perspective.ProjectionReactor do
     start_link(nil)
   end
 
-  def handle_info(%Perspective.Reactor.ReactorUpdated{module: module} = _data, state) do
-    data = module.get
+  def handle_info(%Perspective.Reactor.ReactorUpdated{module: module, pid: pid} = _data, state) do
+    # @todo: improve error handling for dead reactors
+    data =
+      case Process.alive?(pid) do
+        true -> module.get
+        false -> %{}
+      end
 
     channels_for_reactor(module)
     |> Enum.each(fn {path, _channel, _reactor} ->
