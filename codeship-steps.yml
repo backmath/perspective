@@ -1,0 +1,23 @@
+- name: Build Container
+  service: elixir-1.8.1
+  command: cat /dev/null
+
+- name: Parallel Steps
+  type: parallel
+  steps:
+
+  - name: Check for Linting Issues
+    service: elixir-1.8.1
+    command: mix format --check-formatted
+
+  - name: Run Tests
+    service: elixir-1.8.1
+    command: mix test
+
+# - name: Push To GCR
+#   service: build-service
+#   type: push
+#   image_name: gcr.io/backmath/com.backmath.www
+#   image_tag: "{{.CommitID}}"
+#   registry: https://gcr.io
+#   dockercfg_service: dockercfg

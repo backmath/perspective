@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  elixir-1.8.1:
+    build:
+      image: elixir-1.8.1-alpine
+      dockerfile: ci/elixir-1.8.1-alpine.Dockerfile
+    cached: true
+    volumes:
+      - ./:/opt/app
+
+  google-cli:
+    image: google/cloud-sdk:latest
+    working_dir: /opt/app
+    volumes:
+      - ./:/opt/app
+
+  dockercfg:
+    image: codeship/gcr-dockercfg-generator
+    add_docker: true
+    encrypted_env_file: codeship.aes.google.encrypted
