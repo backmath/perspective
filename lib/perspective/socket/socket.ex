@@ -7,7 +7,7 @@ defmodule Perspective.Socket do
   end
 
   defmacro projection(module, opts \\ []) do
-    {path, channel, _reactor} = Macro.expand(module, __ENV__).projection
+    {path, channel, _reactor} = Macro.expand(module, __ENV__).projection_spec
 
     quote do
       channel(unquote(path), unquote(channel), unquote(opts))
