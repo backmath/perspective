@@ -4,7 +4,7 @@ services:
   elixir-1.8.1:
     build:
       image: elixir-1.8.1-alpine
-      dockerfile: ci/elixir-1.8.1-alpine.Dockerfile
+      dockerfile: ci/Dockerfile.elixir-1.8.1-alpine
     cached: true
     volumes:
       - ./:/opt/app
