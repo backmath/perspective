@@ -1,21 +1,24 @@
 FROM elixir:1.8.1-alpine
 
-ARG MIX_ENV=test
-
 WORKDIR /opt/app
 
+# Install system tools
 RUN apk update && apk upgrade --no-cache
 RUN apk add --no-cache \
     git \
     build-base \
     inotify-tools
 
+# Install elixir tools
 RUN mix local.rebar --force
 RUN mix local.hex --force
 
-# This copies our app source code into the build container
+ENV MIX_ENV=test
+
+# Compile dependencies
 COPY mix.exs mix.lock ./
 RUN mix do deps.get, deps.compile
 
+# Compile the app
 COPY . .
 RUN mix compile
