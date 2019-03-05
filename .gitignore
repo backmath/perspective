@@ -26,4 +26,3 @@ perspective-*.tar
 
 storage/*/tmp/
 storage/dev/
-storage/test/event-chain.json
