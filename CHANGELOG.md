@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+
+- Added continuous integration via Codeship
 - Updated the README with more design documentation
 
 ## [0.0.0] - 2018-01-29

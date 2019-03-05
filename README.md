@@ -16,6 +16,8 @@ Then we see that things can happen to other things, too.
 
 ---
 
+[![Codeship Status for backmath/perspective](https://app.codeship.com/projects/32f5e0a0-20e7-0137-9fe1-065c96f422e8/status?branch=master)](https://app.codeship.com/projects/329489)
+
 ## The Domain Pool
 
 As in life and so in our systems, we need to identify things uniquely. These identifiable somethings represent the canonical state for the application, and consequently the canonical state of our domain. These identifiable somethings are called **domain nodes** and are managed as part of **the domain pool**.
