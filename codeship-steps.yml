@@ -1,5 +1,5 @@
 - name: Build Container
-  service: elixir-1.8.1
+  service: elixir
   command: cat /dev/null
 
 - name: Parallel Steps
@@ -7,11 +7,11 @@
   steps:
 
   - name: Check for Linting Issues
-    service: elixir-1.8.1
+    service: elixir
     command: mix format --check-formatted
 
   - name: Run Tests
-    service: elixir-1.8.1
+    service: elixir
     command: mix test
 
 # - name: Push To GCR

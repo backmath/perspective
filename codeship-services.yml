@@ -1,19 +1,10 @@
 version: '2'
 
 services:
-  elixir-1.8.1:
+  elixir:
     build:
-      image: elixir-1.8.1-alpine
+      image: perspective/elixir-1.8.1-alpine
       dockerfile: ci/Dockerfile.elixir-1.8.1-alpine
-    cached: true
-    volumes:
-      - ./:/opt/app
-
-  google-cli:
-    image: google/cloud-sdk:latest
-    working_dir: /opt/app
-    volumes:
-      - ./:/opt/app
 
   dockercfg:
     image: codeship/gcr-dockercfg-generator

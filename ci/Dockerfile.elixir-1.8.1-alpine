@@ -17,7 +17,8 @@ ENV MIX_ENV=test
 
 # Compile dependencies
 COPY mix.exs mix.lock ./
-RUN mix do deps.get, deps.compile
+RUN mix deps.get
+RUN mix deps.compile
 
 # Compile the app
 COPY . .

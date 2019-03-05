@@ -2,4 +2,6 @@ _build/
 .elixir_ls/
 ci/
 
+codeship-services.yml
+codeship-steps.yml
 .dockerignore
