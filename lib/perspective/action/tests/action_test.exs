@@ -1,17 +1,17 @@
 defmodule Perspective.ActionTestExample do
   use Perspective.Action
 
-  defstruct id: "", name: ""
+  defstruct example_id: "", name: ""
 
   transform(action) do
-    {:ok, %{some: :transformation, data: action}}
+    %{some: :transformation, data: action}
   end
 end
 
 defmodule Perspective.NonCompliantExample do
   use Perspective.Action
 
-  defstruct id: "", name: ""
+  defstruct example_id: "", name: ""
 end
 
 defmodule Perspective.ActionTest do
@@ -19,9 +19,9 @@ defmodule Perspective.ActionTest do
   alias Perspective.ActionTestExample, as: Subject
 
   test "transformation macro" do
-    action = %Perspective.ActionTestExample{id: "abc-123"}
+    action = %Perspective.ActionTestExample{example_id: "abc-123"}
 
-    assert {:ok, %{some: :transformation, data: action}} == Subject.transform(action)
+    assert %{some: :transformation, data: action} = Subject.transform(action)
   end
 
   test "transformation fails with wrong type" do
@@ -32,7 +32,7 @@ defmodule Perspective.ActionTest do
   end
 
   test "transformation fails with a missing definition" do
-    action = %Perspective.NonCompliantExample{id: "abc-123"}
+    action = %Perspective.NonCompliantExample{example_id: "abc-123"}
 
     assert_raise(Perspective.Action.UndefinedTransformationFunction, fn ->
       Perspective.NonCompliantExample.transform(action)
@@ -40,7 +40,7 @@ defmodule Perspective.ActionTest do
   end
 
   test "an action 'uses' vex struct" do
-    action = %Perspective.ActionTestExample{id: "abc-123"}
+    action = %Perspective.ActionTestExample{example_id: "abc-123"}
     assert Vex.valid?(action)
   end
 end

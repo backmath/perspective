@@ -3,7 +3,7 @@ defmodule Core.ToDoRenamed.Test do
 
   test "builds a struct" do
     assert %Core.ToDoRenamed{
-      id: "123",
+      todo_id: "123",
       name: "Hello"
     }
   end

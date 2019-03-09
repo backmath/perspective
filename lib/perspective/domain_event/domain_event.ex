@@ -10,7 +10,7 @@ defmodule Perspective.DomainEvent do
 
   defmacro defstruct(args) do
     # todo: throw an error if args contians an event, date key
-    arguments = [:event_id | [:date | args]]
+    arguments = [:domain_event_id | [:domain_event_date | args]]
 
     quote do
       Kernel.defstruct(unquote(arguments))

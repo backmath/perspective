@@ -7,7 +7,7 @@ defmodule Core.AddToDo do
 
   transform(action) do
     %Core.ToDoAdded{
-      id: UUID.uuid4(),
+      todo_id: UUID.uuid4(),
       name: action.name
     }
   end

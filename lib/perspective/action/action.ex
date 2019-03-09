@@ -19,8 +19,8 @@ defmodule Perspective.Action do
 
   def attach_metadata(event) do
     event
-    |> Map.put(:id, UUID.uuid4())
-    |> Map.put(:date, DateTime.utc_now() |> to_string())
+    |> Map.put(:domain_event_id, UUID.uuid4())
+    |> Map.put(:domain_event_date, DateTime.utc_now() |> DateTime.to_iso8601())
   end
 
   defmacro __using__(_opts) do

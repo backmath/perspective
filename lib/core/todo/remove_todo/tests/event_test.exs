@@ -3,7 +3,7 @@ defmodule Core.ToDoRemoved.Test do
 
   test "builds a struct" do
     assert %Core.ToDoRemoved{
-      id: "todo:abc-123"
+      todo_id: "todo:abc-123"
     }
   end
 end

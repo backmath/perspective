@@ -4,7 +4,7 @@ defmodule Core.RenameToDo.Test do
   test "transforms into an event" do
     event = Core.RenameToDo.transform(valid_action())
 
-    assert %Core.ToDoRenamed{id: "todo:abc-123", name: "Demonstrate a Valid RenameToDo Action"} = event
+    assert %Core.ToDoRenamed{todo_id: "todo:abc-123", name: "Demonstrate a Valid RenameToDo Action"} = event
   end
 
   test "name is required" do
@@ -16,10 +16,10 @@ defmodule Core.RenameToDo.Test do
     assert false == result
   end
 
-  test "id is required" do
+  test "todo_id is required" do
     result =
       valid_action()
-      |> Map.put(:id, "")
+      |> Map.put(:todo_id, "")
       |> Core.RenameToDo.valid?()
 
     assert false == result
@@ -31,7 +31,7 @@ defmodule Core.RenameToDo.Test do
 
   defp valid_action do
     %Core.RenameToDo{
-      id: "todo:abc-123",
+      todo_id: "todo:abc-123",
       name: "Demonstrate a Valid RenameToDo Action"
     }
   end

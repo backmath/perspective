@@ -11,7 +11,7 @@ defmodule Perspective.MultiNodeEventApplier.Test do
 
   test "non-empty run" do
     domain_nodes = [%Core.ToDo{}]
-    event = %Core.ToDoAdded{id: "abc-123", name: "Something ToDo"}
+    event = %Core.ToDoAdded{todo_id: "abc-123", name: "Something ToDo"}
 
     expected = {:ok, [%Core.ToDo{id: "abc-123", name: "Something ToDo"}]}
     assert Subject.apply_event_to_domain_nodes(domain_nodes, event) == expected

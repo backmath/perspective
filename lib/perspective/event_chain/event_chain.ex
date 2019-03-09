@@ -15,7 +15,7 @@ defmodule Perspective.EventChain do
   def since(id) do
     Agent.get(__MODULE__, fn events ->
       Enum.reduce_while(events, [], fn event, since ->
-        if event.id == id, do: {:halt, since}, else: {:cont, [event | since]}
+        if event.domain_event_id == id, do: {:halt, since}, else: {:cont, [event | since]}
       end)
     end)
   end

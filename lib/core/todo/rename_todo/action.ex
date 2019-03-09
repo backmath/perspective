@@ -1,14 +1,14 @@
 defmodule Core.RenameToDo do
   use Perspective.Action
 
-  defstruct id: "", name: ""
+  defstruct todo_id: "", name: ""
 
-  validates(:id, presence: true)
+  validates(:todo_id, presence: true)
   validates(:name, presence: true)
 
   transform(action) do
     %Core.ToDoRenamed{
-      id: action.id,
+      todo_id: action.todo_id,
       name: action.name
     }
   end

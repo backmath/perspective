@@ -5,7 +5,7 @@ defmodule Core.CompleteToDo.Test do
     event = Core.CompleteToDo.transform(valid_action())
 
     assert %Core.ToDoCompleted{
-             id: "todo:abc-123",
+             todo_id: "todo:abc-123",
              date: event_date
            } = event
 
@@ -15,10 +15,10 @@ defmodule Core.CompleteToDo.Test do
     assert DateTime.diff(expected_date, event_date, :microsecond) < 10_000
   end
 
-  test "id is required" do
+  test "todo_id is required" do
     result =
       valid_action()
-      |> Map.put(:id, "")
+      |> Map.put(:todo_id, "")
       |> Core.CompleteToDo.valid?()
 
     assert false == result
@@ -30,7 +30,7 @@ defmodule Core.CompleteToDo.Test do
 
   defp valid_action do
     %Core.CompleteToDo{
-      id: "todo:abc-123"
+      todo_id: "todo:abc-123"
     }
   end
 end

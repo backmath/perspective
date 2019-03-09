@@ -1,3 +1,3 @@
 defmodule Core.ToDoRenamed do
-  defstruct [:id, :name]
+  defstruct [:todo_id, :name]
 end

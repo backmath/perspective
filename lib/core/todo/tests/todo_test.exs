@@ -5,7 +5,7 @@ defmodule Core.ToDo.Test do
     todo = %Core.ToDo{}
 
     event = %Core.ToDoAdded{
-      id: "todo:abc-123",
+      todo_id: "todo:abc-123",
       name: "Demonstrate ToDoAdded application"
     }
 
@@ -26,7 +26,7 @@ defmodule Core.ToDo.Test do
     }
 
     event = %Core.ToDoRenamed{
-      id: "todo:abc-123",
+      todo_id: "todo:abc-123",
       name: "Demonstrate ToDoRenamed application"
     }
 
@@ -47,7 +47,7 @@ defmodule Core.ToDo.Test do
     }
 
     event = %Core.ToDoCompleted{
-      id: "todo:abc-123"
+      todo_id: "todo:abc-123"
     }
 
     expected = %Core.ToDo{

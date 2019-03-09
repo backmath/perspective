@@ -5,7 +5,7 @@ defmodule Core.ToDo do
 
   def apply_event(_todo, %Core.ToDoAdded{} = event) do
     %Core.ToDo{}
-    |> Map.put(:id, event.id)
+    |> Map.put(:id, event.todo_id)
     |> Map.put(:name, event.name)
     |> case do
       new_todo -> {:ok, new_todo}

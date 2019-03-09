@@ -1,3 +1,3 @@
 defmodule Core.ToDoRemoved do
-  defstruct [:id]
+  defstruct [:todo_id]
 end

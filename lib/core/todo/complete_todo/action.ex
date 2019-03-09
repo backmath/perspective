@@ -1,13 +1,13 @@
 defmodule Core.CompleteToDo do
   use Perspective.Action
 
-  defstruct id: ""
+  defstruct todo_id: ""
 
-  validates(:id, presence: true)
+  validates(:todo_id, presence: true)
 
   transform(action) do
     %Core.ToDoCompleted{
-      id: action.id,
+      todo_id: action.todo_id,
       date: DateTime.utc_now() |> DateTime.to_iso8601()
     }
   end

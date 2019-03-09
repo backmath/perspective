@@ -1,3 +1,3 @@
 defmodule Core.ToDoCompleted do
-  defstruct [:id, :date]
+  defstruct [:todo_id, :date]
 end
