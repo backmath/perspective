@@ -5,6 +5,8 @@ defmodule Core.AddUser.Test do
     event = Core.AddUser.transform(valid_action())
 
     assert %Core.UserAdded{username: "josh@backmath.com"} = event
+    assert event.user_id =~ ~r/user\:.*/
+    assert event.password_hash =~ ~r/^\$argon2id\$.*/
   end
 
   test "username is required" do
