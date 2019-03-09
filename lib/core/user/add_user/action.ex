@@ -9,6 +9,7 @@ defmodule Core.AddUser do
 
   transform(action) do
     %Core.UserAdded{username: action.username}
+    |> Map.put(:password_hash, Argon2.hash_pwd_salt(action.password))
   end
 
   def matches_password_confirmation(password_confirmation, %{password: password}) do

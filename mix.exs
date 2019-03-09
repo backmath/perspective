@@ -33,6 +33,7 @@ defmodule Perspective.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:argon2_elixir, "~> 2.0"},
       {:distillery, "~> 2.0"},
       {:jason, "~> 1.1"},
       {:phoenix_live_reload, "~> 1.2"},
