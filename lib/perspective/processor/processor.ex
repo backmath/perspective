@@ -1,5 +1,7 @@
 defmodule Perspective.Processor do
   def run(request) do
+    # authorize request (not authenticate)
+
     # Validate syntax
     validate_action(request.action)
 

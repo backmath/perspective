@@ -36,6 +36,7 @@ defmodule Perspective.MixProject do
       {:argon2_elixir, "~> 2.0"},
       {:distillery, "~> 2.0"},
       {:jason, "~> 1.1"},
+      {:guardian, "~> 1.0"},
       {:phoenix_live_reload, "~> 1.2"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix, "~> 1.4.0"},

@@ -19,4 +19,8 @@ defmodule Core.AddUser do
       _no_match -> {:error, :password_and_password_confirmation_do_not_match}
     end
   end
+
+  def skip_authentication? do
+    true
+  end
 end

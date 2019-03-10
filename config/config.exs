@@ -20,6 +20,10 @@ config :perspective, Web.Endpoint,
 
 config :perspective, Web.PubSub, pubsub: [name: Web.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :perspective, Perspective.Guardian,
+  issuer: "perspective",
+  secret_key: "[REDACTED]"
+
 config :phoenix, :json_library, Jason
 config :phoenix, :format_encoders, json: Jason
 

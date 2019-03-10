@@ -1,6 +1,8 @@
 defmodule Perspective.Authorizer do
   def authorize(request, token) do
-    # Does token and data actor_id match?
+    # authorize the JWT token
+
+    # assign actor_id
     {:ok, request}
   end
 end

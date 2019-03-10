@@ -1,18 +1,21 @@
 defmodule Perspective do
   def call(data, token \\ "") do
     generate_request(data)
-    |> authorize_request(token)
+    |> authenticate_request(token)
     |> register_request
     |> queue_request()
   end
 
   defp generate_request(data), do: Perspective.RequestGenerator.from(data)
 
-  defp authorize_request(request, token) do
-    Perspective.Authorizer.authorize(request, token)
-    |> case do
-      {:ok, _request} -> {:ok, request}
-    end
+  defp authenticate_request(request, token) do
+    Perspective.Authentication.authenticate(request, token)
+  end
+
+  defp action_skips_authentication?(%action_type{} = _action) do
+    IO.inspect(action_type)
+    IO.inspect(action_type.skip_authentication?)
+    action_type.skip_authentication?
   end
 
   defp queue_request({:ok, request}) do

@@ -43,4 +43,17 @@ defmodule Perspective.ActionTest do
     action = %Perspective.ActionTestExample{example_id: "abc-123"}
     assert Vex.valid?(action)
   end
+
+  test "an action can indicate if authentication should be skipped" do
+    defmodule YesSkip do
+      use Perspective.Action
+
+      def skip_authentication? do
+        true
+      end
+    end
+
+    assert false == Perspective.ActionTestExample.skip_authentication?()
+    assert true == YesSkip.skip_authentication?()
+  end
 end

@@ -26,12 +26,17 @@ defmodule Perspective.Action do
       use Perspective.ModuleRegistry
       register_module(Perspective.Action)
       # @todo, add a test for module registration
+      Module.register_attribute(__MODULE__, :foo, persist: true)
 
       def transform(_action) do
         raise UndefinedTransformationFunction, unquote(calling_module)
       end
 
-      defoverridable transform: 1
+      def skip_authentication? do
+        false
+      end
+
+      defoverridable transform: 1, skip_authentication?: 0
     end
   end
 end
