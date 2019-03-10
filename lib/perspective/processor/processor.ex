@@ -3,19 +3,24 @@ defmodule Perspective.Processor do
     # authorize request (not authenticate)
 
     # Validate syntax
-    validate_action(request.action)
-
-    # todo: Validate Domain integrity
-
-    domain_event = transform_request_to_event(request)
-
-    apply_to_the_event_chain(domain_event)
-
-    {:ok, domain_event}
+    case valid_action?(request.action) do
+      true -> complete_request(request)
+      false -> validation_errors(request.action)
+    end
   end
 
-  defp validate_action(%action_type{} = action) do
+  defp valid_action?(%action_type{} = action) do
     action_type.valid?(action)
+  end
+
+  defp validation_errors(%action_type{} = action) do
+    action_type.errors?(action)
+  end
+
+  defp complete_request(request) do
+    request
+    |> transform_request_to_event()
+    |> apply_to_the_event_chain()
   end
 
   defp transform_request_to_event(request) do
@@ -33,6 +38,6 @@ defmodule Perspective.Processor do
 
   defp apply_to_the_event_chain(domain_event) do
     Perspective.EventChain.apply_event(domain_event)
-    domain_event
+    {:ok, domain_event}
   end
 end
