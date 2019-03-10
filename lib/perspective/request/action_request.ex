@@ -1,3 +1,3 @@
 defmodule Perspective.ActionRequest do
-  defstruct request: "", actor: "", date: "", action: %{}
+  defstruct request_id: "", request_date: "", actor_id: "", action: %{}
 end
