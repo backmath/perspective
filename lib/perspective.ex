@@ -12,19 +12,12 @@ defmodule Perspective do
     Perspective.Authentication.authenticate(request, token)
   end
 
-  defp action_skips_authentication?(%action_type{} = _action) do
-    IO.inspect(action_type)
-    IO.inspect(action_type.skip_authentication?)
-    action_type.skip_authentication?
+  defp register_request(request) do
+    # Perspective.RequestRegistry.register(request)
   end
 
   defp queue_request({:ok, request}) do
     # Rename to dispatcher queue, or similar
     Perspective.Dispatcher.dispatch(request)
-  end
-
-  defp register_request(request) do
-    # Perspective.RequestRegistry.register(request)
-    request
   end
 end
