@@ -7,14 +7,14 @@ defmodule Perspective.EventChainStorage.Test do
   end
 
   test "backup saves an copy to the filesystem" do
-    # Convert from Core.ToDoAdded to Perspective.DomainEvent
     event = %Perspective.DomainEvent{
+      actor_id: "user:abc-123",
       event_date: "2019-03-09T22:26:02.940566Z",
-      event_id: "event:abc-123",
+      event_id: "event:def-456",
       request_date: "2019-03-09T22:26:02.840566Z",
       event_type: "Core.ToDoAdded",
       event: %Core.ToDoAdded{
-        todo_id: "todo:def-456",
+        todo_id: "todo:hij-789",
         name: "Demonstrate a Saved Event"
       }
     }
@@ -23,7 +23,7 @@ defmodule Perspective.EventChainStorage.Test do
 
     Perspective.EventChainStorage.save(test_file())
 
-    assert "[{\"event\":{\"name\":\"Demonstrate a Saved Event\",\"todo_id\":\"todo:def-456\"},\"event_date\":\"2019-03-09T22:26:02.940566Z\",\"event_id\":\"event:abc-123\",\"event_type\":\"Core.ToDoAdded\",\"request_date\":\"2019-03-09T22:26:02.840566Z\"}]" ==
+    assert "[{\"actor_id\":\"user:abc-123\",\"event\":{\"name\":\"Demonstrate a Saved Event\",\"todo_id\":\"todo:hij-789\"},\"event_date\":\"2019-03-09T22:26:02.940566Z\",\"event_id\":\"event:def-456\",\"event_type\":\"Core.ToDoAdded\",\"request_date\":\"2019-03-09T22:26:02.840566Z\"}]" ==
              File.read!(test_file())
   end
 

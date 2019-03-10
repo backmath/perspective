@@ -1,6 +1,6 @@
 defmodule Perspective.DomainEvent do
   @derive Jason.Encoder
-  defstruct [:event_id, :event_date, :event_type, :request_date, :event]
+  defstruct [:event_id, :event_date, :event_type, :request_date, :actor_id, :event]
 
   defmacro __using__(_options) do
     quote do

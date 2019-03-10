@@ -20,6 +20,7 @@ defmodule Perspective.Processor do
     event = Perspective.ActionTransformer.transform(request.action)
 
     %Perspective.DomainEvent{
+      actor_id: request.actor_id,
       event_id: request.request_id,
       event_date: DateTime.utc_now() |> DateTime.to_iso8601(),
       request_date: request.request_date,
