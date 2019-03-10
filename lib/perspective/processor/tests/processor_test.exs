@@ -4,11 +4,9 @@ defmodule Perspective.Processor.Test do
   test "example run" do
     assert {:ok, _action} = Perspective.Processor.run(action_request())
 
-    expected = %Perspective.DomainEvent{
-      event: %Core.ToDoAdded{name: "Test Perspective.Processor.run"}
-    }
+    result = Perspective.EventChain.last()
 
-    assert expected = Perspective.EventChain.last()
+    assert %Core.ToDoAdded{name: "Test Perspective.Processor.run"} = result.event
   end
 
   defp action_request do
