@@ -1,9 +1,9 @@
 defmodule Perspective do
-  def call(token, data) do
+  def call(data, token \\ "") do
     generate_request(data)
     |> authorize_request(token)
     |> register_request
-    |> dispatch_request()
+    |> queue_request()
   end
 
   defp generate_request(data), do: Perspective.RequestGenerator.from(data)
@@ -15,7 +15,8 @@ defmodule Perspective do
     end
   end
 
-  defp dispatch_request({:ok, request}) do
+  defp queue_request({:ok, request}) do
+    # Rename to dispatcher queue, or similar
     Perspective.Dispatcher.dispatch(request)
   end
 
