@@ -2,7 +2,6 @@ defmodule Perspective do
   def call(data, token \\ "") do
     generate_request(data)
     |> authenticate_request(token)
-    |> register_request
     |> queue_request()
   end
 
@@ -19,5 +18,6 @@ defmodule Perspective do
   defp queue_request({:ok, request}) do
     # Rename to dispatcher queue, or similar
     Perspective.Dispatcher.dispatch(request)
+    request
   end
 end
