@@ -10,6 +10,22 @@ defmodule Perspective.Authentication do
     end
   end
 
+  def hash_password(password) do
+    Argon2.hash_pwd_salt(password)
+  end
+
+  def generate_authentication_token(username, password) do
+    password_hash =
+      case Perspective.AuthenticationVault.password_hash_for(username) do
+        {:ok, password_hash} -> password_hash
+        {:error, :username_not_found} -> ""
+      end
+
+    case Argon2.verify_pass(password, password_hash) do
+      true -> {:ok, Perspective.Guardian.encode_and_sign(resource, claims \\ %{}, opts \\ [])}
+    end
+  end
+
   defp action_skips_authentication?(%action_type{} = _action) do
     action_type.skip_authentication?
   end
