@@ -11,10 +11,14 @@ defmodule Perspective.Reactor do
         raise "Update (#{event.__struct__}) has no matching function"
       end
 
-      def handle_info(%_{} = data, state) do
-        new_state = update(data, state)
+      def backup(_event, _state), do: nil
+
+      def handle_info(%_{} = event, state) do
+        new_state = update(event, state)
 
         emit_reactor_update()
+
+        generate_backup(event, state)
 
         {:noreply, new_state}
       end
@@ -35,13 +39,38 @@ defmodule Perspective.Reactor do
         |> Perspective.Notifications.emit()
       end
 
-      defoverridable(update: 2)
+      def load_backup() do
+        case File.read("./storage/test/#{unquote(calling_module)}.backup.json") do
+          {:ok, data} -> Jason.decode!(data)
+          {:error, _} -> nil
+        end
+      end
+
+      def generate_backup(event, state) do
+        backup =
+          backup(event, state)
+          |> Jason.encode!()
+
+        File.write!("./storage/test/#{unquote(calling_module)}.backup.json", backup)
+      end
+
+      def initial_state(_) do
+        nil
+      end
+
+      defoverridable(update: 2, backup: 2, initial_state: 1)
+    end
+  end
+
+  defmacro initial_state(backup_state, do: block) do
+    quote do
+      def run_initial_state(unquote(backup_state)), do: unquote(block)
     end
   end
 
   defmacro initial_state(do: block) do
     quote do
-      def initial_state, do: unquote(block)
+      def run_initial_state(_), do: unquote(block)
     end
   end
 
@@ -51,6 +80,12 @@ defmodule Perspective.Reactor do
     quote do
       @updateable_events [unquote(event_struct_type) | @updateable_events]
       def update(unquote(event), unquote(state)), do: unquote(block)
+    end
+  end
+
+  defmacro backup(event, state, do: block) do
+    quote do
+      def backup(unquote(event), unquote(state)), do: unquote(block)
     end
   end
 
@@ -64,7 +99,7 @@ defmodule Perspective.Reactor do
       def init(_data) do
         subscribe_to(unquote(updateable_events))
 
-        {:ok, initial_state()}
+        {:ok, run_initial_state(load_backup())}
       end
 
       def start_link(_data) do
