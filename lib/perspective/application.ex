@@ -6,6 +6,7 @@ defmodule Perspective.Application do
       {Perspective.Notifications.Supervisor, []},
       {Perspective.DomainPoolSupervisor, []},
       {Perspective.EventChainSupervisor, []},
+      {Perspective.AuthenticationVault, []},
       {Core.Services.Supervisor, []},
       {Perspective.ProjectionReactor, []},
       {Web.Endpoint, []}
