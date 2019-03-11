@@ -1,7 +1,7 @@
 defmodule Perspective.EventChain do
   use Agent
 
-  def apply_event(event) do
+  def apply_event(%Perspective.DomainEvent{} = event) do
     Agent.update(__MODULE__, fn events -> [event | events] end)
 
     %Perspective.EventChain.NewEvent{event: event}

@@ -3,6 +3,10 @@ defmodule Perspective.EventChain.Test do
 
   setup do
     Perspective.EventChain.load([])
+
+    on_exit(fn ->
+      Perspective.EventChain.load([])
+    end)
   end
 
   test "you can add events to the event chain" do

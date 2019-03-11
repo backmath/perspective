@@ -21,10 +21,28 @@ defmodule Perspective.EventChainStorage do
   defp decode_from_json(data), do: Jason.decode!(data)
 
   defp map_to_event_structs(events) do
+    # @todo Create a Perspective.DomainEvent.from
     Enum.map(events, fn data ->
-      event_type = data["event_type"] |> String.replace(~r/^/, "Elixir.") |> String.to_existing_atom()
-      struct(event_type, data)
+      struct(Perspective.DomainEvent, atomize_keys(data))
+      |> map_domain_event()
     end)
+  end
+
+  defp atomize_keys(%{} = map) do
+    for {k, v} <- map, into: %{} do
+      case is_map(v) do
+        true -> {String.to_atom(k), atomize_keys(v)}
+        false -> {String.to_atom(k), v}
+      end
+    end
+  end
+
+  def map_domain_event(%{event_type: event_type, event: event} = domain_event) do
+    event_type = event_type |> String.replace(~r/^/, "Elixir.") |> String.to_existing_atom()
+
+    domain_event
+    |> Map.put(:event, struct(event_type, event))
+    |> Map.put(:event_type, event_type)
   end
 
   defp default_filepath do
