@@ -1,5 +1,5 @@
-defmodule Perspective.Authentication do
-  def authenticate(request, token) do
+defmodule Perspective.Authenticator do
+  def authenticate_request(request, token) do
     token
     |> retrieve_actor
     |> attach_to_request(request)
@@ -22,7 +22,7 @@ defmodule Perspective.Authentication do
     {:ok, Map.put(request, :actor_id, actor.id)}
   end
 
-  defp attach_to_request({:error, error}, request) do
+  defp attach_to_request({:error, error}, _request) do
     {:error, error}
   end
 
