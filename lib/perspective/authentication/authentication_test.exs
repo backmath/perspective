@@ -17,7 +17,9 @@ defmodule Perspective.Authentication.Test do
   end
 
   test "a request authenticates correctly" do
-    {:ok, token, _claims} = Perspective.Guardian.encode_and_sign(%Core.User{id: "user:abc-123"})
+    user = %Core.User{id: "user:abc-123"}
+    Perspective.DomainPool.put(user)
+    {:ok, token, _claims} = Perspective.Guardian.encode_and_sign(user)
 
     request =
       Perspective.RequestGenerator.from(%{

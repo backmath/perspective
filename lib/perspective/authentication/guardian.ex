@@ -6,7 +6,7 @@ defmodule Perspective.Guardian do
     {:ok, sub}
   end
 
-  def resource_from_claims(claims) do
-    {:ok, claims["sub"]}
+  def resource_from_claims(%{"sub" => id}) do
+    Perspective.DomainPool.get(id)
   end
 end
