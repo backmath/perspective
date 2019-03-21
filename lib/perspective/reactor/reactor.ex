@@ -31,6 +31,21 @@ defmodule Perspective.Reactor do
         {:reply, state, state}
       end
 
+      def handle_call(:reset, _from, state) do
+        state = run_initial_state(load_backup())
+        {:reply, state, state}
+      end
+
+      def send(event) do
+        Kernel.send(unquote(calling_module), event)
+      end
+
+      def reset() do
+        File.rm("./storage/test/#{unquote(calling_module)}.backup.json")
+
+        GenServer.call(unquote(calling_module), :reset)
+      end
+
       def emit_reactor_update do
         %Perspective.Reactor.ReactorUpdated{
           module: unquote(calling_module),

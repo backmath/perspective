@@ -12,7 +12,7 @@ defmodule Perspective.Reactor.Test do
   defmodule Example do
     use Perspective.Reactor
 
-    initial_state(backup_state) do
+    initial_state(_backup_state) do
       [:a]
     end
 
@@ -56,5 +56,17 @@ defmodule Perspective.Reactor.Test do
     Process.sleep(5)
 
     assert "[\"a\"]" = File.read!("./storage/test/Elixir.Perspective.Reactor.Test.Example.backup.json")
+  end
+
+  test "reset a reactor" do
+    Example.start()
+
+    Example.send(%ExampleEvent{data: :data})
+
+    assert [:data, :a] = Example.get()
+
+    Example.reset()
+
+    assert [:a] = Example.get()
   end
 end
