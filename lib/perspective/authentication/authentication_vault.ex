@@ -1,31 +1,29 @@
 defmodule Perspective.AuthenticationVault do
   use Perspective.Reactor
 
-  initial_state(backup) do
-    case backup do
-      %{last_event_processed: last_event_processed} -> last_event_processed
-      _ -> "event:000000000"
-    end
-    |> Perspective.EventChain.since()
+  initial_state(_backup) do
+    Perspective.EventChain.since("event:000000000")
     |> Enum.filter(fn event ->
-      event.event_type == Core.UserAdded
+      nil
+      # event.event_type == Core.UserAdded
     end)
-    |> Enum.reduce(%{}, fn event, accumulator ->
-      Map.put(accumulator, event.event.username, event.event.password_hash)
+    |> Enum.reduce(%{}, fn %Perspective.DomainEvent{event: event}, accumulator ->
+      Map.put(accumulator, event.username, {event.user_id, event.username, event.password_hash})
     end)
   end
 
-  backup(event, _state) do
-    %{last_event_processed: event.event_id}
+  update(
+    %Perspective.DomainEvent{
+      event: %Core.UserAdded{user_id: user_id, username: username, password_hash: password_hash}
+    },
+    state
+  ) do
+    Map.put(state, username, {user_id, username, password_hash})
   end
 
-  update(%Perspective.DomainEvent{event_type: "Core.UserAdded"} = event, state) do
-    Map.put(state, event.event.username, event.event.password_hash)
-  end
-
-  def password_hash_for(username) do
+  def credentials_for(username) do
     case get() |> Map.get(username, nil) do
-      nil -> {:error, :username_not_found}
+      nil -> {:error, %Perspective.Authentication.UsernameNotFound{username: username}}
       password_hash -> {:ok, password_hash}
     end
   end

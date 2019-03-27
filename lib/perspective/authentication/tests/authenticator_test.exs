@@ -47,14 +47,4 @@ defmodule Perspective.Authenticator.Test do
 
     assert {:error, :token_expired} = Perspective.Authenticator.authenticate_request(request, token)
   end
-
-  test "authentication test" do
-    result = Perspective.Authenticator.hash_password("abc-123")
-    assert result =~ ~r/^\$argon2id/
-  end
-
-  test "generate_authentication_token" do
-    # @todo add test
-    # result = Perspective.Authenticator.generate_authentication_token("josh@backmath.com")
-  end
 end
