@@ -5,7 +5,8 @@ defmodule Perspective.DomainEvent do
       use Perspective.ModuleRegistry
       register_module(Perspective.DomainEvent)
 
-      Kernel.defstruct([:id, :actor_id, :data, :meta, :event_date])
+      Module.put_attribute(__MODULE__, :derive, Jason.Encoder)
+      Kernel.defstruct(id: "event:", actor_id: "_:", event_date: nil, data: %{}, meta: %{})
     end
   end
 end

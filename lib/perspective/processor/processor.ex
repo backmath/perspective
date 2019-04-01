@@ -24,16 +24,7 @@ defmodule Perspective.Processor do
   end
 
   defp transform_request_to_event(request) do
-    event = Perspective.ActionTransformer.transform(request.action)
-
-    %Perspective.DomainEvent{
-      actor_id: request.actor_id,
-      event_id: request.request_id,
-      event_date: DateTime.utc_now() |> DateTime.to_iso8601(),
-      request_date: request.request_date,
-      event_type: event.__struct__ |> to_string |> String.replace(~r/^Elixir./, ""),
-      event: event
-    }
+    Perspective.ActionTransformer.transform(request.action)
   end
 
   defp apply_to_the_event_chain(domain_event) do

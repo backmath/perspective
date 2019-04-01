@@ -5,8 +5,10 @@ defmodule Core.ToDo.Test do
     todo = %Core.ToDo{}
 
     event = %Core.ToDoAdded{
-      todo_id: "todo:abc-123",
-      name: "Demonstrate ToDoAdded application"
+      data: %{
+        todo_id: "todo:abc-123",
+        name: "Demonstrate ToDoAdded application"
+      }
     }
 
     expected = %Core.ToDo{

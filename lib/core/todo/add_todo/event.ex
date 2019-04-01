@@ -1,7 +1,9 @@
 defmodule Core.ToDoAdded do
   use Perspective.DomainEvent
 
-  defstruct [:todo_id, :name]
+  defmodule Data do
+    defstruct [:todo_id, :name]
+  end
 end
 
 defprotocol Core.ToDoAdded.Applier do

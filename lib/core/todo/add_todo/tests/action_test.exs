@@ -4,7 +4,7 @@ defmodule Core.AddToDo.Test do
   test "transforms into an event" do
     event = Core.AddToDo.transform(valid_action())
 
-    assert %Core.ToDoAdded{name: "Demonstrate a Valid AddToDo Action"} = event
+    assert %Core.ToDoAdded{data: %{name: "Demonstrate a Valid AddToDo Action"}} = event
   end
 
   test "name is required" do

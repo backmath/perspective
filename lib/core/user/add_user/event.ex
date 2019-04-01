@@ -1,7 +1,9 @@
 defmodule Core.UserAdded do
   use Perspective.DomainEvent
 
-  defstruct [:user_id, :username, :password_hash]
+  defmodule Data do
+    defstruct [:user_id, :username, :password_hash]
+  end
 end
 
 defprotocol Core.UserAdded.Applier do
@@ -11,8 +13,8 @@ end
 defimpl Core.UserAdded.Applier, for: Core.User do
   def apply_to(_node, event) do
     %Core.User{
-      id: event.user_id,
-      username: event.username
+      id: event.data.user_id,
+      username: event.data.username
     }
   end
 end

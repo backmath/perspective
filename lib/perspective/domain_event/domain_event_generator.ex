@@ -7,7 +7,7 @@ defmodule Perspective.DomainEventTransformers do
   def to_map(event) do
     Map.from_struct(event)
     |> Map.put(:event_type, struct_name_to_string(event.__struct__))
-    |> Map.put(:data, Map.from_struct(event.data))
+    |> Map.put(:data, struct_to_map(event.data))
   end
 
   defp to_domain_event(struct_type, data) do
@@ -31,4 +31,7 @@ defmodule Perspective.DomainEventTransformers do
     to_string(atom)
     |> String.replace(~r/^Elixir./, "")
   end
+
+  defp struct_to_map(%_{} = data), do: Map.from_struct(data)
+  defp struct_to_map(map) when is_map(map), do: map
 end

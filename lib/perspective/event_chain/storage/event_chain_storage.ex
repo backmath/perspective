@@ -3,28 +3,36 @@ defmodule Perspective.EventChainStorage do
 
   def save(filepath \\ default_filepath()) do
     read_the_event_chain()
+    |> convert_to_maps()
     |> encode_to_json()
     |> write_to_file(filepath)
   end
 
   def read(filepath \\ default_filepath()) do
     load_file(filepath)
+    |> parse_file_load
     |> decode_from_json
     |> map_to_event_structs
   end
 
   defp read_the_event_chain, do: Perspective.EventChain.list()
 
+  defp convert_to_maps(events) do
+    Enum.map(events, fn event ->
+      Perspective.DomainEventTransformers.to_map(event)
+    end)
+  end
+
   defp encode_to_json(events), do: Jason.encode!(events)
   defp write_to_file(data, filepath), do: File.write!(filepath, data)
-  defp load_file(filepath), do: File.read!(filepath)
+  defp load_file(filepath), do: File.read(filepath)
+  defp parse_file_load({:ok, file}), do: file
+  defp parse_file_load({:error, _}), do: "[]"
   defp decode_from_json(data), do: Jason.decode!(data)
 
   defp map_to_event_structs(events) do
-    # @todo Create a Perspective.DomainEvent.from
     Enum.map(events, fn data ->
-      struct(Perspective.DomainEvent, atomize_keys(data))
-      |> map_domain_event()
+      Perspective.DomainEventTransformers.from_map(atomize_keys(data))
     end)
   end
 
@@ -35,14 +43,6 @@ defmodule Perspective.EventChainStorage do
         false -> {String.to_atom(k), v}
       end
     end
-  end
-
-  def map_domain_event(%{event_type: event_type, event: event} = domain_event) do
-    event_type = event_type |> String.replace(~r/^/, "Elixir.") |> String.to_existing_atom()
-
-    domain_event
-    |> Map.put(:event, struct(event_type, event))
-    |> Map.put(:event_type, event_type)
   end
 
   defp default_filepath do

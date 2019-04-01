@@ -8,9 +8,13 @@ defmodule Core.AddUser do
   validates(:password_confirmation, &Core.AddUser.matches_password_confirmation/2)
 
   transform(action) do
-    %Core.UserAdded{username: action.username}
-    |> Map.put(:user_id, "user:" <> UUID.uuid4())
-    |> Map.put(:password_hash, Argon2.hash_pwd_salt(action.password))
+    %Core.UserAdded{
+      data: %{
+        user_id: "user:" <> UUID.uuid4(),
+        username: action.username,
+        password_hash: Argon2.hash_pwd_salt(action.password)
+      }
+    }
   end
 
   def matches_password_confirmation(password_confirmation, %{password: password}) do

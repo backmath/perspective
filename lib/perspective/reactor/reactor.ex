@@ -13,7 +13,7 @@ defmodule Perspective.Reactor do
 
       def backup(_event, _state), do: nil
 
-      def handle_info(%_{} = event, state) do
+      def handle_info(event, state) do
         new_state = update(event, state)
 
         emit_reactor_update()
@@ -89,11 +89,24 @@ defmodule Perspective.Reactor do
     end
   end
 
-  defmacro update({_, _, [{_, _, [struct, _]}, _]} = event, state, do: block) do
-    event_struct_type = Macro.expand_once(struct, __CALLER__)
+  defmacro update({:%, _, [struct, _]} = event, state, do: block) do
+    struct_type =
+      Macro.expand(struct, __CALLER__)
+      |> Macro.escape()
 
     quote do
-      @updateable_events [unquote(event_struct_type) | @updateable_events]
+      @updateable_events [unquote(struct_type) | @updateable_events]
+      def update(unquote(event), unquote(state)), do: unquote(block)
+    end
+  end
+
+  defmacro update({:=, _, [{:%, _, [struct, _]}, _]} = event, state, do: block) do
+    struct_type =
+      Macro.expand(struct, __CALLER__)
+      |> Macro.escape()
+
+    quote do
+      @updateable_events [unquote(struct_type) | @updateable_events]
       def update(unquote(event), unquote(state)), do: unquote(block)
     end
   end

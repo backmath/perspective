@@ -1,11 +1,10 @@
 defmodule Perspective.EventChain do
   use Agent
 
-  def apply_event(%Perspective.DomainEvent{} = event) do
+  def apply_event(event) do
     Agent.update(__MODULE__, fn events -> [event | events] end)
 
-    %Perspective.EventChain.NewEvent{event: event}
-    |> Perspective.Notifications.emit()
+    Perspective.Notifications.emit(event)
   end
 
   def last() do
@@ -15,7 +14,7 @@ defmodule Perspective.EventChain do
   def since(id) do
     Agent.get(__MODULE__, fn events ->
       Enum.reduce_while(events, [], fn event, since ->
-        if event.event_id == id, do: {:halt, since}, else: {:cont, [event | since]}
+        if event.id == id, do: {:halt, since}, else: {:cont, [event | since]}
       end)
     end)
   end

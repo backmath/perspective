@@ -6,7 +6,7 @@ defmodule Perspective.Processor.Test do
 
     result = Perspective.EventChain.last()
 
-    assert %Core.ToDoAdded{name: "Test Perspective.Processor.run"} = result.event
+    assert %Core.ToDoAdded{data: %{name: "Test Perspective.Processor.run"}} = result
   end
 
   defp action_request do

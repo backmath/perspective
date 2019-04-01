@@ -12,9 +12,12 @@ defmodule Perspective.AuthenticationTokenGenerator.Test do
     Perspective.DomainPool.delete(%{id: "user:abc-123"})
     Perspective.DomainPool.put(%{id: "user:abc-123", username: "josh@backmath.com"})
 
-    %Perspective.DomainEvent{
-      event_type: "Core.UserAdded",
-      event: %{id: "user:abc-123", username: "josh@backmath.com", password_hash: Argon2.hash_pwd_salt("password-bh5r")}
+    %Core.UserAdded{
+      data: %{
+        user_id: "user:abc-123",
+        username: "josh@backmath.com",
+        password_hash: Argon2.hash_pwd_salt("password-bh5r")
+      }
     }
     |> Perspective.AuthenticationVault.send()
 
@@ -37,9 +40,12 @@ defmodule Perspective.AuthenticationTokenGenerator.Test do
     Perspective.DomainPool.delete(%{id: "user:abc-123"})
     Perspective.DomainPool.put(%{id: "user:abc-123", username: "josh@backmath.com"})
 
-    %Perspective.DomainEvent{
-      event_type: "Core.UserAdded",
-      event: %{id: "user:abc-123", username: "josh@backmath.com", password_hash: Argon2.hash_pwd_salt("password-bh5r")}
+    %Core.UserAdded{
+      data: %{
+        user_id: "user:abc-123",
+        username: "josh@backmath.com",
+        password_hash: Argon2.hash_pwd_salt("password-bh5r")
+      }
     }
     |> Perspective.AuthenticationVault.send()
 

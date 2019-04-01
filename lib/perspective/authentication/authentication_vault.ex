@@ -4,20 +4,14 @@ defmodule Perspective.AuthenticationVault do
   initial_state(_backup) do
     Perspective.EventChain.since("event:000000000")
     |> Enum.filter(fn event ->
-      nil
-      # event.event_type == Core.UserAdded
+      event.__struct__ == Core.UserAdded
     end)
-    |> Enum.reduce(%{}, fn %Perspective.DomainEvent{event: event}, accumulator ->
-      Map.put(accumulator, event.username, {event.user_id, event.username, event.password_hash})
+    |> Enum.reduce(%{}, fn event, accumulator ->
+      Map.put(accumulator, event.data.username, {event.data.user_id, event.data.username, event.data.password_hash})
     end)
   end
 
-  update(
-    %Perspective.DomainEvent{
-      event: %Core.UserAdded{user_id: user_id, username: username, password_hash: password_hash}
-    },
-    state
-  ) do
+  update(%Core.UserAdded{data: %{user_id: user_id, username: username, password_hash: password_hash}}, state) do
     Map.put(state, username, {user_id, username, password_hash})
   end
 
