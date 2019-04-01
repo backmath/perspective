@@ -13,7 +13,7 @@ defmodule Core.Services.SystemClock do
     }
   end
 
-  update(%NewTime{time: time} = _event, _state) do
+  update(%NewTime{time: time}, _state) do
     schedule_next_update()
 
     %{
