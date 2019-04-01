@@ -24,5 +24,4 @@ perspective-*.tar
 
 .elixir_ls
 
-storage/*/tmp/
-storage/dev/
+storage/*
