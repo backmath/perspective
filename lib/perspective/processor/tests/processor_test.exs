@@ -10,11 +10,8 @@ defmodule Perspective.Processor.Test do
   end
 
   defp action_request do
-    Perspective.RequestGenerator.from(%{
-      action: "Core.AddToDo",
-      data: %{
-        name: "Test Perspective.Processor.run"
-      }
+    Core.AddToDo.new(%{
+      name: "Test Perspective.Processor.run"
     })
   end
 end

@@ -2,18 +2,10 @@ defmodule Perspective.Authenticator.Test do
   use ExUnit.Case
 
   test "a request that skips authentication" do
-    token = ""
+    request = Core.AddUser.new(%{})
 
-    request =
-      Perspective.RequestGenerator.from(%{
-        action: "Core.AddUser",
-        data: %{
-          name: "some-username"
-        }
-      })
-
-    assert {:ok, %Perspective.ActionRequest{actor_id: "user:anonymous"}} =
-             Perspective.Authenticator.authenticate_request(request, token)
+    assert {:ok, %Core.AddUser{actor_id: "user:anonymous"}} =
+             Perspective.Authenticator.authenticate_request(request, "")
   end
 
   test "a request authenticates correctly" do
@@ -21,13 +13,9 @@ defmodule Perspective.Authenticator.Test do
     Perspective.DomainPool.put(user)
     {:ok, token, _claims} = Perspective.Guardian.encode_and_sign(user)
 
-    request =
-      Perspective.RequestGenerator.from(%{
-        action: "Core.AddToDo",
-        data: %{}
-      })
+    request = Core.AddToDo.new(%{})
 
-    assert {:ok, %Perspective.ActionRequest{actor_id: "user:abc-123"}} =
+    assert {:ok, %Core.AddToDo{actor_id: "user:abc-123"}} =
              Perspective.Authenticator.authenticate_request(request, token)
   end
 
@@ -39,11 +27,7 @@ defmodule Perspective.Authenticator.Test do
         exp: now - 1000
       )
 
-    request =
-      Perspective.RequestGenerator.from(%{
-        action: "Core.AddToDo",
-        data: %{}
-      })
+    request = Core.AddToDo.new(%{})
 
     assert {:error, :token_expired} = Perspective.Authenticator.authenticate_request(request, token)
   end

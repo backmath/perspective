@@ -6,14 +6,8 @@ defmodule Perspective.Dispatcher.Test do
   end
 
   def example_request do
-    %{
-      action: "Core.AddToDo",
-      request: "request:e008852b-9cbe-4262-bbd1-ad19c4b52de3",
-      actor: "user:bbe22817-5205-47d5-bdca-e4d270e13277",
-      data: %{
-        name: "Demonstrate how to generate an action from a data struct"
-      }
-    }
-    |> Perspective.RequestGenerator.from()
+    Core.AddToDo.new(%{
+      name: "Demonstrate how to generate an action from a data struct"
+    })
   end
 end

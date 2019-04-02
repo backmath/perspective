@@ -5,10 +5,8 @@ defmodule Perspective.InvalidAction.Test do
     expected_message = "The action (Elixir.Core.AddToDo) is invalid (to enumerate later)."
 
     assert_raise(Perspective.Action.InvalidAction, expected_message, fn ->
-      action = %Core.AddToDo{}
-      errors = Vex.errors(action)
-
-      raise Perspective.Action.InvalidAction, {action, errors}
+      action = Core.AddToDo.new(%{})
+      raise Perspective.Action.InvalidAction, {action, []}
     end)
   end
 end
