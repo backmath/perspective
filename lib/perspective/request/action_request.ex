@@ -93,11 +93,11 @@ defmodule Perspective.ActionRequest do
       register_module(Perspective.ActionRequest)
 
       Module.put_attribute(__MODULE__, :derive, Jason.Encoder)
-      Kernel.defstruct(id: "request:", actor_id: "_:", data: %{}, meta: %{}, errors: [])
+      Kernel.defstruct(id: "request/", actor_id: "_:", data: %{}, meta: %{}, errors: [])
 
       def new(data \\ %{}, actor_id \\ default_actor_id(), meta \\ default_meta()) do
         %__MODULE__{
-          id: "request:" <> UUID.uuid4(),
+          id: "request/" <> UUID.uuid4(),
           actor_id: actor_id,
           data: data,
           meta: meta
