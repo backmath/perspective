@@ -47,50 +47,14 @@ defmodule Perspective.ActionRequest do
     end
   end
 
-  defmacro event_data(action_request, do: block) do
-    calling_module = __CALLER__.module()
-
-    quote do
-      def event_data(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
-
-      def event_data(%wrong_type{} = action) do
-        raise(Perspective.Action.WrongActionType, {action, unquote(calling_module)})
-      end
-
-      defimpl Perspective.ActionRequest.RequestDataTransformer, for: unquote(calling_module) do
-        def event_data(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
-      end
-    end
-  end
-
-  defmacro event_meta(action_request, do: block) do
-    calling_module = __CALLER__.module()
-
-    quote do
-      def event_meta(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
-
-      def event_meta(%wrong_type{} = action) do
-        raise(Perspective.Action.WrongActionType, {action, unquote(calling_module)})
-      end
-
-      defimpl Perspective.ActionRequest.MetadataTransformer, for: unquote(calling_module) do
-        def event_meta(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
-      end
-    end
-  end
-
-  defmacro event_name(name) do
-    # test if struct exists someday
-    quote do
-      def event_name(), do: unquote(name)
-    end
-  end
-
   defmacro __using__(_options) do
     quote do
+      @before_compile Perspective.ActionRequest
       import Perspective.ActionRequest
       use Perspective.ModuleRegistry
       register_module(Perspective.ActionRequest)
+
+      Module.register_attribute(__MODULE__, :domain_event, persist: true)
 
       Module.put_attribute(__MODULE__, :derive, Jason.Encoder)
       Kernel.defstruct(id: "request/", actor_id: "_:", data: %{}, meta: %{}, errors: [])
@@ -113,6 +77,12 @@ defmodule Perspective.ActionRequest do
           request_date: DateTime.utc_now()
         }
       end
+    end
+  end
+
+  defmacro __before_compile__(_) do
+    quote do
+      def domain_event, do: @domain_event
     end
   end
 end

@@ -3,6 +3,7 @@ defmodule Perspective.DomainEvent.RequestTransformer.Test do
 
   test "to_event generates the correct event from a request" do
     request = Core.AddToDo.new(%{name: "Example todo"})
+
     event = Perspective.DomainEvent.RequestTransformer.to_event(request)
 
     assert event.data.todo_id =~ ~r/todo\/.*/
