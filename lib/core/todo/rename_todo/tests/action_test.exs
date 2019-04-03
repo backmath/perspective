@@ -1,38 +1,41 @@
 defmodule Core.RenameToDo.Test do
   use ExUnit.Case
 
-  test "transforms into an event" do
-    event = Core.RenameToDo.transform(valid_action())
+  test "validate_syntax returns an empty list for a valid action" do
+    result =
+      Core.RenameToDo.new(%{
+        todo_id: "todo:abc-123",
+        name: "Demonstrate a Valid RenameToDo Action"
+      })
+      |> Core.RenameToDo.validate_syntax()
 
-    assert %Core.ToDoRenamed{todo_id: "todo:abc-123", name: "Demonstrate a Valid RenameToDo Action"} = event
+    assert [] == result
   end
 
   test "name is required" do
     result =
-      valid_action()
-      |> Map.put(:name, "")
-      |> Core.RenameToDo.valid?()
+      Core.RenameToDo.new(%{
+        todo_id: "todo:abc-123"
+      })
+      |> Core.RenameToDo.validate_syntax()
 
-    assert false == result
+    assert [{:error, :name, :presence, "must be present"}] == result
   end
 
   test "todo_id is required" do
     result =
-      valid_action()
-      |> Map.put(:todo_id, "")
-      |> Core.RenameToDo.valid?()
+      Core.RenameToDo.new(%{
+        name: "Demonstrate a Valid RenameToDo Action"
+      })
+      |> Core.RenameToDo.validate_syntax()
 
-    assert false == result
+    assert [{:error, :todo_id, :presence, "must be present"}] == result
   end
 
-  test "the valid action is indeed valid" do
-    assert Core.RenameToDo.valid?(valid_action())
+  test "domain_event is as expected" do
+    assert Core.ToDoRenamed == Core.RenameToDo.domain_event()
   end
 
   defp valid_action do
-    %Core.RenameToDo{
-      todo_id: "todo:abc-123",
-      name: "Demonstrate a Valid RenameToDo Action"
-    }
   end
 end

@@ -1,3 +1,9 @@
 defmodule Core.ToDoRenamed do
-  defstruct [:todo_id, :name]
+  use Perspective.DomainEvent
+
+  @action_request Core.ToDoRenamed
+
+  defmodule Data do
+    defstruct [:todo_id, :name]
+  end
 end

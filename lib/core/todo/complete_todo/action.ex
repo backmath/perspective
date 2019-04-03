@@ -1,14 +1,9 @@
 defmodule Core.CompleteToDo do
-  use Perspective.Action
+  use Perspective.ActionRequest
 
-  defstruct todo_id: ""
+  @domain_event Core.ToDoCompleted
 
-  validates(:todo_id, presence: true)
-
-  transform(action) do
-    %Core.ToDoCompleted{
-      todo_id: action.todo_id,
-      date: DateTime.utc_now() |> DateTime.to_iso8601()
-    }
+  validate_syntax(%{data: data}) do
+    Vex.errors(data, todo_id: [presence: true])
   end
 end

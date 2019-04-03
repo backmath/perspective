@@ -1,3 +1,9 @@
 defmodule Core.ToDoCompleted do
-  defstruct [:todo_id, :date]
+  use Perspective.DomainEvent
+
+  @action_request Core.CompleteToDo
+
+  defmodule Data do
+    defstruct [:todo_id, :date]
+  end
 end

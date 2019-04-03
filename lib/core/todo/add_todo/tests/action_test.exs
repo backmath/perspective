@@ -1,28 +1,23 @@
 defmodule Core.AddToDo.Test do
   use ExUnit.Case
 
-  test "transforms into an event" do
-    event = Core.AddToDo.transform(valid_action())
-
-    assert %Core.ToDoAdded{data: %{name: "Demonstrate a Valid AddToDo Action"}} = event
-  end
-
-  test "name is required" do
+  test "validate_syntax returns an empty list for a valid action" do
     result =
-      valid_action()
-      |> Map.put(:name, "")
-      |> Core.AddToDo.valid?()
+      Core.AddToDo.new(%{name: "Demonstrate a Valid AddToDo Action"})
+      |> Core.AddToDo.validate_syntax()
 
-    assert false == result
+    assert [] = result
   end
 
-  test "the valid action is indeed valid" do
-    assert Core.AddToDo.valid?(valid_action())
+  test "validate_syntax requires a name" do
+    result =
+      Core.AddToDo.new(%{name: ""})
+      |> Core.AddToDo.validate_syntax()
+
+    assert [{:error, :name, :presence, "must be present"}] == result
   end
 
-  defp valid_action do
-    %Core.AddToDo{
-      name: "Demonstrate a Valid AddToDo Action"
-    }
+  test "domain_event is as expected" do
+    assert Core.ToDoAdded == Core.AddToDo.domain_event()
   end
 end

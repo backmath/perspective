@@ -1,23 +1,12 @@
 defmodule Core.ToDoAdded.Test do
   use ExUnit.Case
 
-  test "builds a struct" do
-    assert %Core.ToDoAdded{
-      data: %{
-        todo_id: "123",
-        name: "Hello"
-      }
-    }
-  end
+  test "transform_data generates a todo_id" do
+    data =
+      Core.AddToDo.new(%{name: "Demonstrate a Valid AddToDo Action"})
+      |> Core.ToDoAdded.transform_data()
 
-  test "apply the event" do
-    event = %Core.ToDoAdded{
-      data: %{
-        todo_id: "todo:abc-123",
-        name: "Hello"
-      }
-    }
-
-    _result = Core.ToDoAdded.Applier.apply_to(%Core.ToDo{}, event)
+    assert data.name =~ "Demonstrate a Valid AddToDo Action"
+    assert data.todo_id =~ ~r/todo\/.*/
   end
 end

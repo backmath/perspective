@@ -1,28 +1,27 @@
 defmodule Core.RemoveToDo.Test do
   use ExUnit.Case
 
-  test "transforms into an event" do
-    event = Core.RemoveToDo.transform(valid_action())
-
-    assert %Core.ToDoRemoved{todo_id: "todo:abc-123"} = event
-  end
-
-  test "id is required" do
+  test "validate_syntax returns an empty list for a valid action" do
     result =
-      valid_action()
-      |> Map.put(:todo_id, "")
-      |> Core.RemoveToDo.valid?()
+      Core.RemoveToDo.new(%{
+        todo_id: "todo:abc-123"
+      })
+      |> Core.RemoveToDo.validate_syntax()
 
-    assert false == result
+    assert [] == result
   end
 
-  test "the valid action is indeed valid" do
-    assert Core.RemoveToDo.valid?(valid_action())
+  test "validate_syntax requires a todo_id" do
+    result =
+      Core.RemoveToDo.new(%{
+        todo_id: ""
+      })
+      |> Core.RemoveToDo.validate_syntax()
+
+    assert [{:error, :todo_id, :presence, "must be present"}] == result
   end
 
-  defp valid_action do
-    %Core.RemoveToDo{
-      todo_id: "todo:abc-123"
-    }
+  test "domain_event is as expected" do
+    assert Core.ToDoRemoved == Core.RemoveToDo.domain_event()
   end
 end

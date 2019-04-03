@@ -1,16 +1,9 @@
 defmodule Core.AddToDo do
-  use Perspective.Action
+  use Perspective.ActionRequest
 
-  defstruct name: ""
+  @domain_event Core.ToDoAdded
 
-  validates(:name, presence: true)
-
-  transform(action) do
-    %Core.ToDoAdded{
-      data: %{
-        todo_id: UUID.uuid4(),
-        name: action.name
-      }
-    }
+  validate_syntax(%{data: data}) do
+    Vex.errors(data, name: [presence: true])
   end
 end

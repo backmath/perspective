@@ -1,3 +1,9 @@
 defmodule Core.ToDoRemoved do
-  defstruct [:todo_id]
+  use Perspective.DomainEvent
+
+  @action_request Core.AddUser
+
+  defmodule Data do
+    defstruct [:todo_id]
+  end
 end

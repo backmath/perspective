@@ -1,15 +1,12 @@
 defmodule Core.RenameToDo do
-  use Perspective.Action
+  use Perspective.ActionRequest
 
-  defstruct todo_id: "", name: ""
+  @domain_event Core.ToDoRenamed
 
-  validates(:todo_id, presence: true)
-  validates(:name, presence: true)
-
-  transform(action) do
-    %Core.ToDoRenamed{
-      todo_id: action.todo_id,
-      name: action.name
-    }
+  validate_syntax(%{data: data}) do
+    Vex.errors(data,
+      todo_id: [presence: true],
+      name: [presence: true]
+    )
   end
 end

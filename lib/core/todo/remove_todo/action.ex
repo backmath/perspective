@@ -1,13 +1,9 @@
 defmodule Core.RemoveToDo do
-  use Perspective.Action
+  use Perspective.ActionRequest
 
-  defstruct todo_id: ""
+  @domain_event Core.ToDoRemoved
 
-  validates(:todo_id, presence: true)
-
-  transform(action) do
-    %Core.ToDoRemoved{
-      todo_id: action.todo_id
-    }
+  validate_syntax(%{data: data}) do
+    Vex.errors(data, todo_id: [presence: true])
   end
 end
