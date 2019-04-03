@@ -1,27 +1,26 @@
 defmodule Core.AddUser do
-  use Perspective.Action
+  use Perspective.ActionRequest
 
-  defstruct [:username, :password, :password_confirmation]
+  @domain_event Core.UserAdded
 
-  validates(:username, presence: true)
-  validates(:password, presence: true)
-  validates(:password_confirmation, &Core.AddUser.matches_password_confirmation/2)
+  defmodule Data do
+    use Vex.Struct
+    defstruct [:username, :password, :password_confirmation]
 
-  transform(action) do
-    %Core.UserAdded{
-      data: %{
-        user_id: "user:" <> UUID.uuid4(),
-        username: action.username,
-        password_hash: Argon2.hash_pwd_salt(action.password)
-      }
-    }
+    validates(:username, presence: true)
+    validates(:password, presence: true)
+    validates(:password_confirmation, &Data.matches_password_confirmation/2)
+
+    def matches_password_confirmation(password_confirmation, %{password: password}) do
+      case password_confirmation do
+        ^password -> :ok
+        _no_match -> {:error, :password_and_password_confirmation_do_not_match}
+      end
+    end
   end
 
-  def matches_password_confirmation(password_confirmation, %{password: password}) do
-    case password_confirmation do
-      ^password -> :ok
-      _no_match -> {:error, :password_and_password_confirmation_do_not_match}
-    end
+  validate_syntax(%{data: data}) do
+    Vex.errors(struct(Data, data))
   end
 
   def skip_authentication? do

@@ -1,50 +1,55 @@
 defmodule Core.AddUser.Test do
   use ExUnit.Case
 
-  test "transforms into an event" do
-    event = Core.AddUser.transform(valid_action())
-
-    assert %Core.UserAdded{data: %{username: "josh@backmath.com"}} = event
-    assert event.data.user_id =~ ~r/user\:.*/
-    assert event.data.password_hash =~ ~r/^\$argon2id\$.*/
-  end
-
-  test "username is required" do
+  test "validate_syntax requires a username" do
     result =
-      valid_action()
-      |> Map.put(:username, "")
-      |> Core.AddUser.valid?()
+      Core.AddUser.new(%{
+        username: "",
+        password: "abc-123-xyz!",
+        password_confirmation: "abc-123-xyz!"
+      })
+      |> Core.AddUser.validate_syntax()
 
-    assert false == result
+    assert [{:error, :username, :presence, "must be present"}] == result
   end
 
-  test "password is required" do
+  test "validate_syntax requires a password" do
     result =
-      valid_action()
-      |> Map.put(:password, "")
-      |> Core.AddUser.valid?()
+      Core.AddUser.new(%{
+        username: "josh@backmath.com",
+        password_confirmation: "abc-123-xyz!"
+      })
+      |> Core.AddUser.validate_syntax()
 
-    assert false == result
+    assert [
+             {:error, :password, :presence, "must be present"},
+             {:error, :password_confirmation, :by, :password_and_password_confirmation_do_not_match}
+           ] == result
   end
 
-  test "password_confirmation matches the password" do
+  test "validate_syntax requires that the password_confirmation matches the password" do
     result =
-      valid_action()
-      |> Map.put(:password_confirmation, "def-456-hij%")
-      |> Core.AddUser.valid?()
+      Core.AddUser.new(%{
+        username: "josh@backmath.com",
+        password: "abc-123-xyz!",
+        password_confirmation: "ABC-123-XYZ!"
+      })
+      |> Core.AddUser.validate_syntax()
 
-    assert false == result
+    assert [
+             {:error, :password_confirmation, :by, :password_and_password_confirmation_do_not_match}
+           ] == result
   end
 
-  test "the valid action is indeed valid" do
-    assert Core.AddUser.valid?(valid_action())
-  end
+  test "validate_syntax returns an empty list for a valid action" do
+    result =
+      Core.AddUser.new(%{
+        username: "josh@backmath.com",
+        password: "abc-123-xyz!",
+        password_confirmation: "abc-123-xyz!"
+      })
+      |> Core.AddUser.validate_syntax()
 
-  defp valid_action do
-    %Core.AddUser{
-      username: "josh@backmath.com",
-      password: "abc-123-xyz!",
-      password_confirmation: "abc-123-xyz!"
-    }
+    assert [] == result
   end
 end

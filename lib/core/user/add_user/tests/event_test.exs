@@ -1,15 +1,17 @@
 defmodule Core.UserAdded.Test do
   use ExUnit.Case
 
-  test "apply the event" do
-    event = %Core.UserAdded{
-      data: %{
-        user_id: "user:abc-123",
+  test "transform_data hashes the password" do
+    event_data =
+      Core.AddUser.new(%{
         username: "josh@backmath.com",
-        password_hash: "b3Yk7..."
-      }
-    }
+        password: "abc-123-xyz!",
+        password_confirmation: "abc-123-xyz!"
+      })
+      |> Core.UserAdded.transform_data()
 
-    _result = Core.UserAdded.Applier.apply_to(%Core.User{}, event)
+    assert event_data.user_id =~ ~r/user\/.*/
+    assert event_data.username =~ "josh@backmath.com"
+    assert event_data.password_hash =~ ~r/^\$argon2id\$.*/
   end
 end
