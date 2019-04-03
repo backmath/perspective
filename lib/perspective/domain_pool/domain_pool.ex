@@ -9,12 +9,25 @@ defmodule Perspective.DomainPool do
     end
   end
 
+  def get!(node_id) do
+    case get(node_id) do
+      {:ok, node} -> node
+      {:error, error} -> raise error
+    end
+  end
+
   def put(node) do
     Agent.update(__MODULE__, fn nodes ->
       Map.put(nodes, node.id, node)
     end)
     |> case do
       :ok -> {:ok, node}
+    end
+  end
+
+  def put!(node_id) do
+    case put(node_id) do
+      {:ok, node} -> node
     end
   end
 
