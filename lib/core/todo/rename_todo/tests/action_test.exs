@@ -35,7 +35,4 @@ defmodule Core.RenameToDo.Test do
   test "domain_event is as expected" do
     assert Core.ToDoRenamed == Core.RenameToDo.domain_event()
   end
-
-  defp valid_action do
-  end
 end

@@ -11,10 +11,4 @@ defmodule Perspective.Processor.Test do
 
     assert %Core.ToDoAdded{data: %{name: "Test Perspective.Processor.run"}} = result
   end
-
-  defp action_request do
-    Core.AddToDo.new(%{
-      name: "Test Perspective.Processor.run"
-    })
-  end
 end
