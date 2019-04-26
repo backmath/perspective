@@ -9,19 +9,13 @@ defmodule Perspective.EventChain.Test do
     end)
   end
 
-  test "you can add events to the event chain" do
-    event = %Core.ToDoAdded{}
-
-    :ok = Perspective.EventChain.apply_event(event)
-
-    assert event == Perspective.EventChain.last()
-  end
-
   test "you can list events since a hash" do
-    Perspective.EventChain.apply_event(%Core.ToDoAdded{id: "event:abc"})
-    Perspective.EventChain.apply_event(%Core.ToDoAdded{id: "event:def"})
-    Perspective.EventChain.apply_event(%Core.ToDoAdded{id: "event:ghi"})
-    Perspective.EventChain.apply_event(%Core.ToDoAdded{id: "event:jkl"})
+    Perspective.EventChain.load([
+      %Core.ToDoAdded{id: "event:jkl"},
+      %Core.ToDoAdded{id: "event:ghi"},
+      %Core.ToDoAdded{id: "event:def"},
+      %Core.ToDoAdded{id: "event:abc"}
+    ])
 
     expected = [
       %Core.ToDoAdded{id: "event:ghi"},
@@ -32,8 +26,10 @@ defmodule Perspective.EventChain.Test do
   end
 
   test "you can stream all of the events" do
-    Perspective.EventChain.apply_event(%Core.ToDoAdded{id: "event:abc"})
-    Perspective.EventChain.apply_event(%Core.ToDoAdded{id: "event:def"})
+    Perspective.EventChain.load([
+      %Core.ToDoAdded{id: "event:def"},
+      %Core.ToDoAdded{id: "event:abc"}
+    ])
 
     expected = [
       %Core.ToDoAdded{id: "event:def"},
