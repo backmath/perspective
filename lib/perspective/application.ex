@@ -8,6 +8,7 @@ defmodule Perspective.Application do
       {Perspective.EventChainSupervisor, []},
       {Perspective.AuthenticationVault, []},
       {Core.Services.Supervisor, []},
+      {Core.ToDo.Reactor, []},
       {Perspective.ProjectionReactor, []},
       {Web.Endpoint, []}
     ]
