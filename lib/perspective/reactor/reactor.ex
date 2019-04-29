@@ -89,21 +89,10 @@ defmodule Perspective.Reactor do
     end
   end
 
-  defmacro update({:%, _, [struct, _]} = event, state, do: block) do
+  defmacro update(event, state, do: block) do
     struct_type =
-      Macro.expand(struct, __CALLER__)
-      |> Macro.escape()
-
-    quote do
-      @updateable_events [unquote(struct_type) | @updateable_events]
-      def update(unquote(event), unquote(state)), do: unquote(block)
-    end
-  end
-
-  defmacro update({:=, _, [{:%, _, [struct, _]}, _]} = event, state, do: block) do
-    struct_type =
-      Macro.expand(struct, __CALLER__)
-      |> Macro.escape()
+      Perspective.Reactor.MacroParser.capture_event_name(event)
+      |> Macro.expand(__CALLER__)
 
     quote do
       @updateable_events [unquote(struct_type) | @updateable_events]
