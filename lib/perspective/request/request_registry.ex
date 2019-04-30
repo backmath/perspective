@@ -1,10 +1,19 @@
 defmodule Perspective.RequestRegistry do
-  defmodule RequestCompleted do
+  use Perspective.Reactor
+
+  defmodule RegisterRequest do
     defstruct [:request]
   end
 
-  def register() do
-    Perspective.Notifications.subscribe(%Perspective.Request.RequestCompleted{})
-    Perspective.Notifications.subscribe(%Perspective.Request.RequestRejected{})
+  initial_state do
+    %{}
+  end
+
+  update(%RegisterRequest{request: %{id: request_id, actor_id: actor_id}}, state) do
+    Map.put(state, request_id, actor_id)
+  end
+
+  def register(request) do
+    Perspective.RequestRegistry.send(%RegisterRequest{request: request})
   end
 end

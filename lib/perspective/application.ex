@@ -7,6 +7,7 @@ defmodule Perspective.Application do
       {Perspective.DomainPoolSupervisor, []},
       {Perspective.EventChainSupervisor, []},
       {Perspective.AuthenticationVault, []},
+      {Perspective.RequestRegistry, []},
       {Core.Services.Supervisor, []},
       {Core.ToDo.Reactor, []},
       {Perspective.ProjectionReactor, []},
