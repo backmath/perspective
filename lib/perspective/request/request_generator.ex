@@ -1,18 +1,10 @@
 defmodule Perspective.RequestGenerator do
-  def from(%{data: data} = map) do
+  def from(%{data: data, action: action}) do
     try do
-      map
-      # |> map_to_action_request()
-      # |> set_action_from_data(data)
-      # |> Map.put(:request_id, "request:" <> UUID.uuid4())
-      # |> Map.put(:request_date, DateTime.utc_now() |> DateTime.to_iso8601())
+      create_action(action, data)
     rescue
       error in Perspective.Request.MissingAction -> {:error, error}
     end
-  end
-
-  defp map_to_action_request(%{} = map) do
-    struct(Perspective.ActionRequest, map)
   end
 
   defp create_action(action_name, data) do

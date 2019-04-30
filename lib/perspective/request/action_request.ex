@@ -5,10 +5,6 @@ defmodule Perspective.ActionRequest do
     quote do
       def validate_syntax(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
 
-      def validate_syntax(%wrong_type{} = action) do
-        raise(Perspective.Action.WrongActionType, {action, unquote(calling_module)})
-      end
-
       defimpl Perspective.ActionRequest.SyntaxValidator, for: unquote(calling_module) do
         def validate_syntax(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
       end
@@ -21,10 +17,6 @@ defmodule Perspective.ActionRequest do
     quote do
       def validate_semantics(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
 
-      def validate_semantics(%wrong_type{} = action) do
-        raise(Perspective.Action.WrongActionType, {action, unquote(calling_module)})
-      end
-
       defimpl Perspective.ActionRequest.SemanticValidator, for: unquote(calling_module) do
         def validate_semantics(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
       end
@@ -36,10 +28,6 @@ defmodule Perspective.ActionRequest do
 
     quote do
       def authorize_request(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
-
-      def authorize_request(%wrong_type{} = action) do
-        raise(Perspective.Action.WrongActionType, {action, unquote(calling_module)})
-      end
 
       defimpl Perspective.ActionRequest.RequestAuthorizer, for: unquote(calling_module) do
         def authorize_request(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
