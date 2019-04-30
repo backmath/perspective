@@ -7,22 +7,6 @@ defmodule Perspective.Reactor do
       @before_compile Perspective.Reactor
       @updateable_events []
 
-      def update(event, _state) do
-        raise "Update (#{event.__struct__}) has no matching function"
-      end
-
-      def backup(_event, _state), do: nil
-
-      def handle_info(event, state) do
-        new_state = update(event, state)
-
-        emit_reactor_update()
-
-        generate_backup(event, state)
-
-        {:noreply, new_state}
-      end
-
       def get do
         GenServer.call(__MODULE__, :state)
       end
@@ -63,29 +47,27 @@ defmodule Perspective.Reactor do
 
       def generate_backup(event, state) do
         backup =
-          backup(event, state)
+          run_backup(event, state)
           |> Jason.encode!()
 
         File.write!("./storage/test/#{unquote(calling_module)}.backup.json", backup)
       end
 
-      def initial_state(_) do
-        nil
+      def run_update(event, _state) do
+        raise "Update (#{event.__struct__}) has no matching function"
       end
 
-      defoverridable(update: 2, backup: 2, initial_state: 1)
+      def run_backup(_event, _state), do: nil
+
+      def run_initial_state(_), do: nil
+
+      defoverridable(run_update: 2, run_backup: 2, run_initial_state: 1)
     end
   end
 
-  defmacro initial_state(backup_state, do: block) do
+  defmacro initial_state(backup_state \\ nil, do: block) do
     quote do
       def run_initial_state(unquote(backup_state)), do: unquote(block)
-    end
-  end
-
-  defmacro initial_state(do: block) do
-    quote do
-      def run_initial_state(_), do: unquote(block)
     end
   end
 
@@ -96,13 +78,13 @@ defmodule Perspective.Reactor do
 
     quote do
       @updateable_events [unquote(struct_type) | @updateable_events]
-      def update(unquote(event), unquote(state)), do: unquote(block)
+      def run_update(unquote(event), unquote(state)), do: unquote(block)
     end
   end
 
   defmacro backup(event, state, do: block) do
     quote do
-      def backup(unquote(event), unquote(state)), do: unquote(block)
+      def run_backup(unquote(event), unquote(state)), do: unquote(block)
     end
   end
 
@@ -131,6 +113,16 @@ defmodule Perspective.Reactor do
         Enum.each(updateable_events, fn event ->
           Perspective.Notifications.subscribe(struct(event, []))
         end)
+      end
+
+      def handle_info(event, state) do
+        new_state = run_update(event, state)
+
+        emit_reactor_update()
+
+        generate_backup(event, state)
+
+        {:noreply, new_state}
       end
     end
   end
