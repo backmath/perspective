@@ -15,5 +15,6 @@ defmodule Perspective.RequestRegistry do
 
   def register(request) do
     Perspective.RequestRegistry.send(%RegisterRequest{request: request})
+    request
   end
 end
