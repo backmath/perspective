@@ -3,8 +3,6 @@ defmodule Perspective.Authenticator do
     token
     |> retrieve_actor
     |> attach_to_request(request)
-
-    # todo action.skip_authentication?
   end
 
   defp retrieve_actor(""), do: {:ok, %Core.User{id: "user:anonymous"}}
@@ -19,10 +17,10 @@ defmodule Perspective.Authenticator do
   end
 
   defp attach_to_request({:ok, actor}, request) do
-    {:ok, Map.put(request, :actor_id, actor.id)}
+    Map.put(request, :actor_id, actor.id)
   end
 
-  defp attach_to_request({:error, error}, _request) do
-    {:error, error}
+  defp attach_to_request({:error, error}, request) do
+    Map.put(request, :errors, [error])
   end
 end

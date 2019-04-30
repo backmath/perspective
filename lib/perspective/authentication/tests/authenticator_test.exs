@@ -4,8 +4,7 @@ defmodule Perspective.Authenticator.Test do
   test "a request that skips authentication" do
     request = Core.AddUser.new(%{})
 
-    assert {:ok, %Core.AddUser{actor_id: "user:anonymous"}} =
-             Perspective.Authenticator.authenticate_request(request, "")
+    assert %Core.AddUser{actor_id: "user:anonymous"} = Perspective.Authenticator.authenticate_request(request, "")
   end
 
   test "a request authenticates correctly" do
@@ -15,8 +14,7 @@ defmodule Perspective.Authenticator.Test do
 
     request = Core.AddToDo.new(%{})
 
-    assert {:ok, %Core.AddToDo{actor_id: "user:abc-123"}} =
-             Perspective.Authenticator.authenticate_request(request, token)
+    assert %Core.AddToDo{actor_id: "user:abc-123"} = Perspective.Authenticator.authenticate_request(request, token)
   end
 
   test "a request that fails authentication" do
@@ -29,6 +27,8 @@ defmodule Perspective.Authenticator.Test do
 
     request = Core.AddToDo.new(%{})
 
-    assert {:error, :token_expired} = Perspective.Authenticator.authenticate_request(request, token)
+    assert %Core.AddToDo{
+             errors: [:token_expired]
+           } = Perspective.Authenticator.authenticate_request(request, token)
   end
 end
