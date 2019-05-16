@@ -15,3 +15,9 @@ defimpl Perspective.AtomizeKeys, for: Map do
   defp atomize(value) when is_binary(value), do: String.to_atom(value)
   defp atomize(value), do: value
 end
+
+defimpl Perspective.AtomizeKeys, for: List do
+  def atomize_keys(list) do
+    Enum.map(list, &Perspective.AtomizeKeys.atomize_keys/1)
+  end
+end
