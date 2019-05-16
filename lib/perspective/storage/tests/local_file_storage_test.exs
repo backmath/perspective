@@ -11,10 +11,18 @@ defmodule Perspective.LocalFileStorage.Test do
   test "save and load from a file" do
     assert false == File.exists?("./storage/test/Perspective.LocalFileStorage.Test.data")
 
-    Perspective.LocalFileStorage.save("abc", "Perspective.LocalFileStorage.Test.data")
+    Perspective.SaveLocalFile.save("abc", "Perspective.LocalFileStorage.Test.data")
 
-    data = Perspective.LocalFileStorage.load("Perspective.LocalFileStorage.Test.data")
+    result = Perspective.LoadLocalFile.load("Perspective.LocalFileStorage.Test.data")
 
-    assert "abc" == data
+    assert "abc" == result
+  end
+
+  test "load a missing file" do
+    assert false == File.exists?("./storage/test/Perspective.LocalFileStorage.Test.data")
+
+    result = Perspective.LoadLocalFile.load("Perspective.LocalFileStorage.Test.data")
+
+    assert {:error, %Perspective.LocalFileNotFound{}} = result
   end
 end
