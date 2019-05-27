@@ -1,25 +1,23 @@
 defmodule Perspective.LoadLocalFile do
-  use Perspective.Config, Perspective.LocalFileStorage
-
-  def load(filename, storage_path \\ default_storage_path()) do
+  def load(file_path) do
     try do
-      read_from_disk(filename, storage_path)
+      read_from_disk(file_path)
       |> decrypt()
       |> decompress()
     rescue
-      File.Error -> {:error, Perspective.LocalFileNotFound.exception(filename, storage_path)}
+      File.Error -> {:error, Perspective.LocalFileNotFound.exception(file_path)}
     end
   end
 
-  defp read_from_disk(filename, storage_path) do
-    Path.join(storage_path, filename)
-    |> File.read!()
+  defp read_from_disk(file_path) do
+    File.read!(file_path)
   end
 
   defp decrypt(data) do
-    case String.split(data, ".") |> length() do
-      3 -> Perspective.Encryption.decrypt(data)
-      _ -> data
+    try do
+      Perspective.Encryption.decrypt(data)
+    rescue
+      Perspective.NonDecryptableData -> data
     end
   end
 
@@ -30,6 +28,4 @@ defmodule Perspective.LoadLocalFile do
       ErlangError -> data
     end
   end
-
-  defp default_storage_path, do: config(:path)
 end

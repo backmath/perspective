@@ -1,14 +1,13 @@
 defmodule Perspective.LocalFileNotFound do
-  defexception filename: "", storage_path: ""
+  defexception file_path: ""
 
-  def exception(filename, storage_path) do
+  def exception(file_path) do
     %__MODULE__{
-      filename: filename,
-      storage_path: storage_path
+      file_path: file_path
     }
   end
 
-  def message(%{filename: filename, storage_path: storage_path}) do
-    "The file (#{Path.join(storage_path, filename)}) could not be found"
+  def message(%{file_path: file_path}) do
+    "The file (#{file_path}) could not be found"
   end
 end

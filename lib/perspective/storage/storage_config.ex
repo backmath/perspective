@@ -26,6 +26,7 @@ defmodule Perspective.StorageConfig do
 
   def handle_call(:set_new_key, _from, _state) do
     state = State.new()
+    save(state)
     {:reply, state.key, state}
   end
 
@@ -39,7 +40,7 @@ defmodule Perspective.StorageConfig do
   end
 
   defp load_config do
-    case Perspective.LoadLocalFile.load("storage-config.json") do
+    case Perspective.LoadLocalFile.load(storage_config_path()) do
       {:error, %Perspective.LocalFileNotFound{}} -> create_and_load_new_config()
       data -> data
     end
@@ -48,12 +49,16 @@ defmodule Perspective.StorageConfig do
 
   defp create_and_load_new_config do
     save(State.new())
-    Perspective.LoadLocalFile.load("storage-config.json")
+    Perspective.LoadLocalFile.load(storage_config_path())
   end
 
   defp save(state) do
     state
     |> Perspective.Serialize.to_json()
-    |> Perspective.SaveLocalFile.save("storage-config.json")
+    |> Perspective.SaveLocalFile.save(storage_config_path())
+  end
+
+  defp storage_config_path do
+    Path.join([config(:path), "storage-config.json"])
   end
 end
