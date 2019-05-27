@@ -1,15 +1,17 @@
 defmodule Perspective.EventChainSupervisor do
   use Supervisor
 
-  def start_link(opts) do
-    Supervisor.start_link(__MODULE__, :ok, opts)
+  def start_link(_opts) do
+    Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
   def init(_args) do
     children = [
-      supervisor(Phoenix.PubSub.PG2, [Perspective.EventChainNotifications, []]),
-      {Perspective.EventChain, :ok},
-      {Perspective.EventChainStorageSupervisor, []}
+      {Debouncer, [name: PageWriterDebouncer]},
+      {Perspective.EventChain.PageManifest, []},
+      {Perspective.EventChain.CurrentPage, []},
+      {Perspective.EventChain.PageBuffer, []},
+      {Perspective.EventChain.PageWriter, []}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
