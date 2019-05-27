@@ -6,9 +6,17 @@ defmodule Perspective.Decryptor do
   end
 
   defp decode(binary) do
-    String.split(binary, ".")
-    |> Enum.map(&:base64.decode/1)
-    |> List.to_tuple()
+    try do
+      String.split(binary, ".")
+      |> Enum.map(&:base64.decode/1)
+      |> List.to_tuple()
+    rescue
+      ArgumentError ->
+        raise Perspective.NonDecryptableData, binary
+
+      FunctionClauseError ->
+        raise Perspective.NonDecryptableData, binary
+    end
   end
 
   defp gcm_decrypt({iv, cipher_text, cipher_tag}, encryption_key, authentication_data) do
