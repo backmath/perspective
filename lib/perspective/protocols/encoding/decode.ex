@@ -3,22 +3,32 @@ defprotocol Perspective.Decode do
   def decode(data)
 end
 
-defimpl Perspective.Decode, for: Any do
+defimpl Perspective.Decode, for: Map do
   def decode(%{"__perspective_struct__" => perspective_struct} = map) do
     map
     |> atomize_map()
     |> remove_key()
+    |> decode_values()
     |> build_struct(perspective_struct)
   end
 
   def decode(%{__perspective_struct__: perspective_struct} = map) do
     map
     |> remove_key()
+    |> decode_values()
     |> build_struct(perspective_struct)
   end
 
   defp atomize_map(map), do: Perspective.AtomizeKeys.atomize_keys(map)
   defp remove_key(map), do: Map.delete(map, :__perspective_struct__)
+
+  defp decode_values(map) do
+    map
+    |> Enum.map(fn {k, v} ->
+      {k, Perspective.Decode.decode(v)}
+    end)
+    |> Enum.into(%{})
+  end
 
   defp build_struct(map, perspective_struct) do
     perspective_struct
@@ -34,6 +44,6 @@ defimpl Perspective.Decode, for: List do
   end
 end
 
-defimpl Perspective.Decode, for: [String, BitString, Binary] do
-  def decode(binary), do: binary
+defimpl Perspective.Decode, for: Any do
+  def decode(data), do: data
 end

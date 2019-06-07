@@ -25,6 +25,33 @@ defmodule Perspective.Encoding.Test do
     assert %Example{data: "alpha"} == decoded_struct
   end
 
+  test "encode/decode a nested struct" do
+    struct = %Example{data: %Example{data: %Example{data: "alpha"}}}
+
+    encoded_struct = Perspective.Encode.encode(struct)
+    decoded_struct = Perspective.Decode.decode(encoded_struct)
+
+    assert %{
+             __perspective_struct__: "Perspective.Encoding.Test.Example",
+             data: %{
+               __perspective_struct__: "Perspective.Encoding.Test.Example",
+               data: %{__perspective_struct__: "Perspective.Encoding.Test.Example", data: "alpha"}
+             }
+           } == encoded_struct
+
+    assert %Perspective.Encoding.Test.Example{
+             data: %Perspective.Encoding.Test.Example{data: %Perspective.Encoding.Test.Example{data: "alpha"}}
+           } == decoded_struct
+  end
+
+  test "encode/decode an atom" do
+    encoded_atom = Perspective.Encode.encode(:an_atom)
+    decoded_atom = Perspective.Decode.decode(encoded_atom)
+
+    assert :an_atom == encoded_atom
+    assert :an_atom == decoded_atom
+  end
+
   test "decode a single struct with stringed keys" do
     struct = %{
       "__perspective_struct__" => "Perspective.Encoding.Test.Example",

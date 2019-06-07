@@ -15,6 +15,10 @@ defimpl Perspective.Encode, for: Any do
 
     Map.from_struct(struct)
     |> Map.put(:__perspective_struct__, struct_name)
+    |> Enum.map(fn {k, v} ->
+      {k, Perspective.Encode.encode(v)}
+    end)
+    |> Enum.into(%{})
   end
 
   def encode(data), do: data
