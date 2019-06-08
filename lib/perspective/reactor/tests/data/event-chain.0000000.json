@@ -1,0 +1,14 @@
+[
+  {
+    "__perspective_struct__": "Perspective.Reactor.TestExample.Increment",
+    "id": "event/1"
+  },
+  {
+    "__perspective_struct__": "Perspective.Reactor.TestExample.Increment",
+    "id": "event/2"
+  },
+  {
+    "__perspective_struct__": "Perspective.Reactor.TestExample.Increment",
+    "id": "event/3"
+  }
+]

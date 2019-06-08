@@ -1,72 +1,52 @@
 defmodule Perspective.Reactor.Test do
   use ExUnit.Case
 
-  defmodule ExampleEvent do
-    defstruct data: :b
+  setup_all do
+    case Perspective.Reactor.TestReactor.Supervisor.start_link() do
+      {:ok, _pid} -> :ok
+    end
   end
 
-  defmodule ReverseReverse do
-    defstruct data: nil
-  end
-
-  defmodule Example do
-    use Perspective.Reactor
-
-    initial_state(_backup_state) do
-      [:a]
-    end
-
-    backup(_event, state) do
-      state
-    end
-
-    update(%ExampleEvent{} = event, state) do
-      [event.data | state]
-    end
-
-    update(%ReverseReverse{} = _event, state) do
-      Enum.reverse(state)
-    end
+  setup do
+    Perspective.EventChain.Reset.start_new_chain()
+    Process.sleep(25)
+    Perspective.Reactor.TestReactor.reset()
   end
 
   test "start a reactor and update to events" do
-    Example.start()
+    assert [:a] = Perspective.Reactor.TestReactor.data()
 
-    assert [:a] = Example.get()
+    Perspective.Reactor.TestReactor.send(%Perspective.Reactor.TestReactor.ExampleEvent{})
 
-    Perspective.Notifications.emit(%ExampleEvent{})
+    assert [:b, :a] = Perspective.Reactor.TestReactor.data()
 
-    assert [:b, :a] = Example.get()
+    Perspective.Reactor.TestReactor.send(%Perspective.Reactor.TestReactor.ReverseReverse{})
 
-    Perspective.Notifications.emit(%ReverseReverse{})
-
-    assert [:a, :b] = Example.get()
+    assert [:a, :b] = Perspective.Reactor.TestReactor.data()
   end
 
   test "start a reactor and backup to disk" do
-    Example.start()
+    assert [:a] = Perspective.Reactor.TestReactor.data()
 
-    case File.rm("./storage/test/Elixir.Perspective.Reactor.Test.Example.backup.json") do
-      :ok -> :ok
-      {:error, :enoent} -> :ok
-    end
+    Perspective.Reactor.TestReactor.send(%Perspective.Reactor.TestReactor.ExampleEvent{data: :data})
 
-    Perspective.Notifications.emit(%ExampleEvent{})
+    Process.sleep(75)
 
-    Process.sleep(5)
+    path = Perspective.StorageConfig.path("Perspective.Reactor.TestReactor.json")
 
-    assert "[\"a\"]" = File.read!("./storage/test/Elixir.Perspective.Reactor.Test.Example.backup.json")
+    assert "{\n  \"__perspective_struct__\": \"Perspective.Reactor.State\",\n  \"data\": [\n    \"data\",\n    \"a\"\n  ],\n  \"last_event_processed\": null\n}" =
+             File.read!(path)
   end
 
-  test "reset a reactor" do
-    Example.start()
+  test "reset a Perspective.Reactor.TestReactor" do
+    assert [:a] = Perspective.Reactor.TestReactor.data()
 
-    Example.send(%ExampleEvent{data: :data})
+    Perspective.Reactor.TestReactor.send(%Perspective.Reactor.TestReactor.ExampleEvent{data: :data})
 
-    assert [:data, :a] = Example.get()
+    assert [:data, :a] = Perspective.Reactor.TestReactor.data()
 
-    Example.reset()
+    Perspective.Reactor.TestReactor.reset()
 
-    assert [:a] = Example.get()
+    assert [:a] = Perspective.Reactor.TestReactor.data()
   end
 end
