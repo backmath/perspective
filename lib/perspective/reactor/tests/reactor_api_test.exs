@@ -43,8 +43,45 @@ defmodule Perspective.Reactor.API.Test do
     assert [Perspective.Reactor.API.Test.ExampleEvent] = Perspective.Reactor.API.Test.Example.updateable_events()
   end
 
-  # test "backup_disabled" do
-  #   assert true == Perspective.Reactor.API.Test.Example.backup_enabled?()
-  #   assert false == Perspective.Reactor.API.Test.AnotherExample.backup_enabled?()
-  # end
+  test "@disabled_backups configuration" do
+    defmodule DefaultBackupExample do
+      use Perspective.Reactor
+    end
+
+    assert :none == DefaultBackupExample.disabled_backups()
+
+    defmodule AllBackupsDisabledExample do
+      use Perspective.Reactor
+
+      @disabled_backups :all
+    end
+
+    assert :all == AllBackupsDisabledExample.disabled_backups()
+
+    defmodule RegularBackupsDisabledExample do
+      use Perspective.Reactor
+
+      @disabled_backups :regular
+    end
+
+    assert :regular == RegularBackupsDisabledExample.disabled_backups()
+
+    defmodule CrashBackupsDisabledExample do
+      use Perspective.Reactor
+
+      @disabled_backups :crash
+    end
+
+    assert :crash == CrashBackupsDisabledExample.disabled_backups()
+  end
+
+  test "@disabled_backups rejects invalid values" do
+    assert_raise Perspective.Reactor.InvalidDisabledBackupsConfiguration, fn ->
+      defmodule InvalidBackupsDisabledExample do
+        use Perspective.Reactor
+
+        @disabled_backups :invalid
+      end
+    end
+  end
 end
