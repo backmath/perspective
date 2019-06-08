@@ -11,10 +11,7 @@ defmodule Perspective.Reactor.BuildReactorState do
 
   defp load_from_backup_or_run_initialize(reactor_name) do
     try do
-      case load_from_backup?(reactor_name) do
-        true -> load_backup_state(reactor_name)
-        false -> run_initializer(reactor_name)
-      end
+      Perspective.Reactor.BackupState.load_state(reactor_name)
     rescue
       Perspective.Reactor.BackupStateMissing -> run_initializer(reactor_name)
     end
@@ -27,14 +24,6 @@ defmodule Perspective.Reactor.BuildReactorState do
       new_data = reactor_name.update(event, state.data)
       Perspective.Reactor.State.update(state, new_data, event)
     end)
-  end
-
-  defp load_from_backup?(reactor_name) do
-    true
-  end
-
-  defp load_backup_state(reactor_name) do
-    Perspective.Reactor.BackupState.load_state(reactor_name)
   end
 
   defp run_initializer(reactor_name) do
