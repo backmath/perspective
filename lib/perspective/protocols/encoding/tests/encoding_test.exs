@@ -44,6 +44,14 @@ defmodule Perspective.Encoding.Test do
            } == decoded_struct
   end
 
+  test "encode/decode a map" do
+    encoded_map = Perspective.Encode.encode(%{some: "value"})
+    decoded_map = Perspective.Decode.decode(encoded_map)
+
+    assert %{some: "value"} = encoded_map
+    assert %{some: "value"} = decoded_map
+  end
+
   test "encode/decode an atom" do
     encoded_atom = Perspective.Encode.encode(:an_atom)
     decoded_atom = Perspective.Decode.decode(encoded_atom)

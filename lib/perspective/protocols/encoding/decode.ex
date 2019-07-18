@@ -19,6 +19,11 @@ defimpl Perspective.Decode, for: Map do
     |> build_struct(perspective_struct)
   end
 
+  def decode(map) do
+    map
+    |> decode_values()
+  end
+
   defp atomize_map(map), do: Perspective.AtomizeKeys.atomize_keys(map)
   defp remove_key(map), do: Map.delete(map, :__perspective_struct__)
 
