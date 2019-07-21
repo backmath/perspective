@@ -30,6 +30,14 @@ defmodule Perspective.LocalFileStorage.Test do
     assert {:error, %Perspective.LocalFileNotFound{}} = result
   end
 
+  test "load! a missing file" do
+    assert false == File.exists?("./storage/test/Perspective.LocalFileStorage.Test.data")
+
+    assert_raise Perspective.LocalFileNotFound, fn ->
+      Perspective.LoadLocalFile.load!("./storage/test/Perspective.LocalFileStorage.Test.data")
+    end
+  end
+
   test "save a file to a missing directory creates that directory" do
     Perspective.StorageConfig.set_new_key()
 

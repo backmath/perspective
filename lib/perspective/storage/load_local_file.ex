@@ -9,6 +9,13 @@ defmodule Perspective.LoadLocalFile do
     end
   end
 
+  def load!(file_path) do
+    case load(file_path) do
+      {:error, error} -> raise error
+      file -> file
+    end
+  end
+
   defp read_from_disk(file_path) do
     File.read!(file_path)
   end
