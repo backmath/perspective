@@ -1,5 +1,5 @@
 defmodule Perspective.DomainEvent.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "from_map" do
     data = %{

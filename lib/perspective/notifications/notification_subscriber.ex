@@ -1,16 +1,11 @@
 defmodule Perspective.NotificationsSubscriber do
   defmacro __using__(name: name) do
     quote do
-      use GenServer
+      use Perspective.GenServer
 
-      def start_link(node_id) do
-        GenServer.start_link(__MODULE__, node_id)
-      end
-
-      def init(node_id) do
-        :ok = Phoenix.PubSub.subscribe(unquote(name), node_id)
-        initial_state = %{}
-        {:ok, initial_state}
+      initial_state do
+        Phoenix.PubSub.subscribe(unquote(name), node_id)
+        %{}
       end
     end
   end

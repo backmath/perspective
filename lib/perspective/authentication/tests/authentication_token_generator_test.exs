@@ -1,5 +1,6 @@
 defmodule Perspective.AuthenticationTokenGenerator.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   test "authentication test" do
     result = Perspective.AuthenticationTokenGenerator.hash_password("abc-123")
@@ -7,8 +8,6 @@ defmodule Perspective.AuthenticationTokenGenerator.Test do
   end
 
   test "generate_authentication_token" do
-    Perspective.AuthenticationVault.reset()
-
     Perspective.DomainPool.delete(%{id: "user:abc-123"})
     Perspective.DomainPool.put(%{id: "user:abc-123", username: "josh@backmath.com"})
 
@@ -35,8 +34,6 @@ defmodule Perspective.AuthenticationTokenGenerator.Test do
   end
 
   test "generate_authentication_token errors for a failed password attempt" do
-    Perspective.AuthenticationVault.reset()
-
     Perspective.DomainPool.delete(%{id: "user:abc-123"})
     Perspective.DomainPool.put(%{id: "user:abc-123", username: "josh@backmath.com"})
 

@@ -1,5 +1,5 @@
 defmodule Perspective.DomainPool.ProcessorSupervisor.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Perspective.DomainPool.ProcessorSupervisor, as: Subject
 
   setup_all do

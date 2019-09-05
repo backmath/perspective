@@ -1,5 +1,5 @@
 defmodule Perspective.Encoding.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule Example do
     defstruct [:data]
@@ -81,5 +81,15 @@ defmodule Perspective.Encoding.Test do
     assert [%{__perspective_struct__: "Perspective.Encoding.Test.Example", data: "alpha"}] == encoded_list
 
     assert list == decoded_list
+  end
+
+  test "serialize a DateTime" do
+    date = DateTime.utc_now()
+
+    encoded_date = Perspective.Encode.encode(date)
+
+    decoded_date = Perspective.Decode.decode(encoded_date)
+
+    assert decoded_date =~ ~r/\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\.\d*/
   end
 end

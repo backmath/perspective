@@ -1,5 +1,6 @@
 defmodule Perspective.Processor.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   test "example run" do
     Core.AddToDo.new(%{
@@ -7,8 +8,21 @@ defmodule Perspective.Processor.Test do
     })
     |> Perspective.Processor.run()
 
-    result = Perspective.EventChain.last()
+    result =
+      Perspective.TestSupport.call_repeatedly(fn ->
+        Perspective.EventChain.all()
+        |> Enum.to_list()
+        |> case do
+          [] -> raise "Fail"
+          [result] -> result
+        end
+      end)
 
-    assert %Core.ToDoAdded{data: %{name: "Test Perspective.Processor.run"}} = result
+    assert %Core.ToDoAdded{
+             actor_id: "test:anonymous",
+             data: %{
+               name: "Test Perspective.Processor.run"
+             }
+           } = result
   end
 end

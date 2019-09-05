@@ -7,7 +7,6 @@ defmodule Perspective.Reactor do
 
       @before_compile Perspective.Reactor
       @updateable_events []
-      @disabled_backups :none
 
       def initial_state, do: nil
 
@@ -39,16 +38,13 @@ defmodule Perspective.Reactor do
     Perspective.Reactor.DefineGenServer.define(calling_module, updateable_events, __CALLER__)
     Perspective.Reactor.DefineSupervisor.define(calling_module, __CALLER__)
 
-    genserver_name = Module.concat([calling_module, GenServer])
-
-    disabled_backups = validated_disable_backup(genserver_name, Module.get_attribute(env.module, :disabled_backups))
+    genserver_name = Perspective.Reactor.Names.server(calling_module)
 
     quote do
       defdelegate state, to: unquote(genserver_name)
       defdelegate data, to: unquote(genserver_name)
       defdelegate get, to: unquote(genserver_name), as: :state
       defdelegate send(event), to: unquote(genserver_name)
-      defdelegate reset, to: unquote(genserver_name)
 
       def updateable_events do
         unquote(updateable_events)
@@ -57,18 +53,6 @@ defmodule Perspective.Reactor do
       def update(event, _state) do
         raise Perspective.Reactor.UnsupportedEvent, reactor: unquote(calling_module), event: event
       end
-
-      def disabled_backups, do: unquote(disabled_backups)
-    end
-  end
-
-  defp validated_disable_backup(reactor, disabled_backups) do
-    case disabled_backups do
-      value when value in [:all, :regular, :crash, :none] ->
-        value
-
-      invalid ->
-        raise Perspective.Reactor.InvalidDisabledBackupsConfiguration, reactor: reactor, value: invalid
     end
   end
 end

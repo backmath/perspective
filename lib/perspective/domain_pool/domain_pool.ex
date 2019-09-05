@@ -1,12 +1,12 @@
 defmodule Perspective.DomainPool do
-  use Agent
+  use Perspective.GenServer
+
+  initial_state do
+    %{}
+  end
 
   def get(node_id) do
-    Agent.get(__MODULE__, fn nodes -> Map.get(nodes, node_id) end)
-    |> case do
-      nil -> {:error, %Perspective.DomainPool.NodeNotFound{id: node_id}}
-      node -> {:ok, node}
-    end
+    call({:get, node_id})
   end
 
   def get!(node_id) do
@@ -17,9 +17,7 @@ defmodule Perspective.DomainPool do
   end
 
   def put(node) do
-    Agent.update(__MODULE__, fn nodes ->
-      Map.put(nodes, node.id, node)
-    end)
+    call({:put, node})
     |> case do
       :ok -> {:ok, node}
     end
@@ -32,15 +30,30 @@ defmodule Perspective.DomainPool do
   end
 
   def delete(node) do
-    Agent.update(__MODULE__, fn nodes ->
-      Map.delete(nodes, node.id)
-    end)
+    call({:delete, node})
     |> case do
       :ok -> {:ok, nil}
     end
   end
 
-  def start_link(_) do
-    Agent.start_link(fn -> %{} end, name: __MODULE__)
+  def handle_call({:get, node_id}, _from, state) do
+    result =
+      Map.get(state, node_id)
+      |> case do
+        nil -> {:error, %Perspective.DomainPool.NodeNotFound{id: node_id}}
+        node -> {:ok, node}
+      end
+
+    {:reply, result, state}
+  end
+
+  def handle_call({:put, node}, _from, state) do
+    new_state = Map.put(state, node.id, node)
+    {:reply, :ok, new_state}
+  end
+
+  def handle_call({:delete, node}, _from, state) do
+    new_state = Map.delete(state, node.id)
+    {:reply, :ok, new_state}
   end
 end

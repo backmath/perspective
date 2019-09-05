@@ -1,5 +1,5 @@
 defmodule Perspective.DomainPool.Registry.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Perspective.DomainPool.Registry, as: Subject
   import ExUnit.CaptureLog
 

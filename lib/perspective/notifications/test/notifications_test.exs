@@ -1,5 +1,6 @@
 defmodule Perspective.Notifications.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   defmodule ExampleEvent do
     defstruct [:id]

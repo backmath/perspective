@@ -1,5 +1,5 @@
 defmodule Perspective.RequestGenerator.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "generating a request from a struct" do
     result =

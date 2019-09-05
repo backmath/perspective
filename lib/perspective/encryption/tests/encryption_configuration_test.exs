@@ -1,8 +1,9 @@
 defmodule Perspective.EncryptionConfiguration.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   test "configuration loads and hashes keys" do
-    {encryption_key, authentication_data} = Perspective.EncryptionConfiguration.data()
+    {encryption_key, authentication_data} = Perspective.EncryptionConfiguration.call(:data)
 
     assert encryption_key ==
              <<191, 117, 99, 47, 181, 166, 102, 164, 204, 27, 62, 70, 83, 9, 172, 97, 51, 36, 228, 192, 134, 54, 221,

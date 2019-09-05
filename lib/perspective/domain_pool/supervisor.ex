@@ -1,16 +1,9 @@
 defmodule Perspective.DomainPoolSupervisor do
-  use Supervisor
+  use Perspective.Supervisor
 
-  def start_link(opts) do
-    Supervisor.start_link(__MODULE__, :ok, opts)
-  end
-
-  def init(_args) do
-    children = [
-      {Perspective.DomainPool, :ok},
-      supervisor(Phoenix.PubSub.PG2, [Perspective.DomainPoolNotifications, []])
+  children do
+    [
+      Perspective.DomainPool
     ]
-
-    Supervisor.init(children, strategy: :one_for_one)
   end
 end

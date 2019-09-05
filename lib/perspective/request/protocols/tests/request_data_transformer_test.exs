@@ -1,5 +1,5 @@
 defmodule Perspective.ActionRequest.RequestDataTransformer.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "transform_data returns the provided data as a fallback" do
     defmodule FallbackRequestExample do

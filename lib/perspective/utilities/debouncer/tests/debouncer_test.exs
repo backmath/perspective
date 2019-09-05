@@ -1,62 +1,54 @@
 defmodule Perspective.Debouncer.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
-  @name TestDebouncer
+  defmodule Counter do
+    use Perspective.GenServer
 
-  setup_all do
-    case Perspective.Debouncer.start_link(name: @name) do
-      {:ok, _pid} -> :ok
+    initial_state do
+      %{counter: 0}
+    end
+
+    def handle_call(:increment, _from, %{counter: counter}) do
+      {:reply, :ok, %{counter: counter + 1}}
     end
   end
 
-  setup do
-    {:ok, agent} = Agent.start_link(fn -> %{call_count: 0} end)
+  defmodule DelayedIncrement do
+    use Perspective.Debouncer
 
-    Perspective.Debouncer.register(@name, :delayed_increment, fn ->
+    execute do
       Process.sleep(10)
 
-      Agent.update(agent, fn %{call_count: count} ->
-        %{
-          call_count: count + 1
-        }
-      end)
-    end)
-
-    {:ok, %{agent: agent}}
+      Counter.call(:increment)
+    end
   end
 
-  test "delayed_increment calls only twice (because of the delay)", %{agent: agent} do
-    assert 0 == Agent.get(agent, fn %{call_count: count} -> count end)
+  setup(%{app_id: app_id}) do
+    Counter.start_link(app_id: app_id)
+    DelayedIncrement.start_link(app_id: app_id)
 
-    Perspective.Debouncer.execute(@name, :delayed_increment)
-    Perspective.Debouncer.execute(@name, :delayed_increment)
-    Perspective.Debouncer.execute(@name, :delayed_increment)
+    :ok
+  end
+
+  test "delayed_increment calls only twice (because of the delay)" do
+    DelayedIncrement.execute()
+    DelayedIncrement.execute()
+    DelayedIncrement.execute()
 
     Process.sleep(40)
 
-    assert 2 == Agent.get(agent, fn %{call_count: count} -> count end)
+    assert %{counter: 2} == Counter.call(:state)
   end
 
-  test "delayed_increment calls thrice (because of the delay and resumation)", %{agent: agent} do
-    assert 0 == Agent.get(agent, fn %{call_count: count} -> count end)
-
-    Perspective.Debouncer.execute(@name, :delayed_increment)
-    Perspective.Debouncer.execute(@name, :delayed_increment)
+  test "delayed_increment calls thrice (because of the delay and resumation)" do
+    DelayedIncrement.execute()
+    DelayedIncrement.execute()
     Process.sleep(30)
-    Perspective.Debouncer.execute(@name, :delayed_increment)
+    DelayedIncrement.execute()
 
     Process.sleep(20)
 
-    assert 3 == Agent.get(agent, fn %{call_count: count} -> count end)
-  end
-
-  test "calling execute/register on an undefined " do
-    assert_raise Perspective.Debouncer.MissingDebouncer, fn ->
-      Perspective.Debouncer.execute(Missing, :empty)
-    end
-
-    assert_raise Perspective.Debouncer.MissingDebouncer, fn ->
-      Perspective.Debouncer.register(Missing, :empty, fn -> nil end)
-    end
+    assert %{counter: 3} == Counter.call(:state)
   end
 end

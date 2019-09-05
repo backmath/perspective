@@ -1,5 +1,5 @@
 defmodule Perspective.Serialization.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule Example do
     defstruct [:data]

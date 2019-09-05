@@ -1,5 +1,5 @@
 defmodule Perspective.ActionRequest.RequestAuthorizer.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "authorize returns an empty list as a fallback" do
     defmodule DefaultExample do

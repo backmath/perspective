@@ -1,15 +1,9 @@
 defmodule Perspective.Notifications.Supervisor do
-  use Supervisor
+  use Perspective.Supervisor
 
-  def start_link(opts) do
-    Supervisor.start_link(__MODULE__, :ok, opts)
-  end
-
-  def init(_args) do
-    children = [
-      supervisor(Phoenix.PubSub.PG2, [Perspective.Notifications, []])
+  children do
+    [
+      {Phoenix.PubSub.PG2, name: Perspective.Notifications.name()}
     ]
-
-    Supervisor.init(children, strategy: :one_for_one)
   end
 end

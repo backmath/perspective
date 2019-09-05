@@ -1,5 +1,5 @@
 defmodule Perspective.EncryptionConfiguration do
-  use Agent
+  use Perspective.GenServer
 
   defmodule State do
     use Perspective.Config
@@ -18,13 +18,13 @@ defmodule Perspective.EncryptionConfiguration do
     end
   end
 
-  def start_link(_) do
-    Agent.start_link(fn -> State.load() end, name: __MODULE__)
+  initial_state do
+    State.load()
   end
 
-  def data() do
-    Agent.get(__MODULE__, fn %State{encryption_key: encryption_key, authentication_data: authentication_data} ->
-      {encryption_key, authentication_data}
-    end)
+  def handle_call(:data, _from, state) do
+    %State{encryption_key: encryption_key, authentication_data: authentication_data} = state
+
+    {:reply, {encryption_key, authentication_data}, state}
   end
 end

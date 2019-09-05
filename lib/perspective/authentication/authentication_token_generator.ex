@@ -16,7 +16,7 @@ defmodule Perspective.AuthenticationTokenGenerator do
   defp fetch_node_and_password_hash(username) do
     {id, password_hash} =
       case Perspective.AuthenticationVault.credentials_for(username) do
-        {:ok, {id, _, password_hash}} -> {id, password_hash}
+        {:ok, %{user_id: id, password_hash: password_hash}} -> {id, password_hash}
         {:error, error} -> throw(error)
       end
 

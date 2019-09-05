@@ -1,4 +1,4 @@
-defmodule Web.Endpoint do
+defmodule Web.Endpointz do
   use Phoenix.Endpoint, otp_app: :perspective
 
   socket("/socket", Web.Socket, websocket: true, longpolling: false)

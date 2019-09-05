@@ -1,5 +1,5 @@
 defmodule Core.ToDoAdded.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "transform_data generates a todo_id" do
     data =

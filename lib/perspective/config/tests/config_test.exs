@@ -1,5 +1,5 @@
 defmodule Perspective.Config.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   use Perspective.Config
 
   defmodule Example do

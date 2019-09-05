@@ -1,5 +1,5 @@
 defmodule Perspective.Projection.InitialStateUndefined.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "raising a InitialStateUndefined error provides a helpful message" do
     expected_message = "The module Elixir.Something is a Perspective.Projection, but it does not define initial_state"

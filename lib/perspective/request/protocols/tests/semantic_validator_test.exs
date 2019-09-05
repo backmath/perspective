@@ -1,5 +1,5 @@
 defmodule Perspective.ActionRequest.SemanticValidator.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "validate_semantics returns the provided data as a fallback" do
     defmodule DefaultExample do

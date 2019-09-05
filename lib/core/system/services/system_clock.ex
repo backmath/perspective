@@ -21,7 +21,7 @@ defmodule Core.Services.SystemClock do
     }
   end
 
-  defp schedule_next_update do
+  def schedule_next_update do
     time = DateTime.utc_now()
     Process.send_after(self(), %NewTime{time: time}, time_until_next_even_five(time))
   end

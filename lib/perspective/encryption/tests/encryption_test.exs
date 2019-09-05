@@ -1,5 +1,6 @@
 defmodule Perspective.Encryption.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   test "encryption/decryption" do
     encrypted_binary = Perspective.Encryption.encrypt("example_data")

@@ -9,6 +9,12 @@ defimpl Perspective.Encode, for: List do
   end
 end
 
+defimpl Perspective.Encode, for: DateTime do
+  def encode(date) do
+    DateTime.to_string(date)
+  end
+end
+
 defimpl Perspective.Encode, for: Any do
   def encode(%struct_type{} = struct) do
     struct_name = String.replace("#{struct_type}", ~r/^Elixir./, "")

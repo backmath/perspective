@@ -1,5 +1,6 @@
 defmodule Perspective.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   test "test a basic perspective call" do
     %{

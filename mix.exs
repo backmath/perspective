@@ -25,8 +25,7 @@ defmodule Perspective.MixProject do
         :logger,
         :phoenix,
         :phoenix_pubsub
-      ],
-      mod: {Perspective.Application, []}
+      ]
     ]
   end
 
@@ -35,12 +34,15 @@ defmodule Perspective.MixProject do
     [
       {:argon2_elixir, "~> 2.0"},
       {:distillery, "~> 2.0"},
-      {:jason, "~> 1.1"},
+      {:ex_crypto, "~> 0.10.0"},
+      {:gen_stage, "~> 0.14"},
       {:guardian, "~> 1.0"},
+      {:jason, "~> 1.1"},
       {:phoenix_live_reload, "~> 1.2"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix, "~> 1.4.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:poison, "~> 2.0"},
       {:uuid, "~> 1.1"},
       {:vex, "~> 0.7.0"}
     ]

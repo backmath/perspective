@@ -1,5 +1,5 @@
 defmodule Core.RemoveToDo.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "validate_syntax returns an empty list for a valid action" do
     result =

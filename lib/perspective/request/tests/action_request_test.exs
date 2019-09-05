@@ -1,5 +1,5 @@
 defmodule Perspective.ActionRequest.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "it converts a data set to an action request" do
     data = %{

@@ -1,5 +1,5 @@
 defmodule Perspective.DomainEvent.RequestTransformer.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   test "to_event generates the correct event from a request" do
     request = Core.AddToDo.new(%{name: "Example todo"})

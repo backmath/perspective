@@ -1,5 +1,6 @@
 defmodule Perspective.LocalFileStorage.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   setup do
     case File.rm("./storage/test/Perspective.LocalFileStorage.Test.data") do
@@ -39,8 +40,6 @@ defmodule Perspective.LocalFileStorage.Test do
   end
 
   test "save a file to a missing directory creates that directory" do
-    Perspective.StorageConfig.set_new_key()
-
     path = Perspective.StorageConfig.path("Perspective.LocalFileStorage.Test.data")
 
     Perspective.SaveLocalFile.save("abc", path)

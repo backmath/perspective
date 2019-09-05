@@ -1,4 +1,6 @@
 defmodule Perspective do
+  use Perspective.Application
+
   def call(data, token \\ "") do
     generate_request(data)
     |> authenticate_request(token)

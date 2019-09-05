@@ -1,5 +1,5 @@
 defmodule Perspective.Projection.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   defmodule Example do
     use Perspective.Projection

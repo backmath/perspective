@@ -1,5 +1,6 @@
 defmodule Perspective.Authenticator.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   test "a request that skips authentication" do
     request = Core.AddUser.new(%{})

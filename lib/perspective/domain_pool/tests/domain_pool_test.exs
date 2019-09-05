@@ -1,5 +1,6 @@
 defmodule Perspective.DomainPool.Test do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
+  use Perspective.BootAppPerTest
 
   test "can set, get a domain node" do
     node = %{id: "abc-123", example: :node}
