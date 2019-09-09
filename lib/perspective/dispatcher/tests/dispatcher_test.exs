@@ -7,7 +7,7 @@ defmodule Perspective.Dispatcher.Test do
   end
 
   def example_request do
-    Core.AddToDo.new(%{
+    Core.AddToDo.new("user/josh", %{
       name: "Demonstrate how to generate an action from a data struct"
     })
   end

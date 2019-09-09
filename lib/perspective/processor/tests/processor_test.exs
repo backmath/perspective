@@ -3,7 +3,7 @@ defmodule Perspective.Processor.Test do
   use Perspective.BootAppPerTest
 
   test "example run" do
-    Core.AddToDo.new(%{
+    Core.AddToDo.new("user/josh", %{
       name: "Test Perspective.Processor.run"
     })
     |> Perspective.Processor.run()
@@ -19,7 +19,7 @@ defmodule Perspective.Processor.Test do
       end)
 
     assert %Core.ToDoAdded{
-             actor_id: "test:anonymous",
+             actor_id: "user/josh",
              data: %{
                name: "Test Perspective.Processor.run"
              }

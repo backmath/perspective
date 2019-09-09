@@ -17,7 +17,9 @@ defmodule Perspective.Processor do
 
   defp authorize_request(request) do
     case Perspective.ActionRequest.RequestAuthorizer.authorize_request(request) do
+      true -> request
       [] -> request
+      {:error, error} -> reject(request, error)
       errors -> reject(request, errors)
     end
   end

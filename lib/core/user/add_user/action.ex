@@ -23,7 +23,11 @@ defmodule Core.AddUser do
     Vex.errors(struct(Data, data))
   end
 
-  def skip_authentication? do
+  authorize_request(%{actor_id: "user/anonymous"}) do
     true
+  end
+
+  authorize_request(%{actor_id: _}) do
+    false
   end
 end
