@@ -15,7 +15,8 @@ defmodule Perspective.Application do
       end
 
       def app_id do
-        config(:app_id)
+        # Needs a test
+        Process.get(:app_id, config(:app_id))
       end
 
       def app_name do

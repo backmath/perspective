@@ -5,8 +5,10 @@ defmodule Perspective.Authenticator do
     |> attach_to_request(request)
   end
 
-  defp retrieve_actor(""), do: {:ok, %Core.User{id: "user:anonymous"}}
-  defp retrieve_actor(nil), do: {:ok, %Core.User{id: "user:anonymous"}}
+  defp retrieve_actor(""), do: {:ok, %Core.User{id: "user/anonymous"}}
+  defp retrieve_actor(nil), do: {:ok, %Core.User{id: "user/anonymous"}}
+  # User not found
+  defp retrieve_actor({:error, error}), do: {:error, error}
 
   defp retrieve_actor(token) do
     Perspective.Guardian.decode_and_verify(token)
