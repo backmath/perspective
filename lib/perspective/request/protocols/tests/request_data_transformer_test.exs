@@ -14,7 +14,7 @@ defmodule Perspective.ActionRequest.RequestDataTransformer.Test do
       @action_request FallbackRequestExample
     end
 
-    request = FallbackRequestExample.new(%{a: 2})
+    request = FallbackRequestExample.new("", %{a: 2})
     assert %{a: 2} == Perspective.ActionRequest.RequestDataTransformer.transform_data(request)
   end
 
@@ -37,7 +37,7 @@ defmodule Perspective.ActionRequest.RequestDataTransformer.Test do
       end
     end
 
-    request = TransformationRequestExample.new(%{a: 2})
+    request = TransformationRequestExample.new("", %{a: 2})
 
     assert %{a: 4} == Perspective.ActionRequest.RequestDataTransformer.transform_data(request)
   end

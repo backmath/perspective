@@ -7,7 +7,7 @@ defmodule Perspective.ActionRequest.MetadataTransformer.Test do
       @domain_event nil
     end
 
-    request = DefaultExample.new(%{}, "", %{a: 2})
+    request = DefaultExample.new("", %{}, %{a: 2})
     assert %{a: 2} == Perspective.ActionRequest.MetadataTransformer.transform_meta(request)
   end
 
@@ -30,7 +30,7 @@ defmodule Perspective.ActionRequest.MetadataTransformer.Test do
       end
     end
 
-    request = RequestExample.new(%{}, "", %{a: 2})
+    request = RequestExample.new("", %{}, %{a: 2})
     assert %{a: 4} == Perspective.ActionRequest.MetadataTransformer.transform_meta(request)
   end
 end

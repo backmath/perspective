@@ -18,7 +18,7 @@ defmodule Perspective.ActionRequest.Test do
     }
 
     result =
-      Core.AddToDo.new(data, "test:anonymous")
+      Core.AddToDo.new("test:anonymous", data)
       |> hardcode_request_id
       |> hardcode_meta
 
