@@ -8,7 +8,6 @@ defmodule Perspective.Application.Supervisor do
       Perspective.DomainPoolSupervisor,
       Perspective.EventChainSupervisor,
       Perspective.RequestRegistry,
-      Perspective.ProjectionReactor,
       Perspective.AuthenticationVault.Supervisor
     ]
   end

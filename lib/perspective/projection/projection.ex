@@ -3,39 +3,32 @@ defmodule Perspective.Projection do
     quote do
       import Perspective.Projection
       use Perspective.ProjectionRegistry
-      @projection_spec {nil, nil, nil}
+
+      Module.register_attribute(__MODULE__, :exposures, persist: true, accumulate: true)
+
+      @before_compile Perspective.Projection
     end
   end
 
   defmacro expose(path, reactor) do
-    reactor_name = Macro.expand(reactor, __ENV__)
-    channel_name = Module.concat(__CALLER__.module, Channel)
+    reactor_name = Macro.expand(reactor, __CALLER__)
+
+    Perspective.Projection.DefineChannel.define(path, reactor_name, __CALLER__)
+    Perspective.Projection.DefineController.define(path, reactor_name, __CALLER__)
+
+    quote bind_quoted: [path: path, reactor_name: reactor_name] do
+      Module.put_attribute(__MODULE__, :exposures, {path, reactor_name})
+    end
+  end
+
+  defmacro __before_compile__(_) do
+    exposures = Module.get_attribute(__CALLER__.module, :exposures)
+
+    Perspective.Projection.DefineRouter.define(exposures, __CALLER__.module, __CALLER__)
+    Perspective.Projection.DefineSocket.define(exposures, __CALLER__.module, __CALLER__)
+    Perspective.Projection.DefineEndpoint.define(__CALLER__.module, __CALLER__)
 
     quote do
-      @projection_spec {unquote(path), unquote(channel_name), unquote(reactor_name)}
-
-      defmodule Channel do
-        use Phoenix.Channel
-        import Perspective.ModuleRegistry
-        register_module(Perspective.ProjectionChannel)
-
-        def join(unquote(path), _message, socket) do
-          {:ok, socket}
-        end
-
-        def handle_in("get", _message, socket) do
-          message = unquote(reactor).get
-          {:reply, {:ok, message}, socket}
-        end
-
-        def handle_in(unknown, payload, socket) do
-          raise "You've attempted to use #{__MODULE__} with #{unknown}. Please fix"
-        end
-
-        def path, do: unquote(path)
-      end
-
-      def projection_spec, do: @projection_spec
     end
   end
 end
