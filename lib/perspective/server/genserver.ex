@@ -46,11 +46,11 @@ defmodule Perspective.GenServer do
       end
 
       defp get_name(module) when is_atom(module) do
-        app_id = Process.get(:app_id)
+        app_id = Perspective.AppID.fetch_and_set()
 
         if app_id == nil do
           raise ArgumentError,
-                "\nYou called Perspective.GenServer.call without setting the parent processes' app_id\n\nCall Process.put(:app_id, *process-id*)"
+                "\nYou called #{__MODULE__}.call/cast without setting the parent processes' app_id\n\nCall Process.put(:app_id, *process-id*)"
         end
 
         Perspective.ServerName.name(module, app_id)

@@ -10,17 +10,10 @@ defmodule Perspective.Application do
       end
 
       def start(_type, _args) do
-        opts = [strategy: :one_for_one, name: app_name()]
+        Perspective.ServerReferences.store_process_references(__MODULE__, app_id: app_id())
+
+        opts = [strategy: :one_for_one, name: name()]
         Supervisor.start_link(all_children(), opts)
-      end
-
-      def app_id do
-        # Needs a test
-        Process.get(:app_id, config(:app_id))
-      end
-
-      def app_name do
-        Perspective.ServerName.name(__MODULE__)
       end
 
       def all_children do
@@ -36,6 +29,14 @@ defmodule Perspective.Application do
       end
 
       defoverridable(children: 0)
+
+      defp app_id do
+        Process.get(:app_id, config(:app_id))
+      end
+
+      defp name do
+        Process.get(:name, config(:app_id))
+      end
     end
   end
 
