@@ -7,7 +7,7 @@ defmodule Perspective.Projection.DefineSocket do
         use Phoenix.Socket
 
         Enum.map(exposures, fn {path, module} ->
-          Phoenix.Socket.channel(path, Module.concat(module, ProjectionSocket))
+          Phoenix.Socket.channel(path, Module.concat(module, ProjectionChannel))
         end)
 
         def connect(params, socket, connect_info) do
