@@ -9,7 +9,7 @@ defmodule Perspective.Projection.DefineController do
         register_module(Perspective.ProjectionController)
 
         def index(conn, _params) do
-          data = unquote(reactor).get()
+          data = unquote(reactor).data()
           json(conn, data)
         end
 

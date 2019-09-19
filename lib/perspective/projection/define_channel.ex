@@ -13,12 +13,7 @@ defmodule Perspective.Projection.DefineChannel do
         end
 
         def handle_in("get", _message, socket) do
-          IO.inspect(unquote(reactor), label: :reactor)
-
-          message =
-            unquote(reactor).get
-            |> IO.inspect(label: :message)
-
+          message = unquote(reactor).data()
           {:reply, {:ok, message}, socket}
         end
 
