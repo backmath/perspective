@@ -20,7 +20,10 @@ defmodule Perspective.Notifications do
   end
 
   def name do
-    {:global, name} = Perspective.ServerName.name(Perspective.Notifications)
+    app_id = Perspective.AppID.fetch_and_set()
+
+    {:global, name} = Perspective.ServerName.name(Perspective.Notifications, app_id: app_id)
+
     String.to_atom(name)
   end
 

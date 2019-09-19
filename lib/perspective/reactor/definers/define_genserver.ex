@@ -19,21 +19,31 @@ defmodule Perspective.Reactor.DefineGenServer do
 
         def handle_call(event, _from, state) do
           new_state = generate_updated_state(event, state)
+          broadcast(new_state, state)
           {:reply, new_state, new_state}
         end
 
         def handle_cast(event, state) do
           new_state = generate_updated_state(event, state)
+          broadcast(new_state, state)
           {:noreply, new_state}
         end
 
         def handle_info(event, state) do
           new_state = generate_updated_state(event, state)
+          broadcast(new_state, state)
           {:noreply, new_state}
         end
 
         def terminate(reason, state) do
           IO.inspect(reason, label: "genserver terminated")
+        end
+
+        defp broadcast(new_state, old_state) do
+          Perspective.Notifications.emit(
+            %Perspective.Reactor.StateUpdated{},
+            unquote(module)
+          )
         end
 
         defp generate_updated_state(event, %Perspective.Reactor.State{data: data} = state) do

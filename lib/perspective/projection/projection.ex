@@ -15,6 +15,7 @@ defmodule Perspective.Projection do
 
     Perspective.Projection.DefineChannel.define(path, reactor_name, __CALLER__)
     Perspective.Projection.DefineController.define(path, reactor_name, __CALLER__)
+    Perspective.Projection.DefineBroadcaster.define(path, reactor_name, __CALLER__)
 
     quote bind_quoted: [path: path, reactor_name: reactor_name] do
       Module.put_attribute(__MODULE__, :exposures, {path, reactor_name})
@@ -27,6 +28,7 @@ defmodule Perspective.Projection do
     Perspective.Projection.DefineRouter.define(exposures, __CALLER__.module, __CALLER__)
     Perspective.Projection.DefineSocket.define(exposures, __CALLER__.module, __CALLER__)
     Perspective.Projection.DefineEndpoint.define(__CALLER__.module, __CALLER__)
+    Perspective.Projection.DefineSupervisor.define(exposures, __CALLER__.module, __CALLER__)
 
     quote do
     end
