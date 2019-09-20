@@ -4,8 +4,7 @@ defmodule Core do
   children do
     [
       Core.ToDo.Reactor.Supervisor,
-      Core.User.Reactor.Supervisor,
-      Core.Services.Supervisor
+      Core.User.Reactor.Supervisor
       # {Web.Endpoint, []}
     ]
   end
