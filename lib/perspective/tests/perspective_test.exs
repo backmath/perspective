@@ -23,8 +23,6 @@ defmodule Perspective.Test do
         end
       end)
 
-    Perspective.DomainPool.call(:state)
-
     %{
       action: "Core.AddToDo",
       data: %{
