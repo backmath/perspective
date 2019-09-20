@@ -2,7 +2,7 @@ defmodule Perspective.DomainEvent.RequestTransformer.Test do
   use ExUnit.Case, async: true
 
   test "to_event generates the correct event from a request" do
-    request = Core.AddToDo.new(%{name: "Example todo"})
+    request = Perspective.Core.AddToDo.new(%{name: "Example todo"})
 
     event = Perspective.DomainEvent.RequestTransformer.to_event(request)
 
@@ -11,7 +11,7 @@ defmodule Perspective.DomainEvent.RequestTransformer.Test do
   end
 
   test "request.id transforms to event.id, and preserves uuid part" do
-    request = Core.AddToDo.new(%{name: "Example todo"})
+    request = Perspective.Core.AddToDo.new(%{name: "Example todo"})
     event = Perspective.DomainEvent.RequestTransformer.to_event(request)
 
     assert event.id =~ ~r/event\/.*/

@@ -4,11 +4,11 @@ defmodule Perspective.RequestGenerator.Test do
   test "generating a request from a struct" do
     result =
       %{
-        action: "Core.AddToDo",
+        action: "Perspective.Core.AddToDo",
         data: %{}
       }
       |> Perspective.RequestGenerator.from()
 
-    assert %Core.AddToDo{} = result
+    assert %Perspective.Core.AddToDo{} = result
   end
 end

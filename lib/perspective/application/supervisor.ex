@@ -5,10 +5,8 @@ defmodule Perspective.Application.Supervisor do
     [
       Perspective.EncryptionSupervisor,
       Perspective.Notifications.Supervisor,
-      Perspective.DomainPoolSupervisor,
       Perspective.EventChainSupervisor,
-      Perspective.RequestRegistry,
-      Perspective.AuthenticationVault.Supervisor
+      Perspective.RequestRegistry
     ]
   end
 end

@@ -1,4 +1,4 @@
-defmodule Perspective.DomainPool.ProcessorSupervisor do
+defmodule Perspective.Core.DomainPool.ProcessorSupervisor do
   use Supervisor
 
   def init(children \\ []) do

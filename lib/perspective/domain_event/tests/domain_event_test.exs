@@ -5,7 +5,7 @@ defmodule Perspective.DomainEvent.Test do
     data = %{
       id: "event:def-456",
       actor_id: "user:abc-123",
-      event_type: "Core.ToDoAdded",
+      event_type: "Perspective.Core.ToDoAdded",
       event_date: "2019-03-09T22:26:02.940566Z",
       data: %{
         name: "Demonstrate a Saved Event",
@@ -16,11 +16,11 @@ defmodule Perspective.DomainEvent.Test do
       }
     }
 
-    expected = %Core.ToDoAdded{
+    expected = %Perspective.Core.ToDoAdded{
       id: "event:def-456",
       actor_id: "user:abc-123",
       event_date: DateTime.from_iso8601("2019-03-09T22:26:02.940566Z") |> elem(1),
-      data: %Core.ToDoAdded.Data{
+      data: %Perspective.Core.ToDoAdded.Data{
         name: "Demonstrate a Saved Event",
         todo_id: "todo:hij-789"
       },
@@ -35,11 +35,11 @@ defmodule Perspective.DomainEvent.Test do
   end
 
   test "to_map" do
-    data = %Core.ToDoAdded{
+    data = %Perspective.Core.ToDoAdded{
       id: "event:def-456",
       actor_id: "user:abc-123",
       event_date: DateTime.from_iso8601("2019-03-09T22:26:02.940566Z") |> elem(1),
-      data: %Core.ToDoAdded.Data{
+      data: %Perspective.Core.ToDoAdded.Data{
         name: "Demonstrate a Saved Event",
         todo_id: "todo:hij-789"
       },
@@ -51,7 +51,7 @@ defmodule Perspective.DomainEvent.Test do
     expected = %{
       id: "event:def-456",
       actor_id: "user:abc-123",
-      event_type: "Core.ToDoAdded",
+      event_type: "Perspective.Core.ToDoAdded",
       event_date: DateTime.from_iso8601("2019-03-09T22:26:02.940566Z") |> elem(1),
       data: %{
         name: "Demonstrate a Saved Event",

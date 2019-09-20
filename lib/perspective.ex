@@ -25,7 +25,7 @@ defmodule Perspective do
   end
 
   defp authenticate_request(request, token) do
-    Perspective.Authenticator.authenticate_request(request, token)
+    Perspective.Authentication.authenticate_request(request, token)
     |> raise_errors
   end
 

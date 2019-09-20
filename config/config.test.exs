@@ -21,3 +21,5 @@ config :perspective, Perspective.LocalFileStorage,
 
 config :perspective, Perspective.Config.Test.Example, test_config: :expected_value
 config :perspective, Perspective.Config.Test.SpecialOverride, test_config: :expected_value
+
+config :perspective, Perspective.Authentication, module: Perspective.Core.Authenticator

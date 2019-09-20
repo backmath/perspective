@@ -3,7 +3,7 @@ defmodule Perspective.Processor.Test do
   use Perspective.BootAppPerTest
 
   test "example run" do
-    Core.AddToDo.new("user/josh", %{
+    Perspective.Core.AddToDo.new("user/josh", %{
       name: "Test Perspective.Processor.run"
     })
     |> Perspective.Processor.run()
@@ -13,12 +13,12 @@ defmodule Perspective.Processor.Test do
         Perspective.EventChain.all()
         |> Enum.to_list()
         |> case do
-          [] -> raise "Fail"
+          [] -> raise "event chain returned an empty list"
           [result] -> result
         end
       end)
 
-    assert %Core.ToDoAdded{
+    assert %Perspective.Core.ToDoAdded{
              actor_id: "user/josh",
              data: %{
                name: "Test Perspective.Processor.run"

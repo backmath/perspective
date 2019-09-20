@@ -6,7 +6,7 @@ defmodule Perspective.ActionRequest.Test do
       name: "Demonstrate how to generate an action from a data struct"
     }
 
-    expected = %Core.AddToDo{
+    expected = %Perspective.Core.AddToDo{
       id: "request:HARD-CODED",
       actor_id: "test:anonymous",
       data: %{
@@ -18,7 +18,7 @@ defmodule Perspective.ActionRequest.Test do
     }
 
     result =
-      Core.AddToDo.new("test:anonymous", data)
+      Perspective.Core.AddToDo.new("test:anonymous", data)
       |> hardcode_request_id
       |> hardcode_meta
 

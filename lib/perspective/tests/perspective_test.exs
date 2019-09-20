@@ -3,10 +3,10 @@ defmodule Perspective.Test do
   use Perspective.SetUniqueAppID
 
   test "test a basic perspective call" do
-    Core.start()
+    Perspective.Core.start()
 
     %{
-      action: "Core.AddUser",
+      action: "Perspective.Core.AddUser",
       data: %{
         username: "user/josh",
         password: "[password]",
@@ -17,14 +17,17 @@ defmodule Perspective.Test do
 
     user_token =
       Perspective.TestSupport.call_repeatedly(fn ->
-        case Perspective.AuthenticationTokenGenerator.generate_authentication_token("user/josh", "[password]") do
-          {:error, _} -> raise "try again"
+        case Perspective.Core.AuthenticationTokenGenerator.generate_authentication_token(
+               "user/josh",
+               "[password]"
+             ) do
+          {:error, _} -> raise "user lookup and token generation failed"
           value -> value
         end
       end)
 
     %{
-      action: "Core.AddToDo",
+      action: "Perspective.Core.AddToDo",
       data: %{
         name: "Build my First ToDo"
       }
