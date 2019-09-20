@@ -15,7 +15,7 @@ defmodule Perspective.DomainEventTransformers do
       id: data.id,
       actor_id: data.actor_id,
       event_date: DateTime.from_iso8601(data.event_date) |> elem(1),
-      data: struct(Module.concat(struct_type, Data), data.data),
+      data: data.data,
       meta: %{
         request_date: DateTime.from_iso8601(data.meta.request_date) |> elem(1)
       }
