@@ -16,12 +16,6 @@ defmodule Perspective.ActionRequest.MetadataTransformer.Test do
       use Perspective.ActionRequest
 
       @domain_event EventExample
-    end
-
-    defmodule EventExample do
-      use Perspective.DomainEvent
-
-      @action_request RequestExample
 
       transform_meta(%{meta: %{a: a}}) do
         %{

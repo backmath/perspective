@@ -8,12 +8,6 @@ defmodule Perspective.ActionRequest.RequestDataTransformer.Test do
       @domain_event FallbackEventExample
     end
 
-    defmodule FallbackEventExample do
-      use Perspective.DomainEvent
-
-      @action_request FallbackRequestExample
-    end
-
     request = FallbackRequestExample.new("", %{a: 2})
     assert %{a: 2} == Perspective.ActionRequest.RequestDataTransformer.transform_data(request)
   end
@@ -23,12 +17,6 @@ defmodule Perspective.ActionRequest.RequestDataTransformer.Test do
       use Perspective.ActionRequest
 
       @domain_event TransformationEventExample
-    end
-
-    defmodule TransformationEventExample do
-      use Perspective.DomainEvent
-
-      @action_request TransformationRequestExample
 
       transform_data(%{data: %{a: a}}) do
         %{

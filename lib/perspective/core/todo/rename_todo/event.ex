@@ -3,7 +3,11 @@ defmodule Perspective.Core.ToDoRenamed do
 
   @action_request Perspective.Core.ToDoRenamed
 
-  defmodule Data do
+  defmodule V2 do
+    defstruct [:todo_id, :name]
+  end
+
+  defmodule V1 do
     defstruct [:todo_id, :name]
   end
 end

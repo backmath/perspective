@@ -30,4 +30,12 @@ defmodule Perspective.Core.AddUser do
   authorize_request(%{actor_id: _}) do
     false
   end
+
+  transform_data(%{data: data}) do
+    %{
+      user_id: "user/" <> UUID.uuid4(),
+      username: data.username,
+      password_hash: Argon2.hash_pwd_salt(data.password)
+    }
+  end
 end

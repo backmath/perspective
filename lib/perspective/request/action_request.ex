@@ -23,6 +23,30 @@ defmodule Perspective.ActionRequest do
     end
   end
 
+  defmacro transform_data(action_request, do: block) do
+    calling_module = __CALLER__.module()
+
+    quote do
+      def transform_data(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
+
+      defimpl Perspective.ActionRequest.RequestDataTransformer, for: unquote(calling_module) do
+        def transform_data(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
+      end
+    end
+  end
+
+  defmacro transform_meta(action_request, do: block) do
+    calling_module = __CALLER__.module()
+
+    quote do
+      def transform_meta(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
+
+      defimpl Perspective.ActionRequest.MetadataTransformer, for: unquote(calling_module) do
+        def transform_meta(%unquote(calling_module){} = unquote(action_request)), do: unquote(block)
+      end
+    end
+  end
+
   defmacro __using__(_options) do
     quote do
       @before_compile Perspective.ActionRequest
