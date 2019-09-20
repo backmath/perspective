@@ -1,5 +1,6 @@
 defmodule Perspective.Core.RemoveToDo do
   use Perspective.ActionRequest
+  use Perspective.ActionRequest.RejectAnonymousUsers
 
   @domain_event Perspective.Core.ToDoRemoved
 
