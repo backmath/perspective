@@ -8,7 +8,10 @@ defmodule Perspective.ToDoReactor.Test do
   end
 
   test "reactor updates to Core.ToDoAdded" do
-    %Core.ToDoAdded{data: %{todo_id: "todo/abc-123", name: "Example todo"}}
+    %Core.ToDoAdded{
+      actor_id: "user/abc-123",
+      data: %{todo_id: "todo/abc-123", name: "Example todo"}
+    }
     |> Core.ToDo.Reactor.send()
 
     :timer.sleep(10)
@@ -18,7 +21,8 @@ defmodule Perspective.ToDoReactor.Test do
     expected = %Core.ToDo{
       completed: false,
       id: "todo/abc-123",
-      name: "Example todo"
+      name: "Example todo",
+      creator_id: "user/abc-123"
     }
 
     assert {:ok, expected} == result

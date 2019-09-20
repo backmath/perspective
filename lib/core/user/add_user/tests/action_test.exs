@@ -3,7 +3,7 @@ defmodule Core.AddUser.Test do
 
   test "validate_syntax requires a username" do
     result =
-      Core.AddUser.new(%{
+      Core.AddUser.new("user/anonymous", %{
         username: "",
         password: "abc-123-xyz!",
         password_confirmation: "abc-123-xyz!"
@@ -15,7 +15,7 @@ defmodule Core.AddUser.Test do
 
   test "validate_syntax requires a password" do
     result =
-      Core.AddUser.new(%{
+      Core.AddUser.new("user/anonymous", %{
         username: "josh@backmath.com",
         password_confirmation: "abc-123-xyz!"
       })
@@ -23,13 +23,14 @@ defmodule Core.AddUser.Test do
 
     assert [
              {:error, :password, :presence, "must be present"},
-             {:error, :password_confirmation, :by, :password_and_password_confirmation_do_not_match}
+             {:error, :password_confirmation, :by,
+              :password_and_password_confirmation_do_not_match}
            ] == result
   end
 
   test "validate_syntax requires that the password_confirmation matches the password" do
     result =
-      Core.AddUser.new(%{
+      Core.AddUser.new("user/anonymous", %{
         username: "josh@backmath.com",
         password: "abc-123-xyz!",
         password_confirmation: "ABC-123-XYZ!"
@@ -37,13 +38,14 @@ defmodule Core.AddUser.Test do
       |> Core.AddUser.validate_syntax()
 
     assert [
-             {:error, :password_confirmation, :by, :password_and_password_confirmation_do_not_match}
+             {:error, :password_confirmation, :by,
+              :password_and_password_confirmation_do_not_match}
            ] == result
   end
 
   test "validate_syntax returns an empty list for a valid action" do
     result =
-      Core.AddUser.new(%{
+      Core.AddUser.new("user/anonymous", %{
         username: "josh@backmath.com",
         password: "abc-123-xyz!",
         password_confirmation: "abc-123-xyz!"

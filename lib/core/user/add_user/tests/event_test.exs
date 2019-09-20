@@ -3,7 +3,7 @@ defmodule Core.UserAdded.Test do
 
   test "transform_data hashes the password" do
     event_data =
-      Core.AddUser.new(%{
+      Core.AddUser.new("user/anonymous", %{
         username: "josh@backmath.com",
         password: "abc-123-xyz!",
         password_confirmation: "abc-123-xyz!"

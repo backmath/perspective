@@ -3,7 +3,7 @@ defmodule Core.AddToDo.Test do
 
   test "validate_syntax returns an empty list for a valid action" do
     result =
-      Core.AddToDo.new(%{name: "Demonstrate a Valid AddToDo Action"})
+      Core.AddToDo.new("user/abc-123", %{name: "Demonstrate a Valid AddToDo Action"})
       |> Core.AddToDo.validate_syntax()
 
     assert [] = result
@@ -11,7 +11,7 @@ defmodule Core.AddToDo.Test do
 
   test "validate_syntax requires a name" do
     result =
-      Core.AddToDo.new(%{name: ""})
+      Core.AddToDo.new("user/abc-123", %{name: ""})
       |> Core.AddToDo.validate_syntax()
 
     assert [{:error, :name, :presence, "must be present"}] == result

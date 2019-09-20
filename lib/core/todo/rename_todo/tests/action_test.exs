@@ -3,7 +3,7 @@ defmodule Core.RenameToDo.Test do
 
   test "validate_syntax returns an empty list for a valid action" do
     result =
-      Core.RenameToDo.new(%{
+      Core.RenameToDo.new("user/abc-123", %{
         todo_id: "todo:abc-123",
         name: "Demonstrate a Valid RenameToDo Action"
       })
@@ -14,7 +14,7 @@ defmodule Core.RenameToDo.Test do
 
   test "name is required" do
     result =
-      Core.RenameToDo.new(%{
+      Core.RenameToDo.new("user/abc-123", %{
         todo_id: "todo:abc-123"
       })
       |> Core.RenameToDo.validate_syntax()
@@ -24,7 +24,7 @@ defmodule Core.RenameToDo.Test do
 
   test "todo_id is required" do
     result =
-      Core.RenameToDo.new(%{
+      Core.RenameToDo.new("user/abc-123", %{
         name: "Demonstrate a Valid RenameToDo Action"
       })
       |> Core.RenameToDo.validate_syntax()

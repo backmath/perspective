@@ -3,7 +3,7 @@ defmodule Core.RemoveToDo.Test do
 
   test "validate_syntax returns an empty list for a valid action" do
     result =
-      Core.RemoveToDo.new(%{
+      Core.RemoveToDo.new("user/abc-123", %{
         todo_id: "todo:abc-123"
       })
       |> Core.RemoveToDo.validate_syntax()
