@@ -16,7 +16,7 @@ defmodule Perspective.ToDoReactor.Test do
 
     :timer.sleep(10)
 
-    result = Perspective.Core.DomainPool.get("todo/abc-123")
+    result = Perspective.Core.ToDoPool.get("todo/abc-123")
 
     expected = %Perspective.Core.ToDo{
       completed: false,
@@ -34,14 +34,14 @@ defmodule Perspective.ToDoReactor.Test do
       id: "todo/abc-123",
       name: "Example todo"
     }
-    |> Perspective.Core.DomainPool.put()
+    |> Perspective.Core.ToDoPool.put()
 
     %Perspective.Core.ToDoRenamed{data: %{todo_id: "todo/abc-123", name: "Renamed todo"}}
     |> Perspective.Core.ToDo.Reactor.send()
 
     :timer.sleep(10)
 
-    result = Perspective.Core.DomainPool.get("todo/abc-123")
+    result = Perspective.Core.ToDoPool.get("todo/abc-123")
 
     expected = %Perspective.Core.ToDo{
       completed: false,
@@ -58,14 +58,14 @@ defmodule Perspective.ToDoReactor.Test do
       id: "todo/abc-123",
       name: "Example todo"
     }
-    |> Perspective.Core.DomainPool.put()
+    |> Perspective.Core.ToDoPool.put()
 
     %Perspective.Core.ToDoCompleted{data: %{todo_id: "todo/abc-123"}}
     |> Perspective.Core.ToDo.Reactor.send()
 
     :timer.sleep(10)
 
-    result = Perspective.Core.DomainPool.get("todo/abc-123")
+    result = Perspective.Core.ToDoPool.get("todo/abc-123")
 
     expected = %Perspective.Core.ToDo{
       completed: true,

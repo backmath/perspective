@@ -5,6 +5,6 @@ defmodule Perspective.Core.User.Reactor do
     %Perspective.Core.User{}
     |> Map.put(:id, data.user_id)
     |> Map.put(:username, data.username)
-    |> Perspective.Core.DomainPool.put!()
+    |> Perspective.Core.UserPool.put!()
   end
 end

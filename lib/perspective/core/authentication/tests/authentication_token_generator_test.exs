@@ -13,8 +13,8 @@ defmodule Perspective.Core.AuthenticationTokenGenerator.Test do
   end
 
   test "generate_authentication_token" do
-    Perspective.Core.DomainPool.delete(%{id: "user:abc-123"})
-    Perspective.Core.DomainPool.put(%{id: "user:abc-123", username: "josh@backmath.com"})
+    Perspective.Core.UserPool.delete(%{id: "user:abc-123"})
+    Perspective.Core.UserPool.put(%{id: "user:abc-123", username: "josh@backmath.com"})
 
     %Perspective.Core.UserAdded{
       data: %{
@@ -45,8 +45,8 @@ defmodule Perspective.Core.AuthenticationTokenGenerator.Test do
   end
 
   test "generate_authentication_token errors for a failed password attempt" do
-    Perspective.Core.DomainPool.delete(%{id: "user:abc-123"})
-    Perspective.Core.DomainPool.put(%{id: "user:abc-123", username: "josh@backmath.com"})
+    Perspective.Core.UserPool.delete(%{id: "user:abc-123"})
+    Perspective.Core.UserPool.put(%{id: "user:abc-123", username: "josh@backmath.com"})
 
     %Perspective.Core.UserAdded{
       data: %{

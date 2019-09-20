@@ -6,18 +6,18 @@ defmodule Perspective.Core.ToDo.Reactor do
     |> Map.put(:id, data.todo_id)
     |> Map.put(:name, data.name)
     |> Map.put(:creator_id, actor_id)
-    |> Perspective.Core.DomainPool.put!()
+    |> Perspective.Core.ToDoPool.put!()
   end
 
   update(%Perspective.Core.ToDoCompleted{data: data}, _state) do
-    Perspective.Core.DomainPool.get!(data.todo_id)
+    Perspective.Core.ToDoPool.get!(data.todo_id)
     |> Map.put(:completed, true)
-    |> Perspective.Core.DomainPool.put!()
+    |> Perspective.Core.ToDoPool.put!()
   end
 
   update(%Perspective.Core.ToDoRenamed{data: data}, _state) do
-    Perspective.Core.DomainPool.get!(data.todo_id)
+    Perspective.Core.ToDoPool.get!(data.todo_id)
     |> Map.put(:name, data.name)
-    |> Perspective.Core.DomainPool.put!()
+    |> Perspective.Core.ToDoPool.put!()
   end
 end

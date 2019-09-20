@@ -16,7 +16,7 @@ defmodule Perspective.Core.Authenticator.Test do
 
   test "a request authenticates correctly" do
     user = %Perspective.Core.User{id: "user/abc-123"}
-    Perspective.Core.DomainPool.put(user)
+    Perspective.Core.UserPool.put(user)
     {:ok, token, _claims} = Perspective.Core.Guardian.encode_and_sign(user)
 
     request = Perspective.Core.AddToDo.new(%{})

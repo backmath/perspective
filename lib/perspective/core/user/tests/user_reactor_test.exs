@@ -16,7 +16,7 @@ defmodule Perspective.User.Reactor.Test do
     %Perspective.Core.UserAdded{data: %{user_id: "user/abc-123", username: "user-bob", password_hash: "[redacted]"}}
     |> Perspective.Core.User.Reactor.send()
 
-    result = Perspective.Core.DomainPool.get!("user/abc-123")
+    result = Perspective.Core.UserPool.get!("user/abc-123")
 
     assert %Perspective.Core.User{
              id: "user/abc-123",
