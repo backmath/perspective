@@ -77,8 +77,16 @@ defmodule Perspective.ActionRequest do
   end
 
   defmacro __before_compile__(_) do
+    domain_event = Module.get_attribute(__CALLER__.module, :domain_event)
+
+    unless domain_event do
+      raise "The action request #{__CALLER__.module} has not defined @domain_event"
+    end
+
+    Perspective.ActionRequest.DefineEvent.define(domain_event, __CALLER__)
+
     quote do
-      def domain_event, do: @domain_event
+      def domain_event, do: unquote(domain_event)
     end
   end
 end
