@@ -19,7 +19,7 @@ defmodule Perspective.Debouncer do
       defp run() do
         app_id = Process.get(:app_id)
 
-        Task.start(fn ->
+        Task.async(fn ->
           Process.put(:app_id, app_id)
 
           run_execute()
@@ -65,6 +65,18 @@ defmodule Perspective.Debouncer do
           :recall_when_done ->
             {:reply, :ok, Perspective.Debouncer.State.require_a_recall(state)}
         end
+      end
+
+      # For the debouncer's peace of mind
+      # Because we use Task.async, this will call back to this process
+      # We don't care about successful callbacks
+      # TBD, Handle failures
+      def handle_info({_reference, :ok}, state) do
+        {:noreply, state}
+      end
+
+      def handle_info({:DOWN, _reference, :process, _pid, :normal}, state) do
+        {:noreply, state}
       end
     end
   end
