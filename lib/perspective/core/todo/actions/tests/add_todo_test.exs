@@ -26,7 +26,11 @@ defmodule Perspective.Core.AddToDo.Test do
     assert data.todo_id =~ ~r/todo\/.*/
   end
 
-  test "domain_event is as expected" do
-    assert Perspective.Core.ToDoAdded == Perspective.Core.AddToDo.domain_event()
+  test "action requests transform to a domain event as expected" do
+    event =
+      Perspective.Core.AddToDo.new("user/abc-123", %{name: "Demonstrate a Valid AddToDo Action"})
+      |> Perspective.DomainEvent.RequestTransformer.to_event()
+
+    assert %Perspective.Core.ToDoAdded{version: "1.0"} = event
   end
 end

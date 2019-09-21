@@ -39,6 +39,7 @@ defmodule Perspective.DomainEvent.Test do
       id: "event:def-456",
       actor_id: "user:abc-123",
       event_date: DateTime.from_iso8601("2019-03-09T22:26:02.940566Z") |> elem(1),
+      version: "1.0",
       data: %{
         name: "Demonstrate a Saved Event",
         todo_id: "todo:hij-789"
@@ -53,6 +54,7 @@ defmodule Perspective.DomainEvent.Test do
       actor_id: "user:abc-123",
       event_type: "Perspective.Core.ToDoAdded",
       event_date: DateTime.from_iso8601("2019-03-09T22:26:02.940566Z") |> elem(1),
+      version: "1.0",
       data: %{
         name: "Demonstrate a Saved Event",
         todo_id: "todo:hij-789"

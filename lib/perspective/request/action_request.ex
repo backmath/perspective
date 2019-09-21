@@ -47,6 +47,13 @@ defmodule Perspective.ActionRequest do
     end
   end
 
+  defmacro domain_event(domain_event_name, domain_event_version) do
+    quote do
+      @domain_event_name unquote(domain_event_name)
+      @domain_event_version unquote(domain_event_version)
+    end
+  end
+
   defmacro __using__(_options) do
     quote do
       @before_compile Perspective.ActionRequest
@@ -54,7 +61,8 @@ defmodule Perspective.ActionRequest do
       use Perspective.AuthorizeRequest
       use Perspective.ModuleRegistry
       register_module(Perspective.ActionRequest)
-      Module.register_attribute(__MODULE__, :domain_event, persist: true)
+      Module.register_attribute(__MODULE__, :domain_event_name, persist: true)
+      Module.register_attribute(__MODULE__, :domain_event_version, persist: true)
 
       Module.put_attribute(__MODULE__, :derive, Jason.Encoder)
       Kernel.defstruct(id: "request/undefined", actor_id: nil, data: %{}, meta: %{}, errors: [])
@@ -77,16 +85,22 @@ defmodule Perspective.ActionRequest do
   end
 
   defmacro __before_compile__(_) do
-    domain_event = Module.get_attribute(__CALLER__.module, :domain_event)
+    domain_event_name = Module.get_attribute(__CALLER__.module, :domain_event_name)
+    domain_event_version = Module.get_attribute(__CALLER__.module, :domain_event_version)
 
-    unless domain_event do
-      raise "The action request #{__CALLER__.module} has not defined @domain_event"
+    unless domain_event_name do
+      raise "The action request #{__CALLER__.module} has not defined @domain_event_name"
     end
 
-    Perspective.ActionRequest.DefineEvent.define(domain_event, __CALLER__)
+    unless domain_event_version do
+      raise "The action request #{__CALLER__.module} has not defined @domain_event_version"
+    end
+
+    Perspective.ActionRequest.DefineEvent.define(domain_event_name, __CALLER__)
 
     quote do
-      def domain_event, do: unquote(domain_event)
+      def domain_event_name, do: unquote(domain_event_name)
+      def domain_event_version, do: unquote(domain_event_version)
     end
   end
 end

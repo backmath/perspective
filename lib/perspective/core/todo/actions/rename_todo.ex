@@ -2,7 +2,7 @@ defmodule Perspective.Core.RenameToDo do
   use Perspective.ActionRequest
   use Perspective.ActionRequest.RejectAnonymousUsers
 
-  @domain_event Perspective.Core.ToDoRenamed
+  domain_event(Perspective.Core.ToDoRenamed, "1.0")
 
   validate_syntax(%{data: data}) do
     Vex.errors(data,

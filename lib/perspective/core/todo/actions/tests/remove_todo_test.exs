@@ -21,7 +21,11 @@ defmodule Perspective.Core.RemoveToDo.Test do
     assert [{:error, :todo_id, :presence, "must be present"}] == result
   end
 
-  test "domain_event is as expected" do
-    assert Perspective.Core.ToDoRemoved == Perspective.Core.RemoveToDo.domain_event()
+  test "action requests transform to a domain event as expected" do
+    event =
+      Perspective.Core.RemoveToDo.new("user/abc-123", %{todo_id: "todo:abc-123"})
+      |> Perspective.DomainEvent.RequestTransformer.to_event()
+
+    assert %Perspective.Core.ToDoRemoved{version: "1.0"} = event
   end
 end

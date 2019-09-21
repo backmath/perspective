@@ -4,7 +4,7 @@ defmodule Perspective.ActionRequest.MetadataTransformer.Test do
   test "transform_meta returns the provided data as a fallback" do
     defmodule DefaultExample do
       use Perspective.ActionRequest
-      @domain_event Perspective.ActionRequest.MetadataTransformer.Test.DefaultExampleEvent
+      domain_event(Perspective.ActionRequest.MetadataTransformer.Test.DefaultExampleEvent, "1.0")
     end
 
     request = DefaultExample.new("", %{}, %{a: 2})
@@ -15,7 +15,7 @@ defmodule Perspective.ActionRequest.MetadataTransformer.Test do
     defmodule RequestExample do
       use Perspective.ActionRequest
 
-      @domain_event Perspective.ActionRequest.MetadataTransformer.Test.RequestExampleEvent
+      domain_event(Perspective.ActionRequest.MetadataTransformer.Test.RequestExampleEvent, "1.0")
 
       transform_meta(%{meta: %{a: a}}) do
         %{

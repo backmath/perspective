@@ -2,7 +2,7 @@ defmodule Perspective.Core.AddToDo do
   use Perspective.ActionRequest
   use Perspective.ActionRequest.RejectAnonymousUsers
 
-  @domain_event Perspective.Core.ToDoAdded
+  domain_event(Perspective.Core.ToDoAdded, "1.0")
 
   validate_syntax(%{data: data}) do
     Vex.errors(data, name: [presence: true])

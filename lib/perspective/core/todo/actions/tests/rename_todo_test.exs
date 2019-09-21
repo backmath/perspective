@@ -32,7 +32,11 @@ defmodule Perspective.Core.RenameToDo.Test do
     assert [{:error, :todo_id, :presence, "must be present"}] == result
   end
 
-  test "domain_event is as expected" do
-    assert Perspective.Core.ToDoRenamed == Perspective.Core.RenameToDo.domain_event()
+  test "action requests transform to a domain event as expected" do
+    event =
+      Perspective.Core.RenameToDo.new("user/abc-123", %{todo_id: "todo:abc-123"})
+      |> Perspective.DomainEvent.RequestTransformer.to_event()
+
+    assert %Perspective.Core.ToDoRenamed{version: "1.0"} = event
   end
 end

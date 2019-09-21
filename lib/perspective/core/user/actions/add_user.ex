@@ -1,7 +1,7 @@
 defmodule Perspective.Core.AddUser do
   use Perspective.ActionRequest
 
-  @domain_event Perspective.Core.UserAdded
+  domain_event(Perspective.Core.UserAdded, "1.0")
 
   defmodule Data do
     use Vex.Struct
