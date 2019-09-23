@@ -1,7 +1,7 @@
 defmodule Perspective.Projection.DefineBroadcaster do
   def define(path, reactor, caller) do
-    genserver_name = Module.concat(reactor, ProjectionBroadcaster)
-    endpoint = Module.concat(caller.module, PhoenixEndpoint)
+    module_name = Perspective.ProjectionNames.broadcaster(reactor)
+    endpoint = Perspective.ProjectionNames.endpoint(caller.module)
 
     definition =
       quote do
@@ -31,6 +31,8 @@ defmodule Perspective.Projection.DefineBroadcaster do
         end
       end
 
-    Module.create(genserver_name, definition, Macro.Env.location(caller))
+    Module.create(module_name, definition, Macro.Env.location(caller))
+
+    module_name
   end
 end

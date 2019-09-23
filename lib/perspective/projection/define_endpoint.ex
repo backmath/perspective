@@ -1,8 +1,8 @@
 defmodule Perspective.Projection.DefineEndpoint do
   def define(module, caller) do
-    name = Module.concat(module, PhoenixEndpoint)
-    socket = Module.concat(module, ProjectionSocket)
-    router = Module.concat(module, ProjectionRouter)
+    module_name = Perspective.ProjectionNames.endpoint(module)
+    socket = Perspective.ProjectionNames.socket(module)
+    router = Perspective.ProjectionNames.router(module)
 
     definition =
       quote bind_quoted: [socket: socket, router: router] do
@@ -21,6 +21,8 @@ defmodule Perspective.Projection.DefineEndpoint do
         end
       end
 
-    Module.create(name, definition, Macro.Env.location(caller))
+    Module.create(module_name, definition, Macro.Env.location(caller))
+
+    module_name
   end
 end

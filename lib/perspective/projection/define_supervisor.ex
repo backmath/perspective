@@ -1,12 +1,7 @@
 defmodule Perspective.Projection.DefineSupervisor do
-  def define(exposures, module, caller) do
-    supervisor_name = Module.concat(module, Supervisor)
-    endpoint = Module.concat(module, PhoenixEndpoint)
-
-    broadcasters =
-      Enum.map(exposures, fn {_path, reactor_name} ->
-        Module.concat(reactor_name, ProjectionBroadcaster)
-      end)
+  def define(broadcasters, module, caller) do
+    module_name = Perspective.ProjectionNames.supervisor(module)
+    endpoint = Perspective.ProjectionNames.endpoint(module)
 
     children = [endpoint] ++ broadcasters
 
@@ -19,6 +14,8 @@ defmodule Perspective.Projection.DefineSupervisor do
         end
       end
 
-    Module.create(supervisor_name, definition, Macro.Env.location(caller))
+    Module.create(module_name, definition, Macro.Env.location(caller))
+
+    module_name
   end
 end

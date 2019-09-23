@@ -1,6 +1,6 @@
 defmodule Perspective.Projection.DefineController do
   def define(path, reactor, caller) do
-    genserver_name = Module.concat(reactor, ProjectionController)
+    module_name = Perspective.ProjectionNames.controller(reactor)
 
     definition =
       quote bind_quoted: [path: path, reactor: reactor] do
@@ -16,6 +16,8 @@ defmodule Perspective.Projection.DefineController do
         def path, do: unquote(path)
       end
 
-    Module.create(genserver_name, definition, Macro.Env.location(caller))
+    Module.create(module_name, definition, Macro.Env.location(caller))
+
+    module_name
   end
 end

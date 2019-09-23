@@ -1,13 +1,13 @@
 defmodule Perspective.Projection.DefineSocket do
   def define(exposures, reactor, caller) do
-    genserver_name = Module.concat(reactor, ProjectionSocket)
+    module_name = Perspective.ProjectionNames.socket(reactor)
 
     definition =
       quote bind_quoted: [exposures: exposures, reactor: reactor] do
         use Phoenix.Socket
 
-        Enum.map(exposures, fn {path, module} ->
-          Phoenix.Socket.channel(path, Module.concat(module, ProjectionChannel))
+        Enum.map(exposures, fn {path, channel} ->
+          Phoenix.Socket.channel(path, channel)
         end)
 
         def connect(params, socket, connect_info) do
@@ -17,6 +17,8 @@ defmodule Perspective.Projection.DefineSocket do
         def id(_socket), do: nil
       end
 
-    Module.create(genserver_name, definition, Macro.Env.location(caller))
+    Module.create(module_name, definition, Macro.Env.location(caller))
+
+    module_name
   end
 end

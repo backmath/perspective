@@ -1,6 +1,6 @@
 defmodule Perspective.Projection.DefineChannel do
   def define(path, reactor, caller) do
-    genserver_name = Module.concat(reactor, ProjectionChannel)
+    module_name = Perspective.ProjectionNames.channel(reactor)
 
     definition =
       quote bind_quoted: [path: path, reactor: reactor] do
@@ -22,6 +22,8 @@ defmodule Perspective.Projection.DefineChannel do
         end
       end
 
-    Module.create(genserver_name, definition, Macro.Env.location(caller))
+    Module.create(module_name, definition, Macro.Env.location(caller))
+
+    module_name
   end
 end
