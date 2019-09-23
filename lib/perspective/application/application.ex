@@ -6,14 +6,21 @@ defmodule Perspective.Application do
       use Application
 
       def start do
-        start(nil, nil)
+        start(app_id: configured_app_id())
       end
 
       def start(_type, _args) do
-        Perspective.ServerReferences.store_process_references(__MODULE__, app_id: app_id())
+        start(app_id: configured_app_id())
+      end
 
-        opts = [strategy: :one_for_one, name: name()]
-        Supervisor.start_link(all_children(), opts)
+      def start(opts) when is_list(opts) do
+        start(%{app_id: Keyword.get(opts, :app_id)})
+      end
+
+      def start(%{app_id: app_id}) do
+        Perspective.ServerReferences.store_process_references(__MODULE__, app_id: app_id)
+
+        Supervisor.start_link(all_children(), opts())
       end
 
       def all_children do
@@ -21,7 +28,7 @@ defmodule Perspective.Application do
           Perspective.Application.Supervisor
         ]
         |> Enum.concat(children())
-        |> Perspective.ChildrenSpecs.set_app_id(app_id())
+        |> Perspective.ChildrenSpecs.set_app_id(configured_app_id())
       end
 
       def children do
@@ -30,12 +37,16 @@ defmodule Perspective.Application do
 
       defoverridable(children: 0)
 
-      defp app_id do
+      defp configured_app_id do
         Process.get(:app_id, config(:app_id))
       end
 
-      defp name do
-        Process.get(:name, config(:app_id))
+      defp configured_name do
+        Process.get(:name, Perspective.ServerName.name(__MODULE__, app_id: configured_app_id()))
+      end
+
+      defp opts do
+        [strategy: :one_for_one, name: configured_name()]
       end
     end
   end
