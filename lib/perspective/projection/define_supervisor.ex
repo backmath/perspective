@@ -3,7 +3,7 @@ defmodule Perspective.Projection.DefineSupervisor do
     module_name = Perspective.ProjectionNames.supervisor(module)
     endpoint = Perspective.ProjectionNames.endpoint(module)
 
-    children = [endpoint] ++ broadcasters
+    children = [endpoint] ++ Enum.map(broadcasters, fn {_, broadcaster} -> broadcaster end)
 
     definition =
       quote do
