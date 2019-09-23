@@ -12,6 +12,12 @@ defmodule Perspective.Projection do
     end
   end
 
+  defmacro expose_channel(path, channel_name) do
+    quote bind_quoted: [path: path, channel_name: channel_name] do
+      Module.put_attribute(__MODULE__, :channel_exposures, {path, channel_name})
+    end
+  end
+
   defmacro expose(path, reactor) do
     reactor_name = Macro.expand(reactor, __CALLER__)
 
