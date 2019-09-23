@@ -9,7 +9,6 @@ config :perspective, Perspective.Core.Guardian,
 config :phoenix, :json_library, Jason
 config :phoenix, :format_encoders, json: Jason
 
-config :perspective, Perspective.Authentication,
-  module: Perspective.Authentication.DefaultAuthenticator
+config :perspective, Perspective.Authentication, module: Perspective.Authentication.DefaultAuthenticator
 
 import_config "config.#{Mix.env()}.exs"
