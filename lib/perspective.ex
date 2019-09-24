@@ -8,7 +8,7 @@ defmodule Perspective do
       |> register_request()
       |> queue_request()
     rescue
-      e -> e
+      error -> {:error, error}
     end
   end
 
