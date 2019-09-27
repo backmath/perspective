@@ -1,9 +1,8 @@
 defmodule Perspective.Projection.DefineSupervisor do
   def define(broadcasters, module, caller) do
     module_name = Perspective.ProjectionNames.supervisor(module)
-    endpoint = Perspective.ProjectionNames.endpoint(module)
 
-    children = [endpoint] ++ Enum.map(broadcasters, fn {_, broadcaster} -> broadcaster end)
+    children = endpoint(module) ++ Enum.map(broadcasters, fn {_, broadcaster} -> broadcaster end)
 
     definition =
       quote do
@@ -17,5 +16,13 @@ defmodule Perspective.Projection.DefineSupervisor do
     Module.create(module_name, definition, Macro.Env.location(caller))
 
     module_name
+  end
+
+  # Document this change
+  defp endpoint(module) do
+    case Mix.env() do
+      :test -> []
+      _ -> [Perspective.ProjectionNames.endpoint(module)]
+    end
   end
 end
