@@ -3,7 +3,6 @@ defmodule Perspective do
 
   def call!(data, token \\ "") do
     generate_request(data)
-    |> register_request()
     |> queue_request()
   end
 
@@ -17,10 +16,6 @@ defmodule Perspective do
 
   defp generate_request(data) do
     Perspective.RequestGenerator.from!(data)
-  end
-
-  defp register_request(request) do
-    Perspective.RequestRegistry.register(request)
   end
 
   defp queue_request(request) do
