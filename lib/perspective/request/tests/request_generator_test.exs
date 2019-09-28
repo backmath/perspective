@@ -7,7 +7,7 @@ defmodule Perspective.RequestGenerator.Test do
         action: "Perspective.Core.AddToDo",
         data: %{}
       }
-      |> Perspective.RequestGenerator.from()
+      |> Perspective.RequestGenerator.from!()
 
     assert %Perspective.Core.AddToDo{} = result
   end
