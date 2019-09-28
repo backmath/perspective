@@ -35,7 +35,7 @@ defmodule Perspective.Core.RenameToDo.Test do
   test "action requests transform to a domain event as expected" do
     event =
       Perspective.Core.RenameToDo.new("user/abc-123", %{todo_id: "todo:abc-123"})
-      |> Perspective.DomainEvent.RequestTransformer.to_event()
+      |> Perspective.Processor.RequestTransformer.transform()
 
     assert %Perspective.Core.ToDoRenamed{version: "1.0"} = event
   end

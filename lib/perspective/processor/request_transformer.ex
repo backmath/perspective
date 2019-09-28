@@ -1,5 +1,5 @@
 defmodule Perspective.Processor.RequestTransformer do
-  def to_event(request) do
+  def transform(request) do
     request
     |> initialize_event
     |> transform_id_from_request_to_event

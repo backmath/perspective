@@ -24,7 +24,7 @@ defmodule Perspective.Core.RemoveToDo.Test do
   test "action requests transform to a domain event as expected" do
     event =
       Perspective.Core.RemoveToDo.new("user/abc-123", %{todo_id: "todo:abc-123"})
-      |> Perspective.DomainEvent.RequestTransformer.to_event()
+      |> Perspective.Processor.RequestTransformer.transform()
 
     assert %Perspective.Core.ToDoRemoved{version: "1.0"} = event
   end

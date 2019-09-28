@@ -29,7 +29,7 @@ defmodule Perspective.Core.AddToDo.Test do
   test "action requests transform to a domain event as expected" do
     event =
       Perspective.Core.AddToDo.new("user/abc-123", %{name: "Demonstrate a Valid AddToDo Action"})
-      |> Perspective.DomainEvent.RequestTransformer.to_event()
+      |> Perspective.Processor.RequestTransformer.transform()
 
     assert %Perspective.Core.ToDoAdded{version: "1.0"} = event
   end

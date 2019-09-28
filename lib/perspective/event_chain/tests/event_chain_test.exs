@@ -4,7 +4,7 @@ defmodule Perspective.EventChain.Test do
 
   test "add an event to the event chain" do
     Perspective.Core.AddToDo.new(%{name: "Example Event"})
-    |> Perspective.DomainEvent.RequestTransformer.to_event()
+    |> Perspective.Processor.RequestTransformer.transform()
     |> Perspective.EventChain.apply_event()
   end
 end
