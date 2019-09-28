@@ -1,4 +1,4 @@
-defmodule Perspective.DomainEvent.RequestTransformer do
+defmodule Perspective.Processor.RequestTransformer do
   def to_event(request) do
     request
     |> initialize_event
