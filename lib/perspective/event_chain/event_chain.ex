@@ -2,6 +2,7 @@ defmodule Perspective.EventChain do
   def apply_event(event) do
     Perspective.EventChain.PageBuffer.add(event)
     Perspective.Notifications.emit(event)
+    {:ok, event}
   end
 
   def all() do

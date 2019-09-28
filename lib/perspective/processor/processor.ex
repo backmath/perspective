@@ -8,44 +8,9 @@ defmodule Perspective.Processor do
     |> apply_to_the_event_chain()
   end
 
-  defp validate_syntax(request) do
-    Perspective.Processor.SyntaxValidator.validate(request)
-  end
-
-  defp authorize_request(request) do
-    case Perspective.ActionRequest.RequestAuthorizer.authorize_request(request) do
-      true -> request
-      [] -> request
-      {:error, error} -> reject(request, error)
-      errors -> reject(request, errors)
-    end
-  end
-
-  defp validate_semantics(request) do
-    case Perspective.ActionRequest.SemanticValidator.validate_semantics(request) do
-      [] -> request
-      errors -> reject(request, errors)
-    end
-  end
-
-  defp transform_request_to_event(request) do
-    Perspective.DomainEvent.RequestTransformer.to_event(request)
-  end
-
-  defp apply_to_the_event_chain(domain_event) do
-    Perspective.EventChain.apply_event(domain_event)
-    {:ok, domain_event}
-  end
-
-  defmodule RequestRejected do
-    defexception [:request]
-
-    def message(error) do
-      "The request was rejected (#{Kernel.inspect(error.request)})"
-    end
-  end
-
-  defp reject(request, errors) do
-    raise RequestRejected, request: Map.put(request, :errors, errors)
-  end
+  defp validate_syntax(request), do: Perspective.Processor.SyntaxValidator.validate(request)
+  defp authorize_request(request), do: Perspective.Processor.RequestAuthorizer.authorize(request)
+  defp validate_semantics(request), do: Perspective.Processor.SemanticValidator.validate(request)
+  defp transform_request_to_event(request), do: Perspective.Processor.RequestTransformer.transform(request)
+  defp apply_to_the_event_chain(domain_event), do: Perspective.EventChain.apply_event(domain_event)
 end

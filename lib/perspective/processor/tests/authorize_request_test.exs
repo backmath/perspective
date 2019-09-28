@@ -7,7 +7,7 @@ defmodule Perspective.Processor.RequestAuthorizer.Test do
     :ok
   end
 
-  test "invalid syntax raises errors", context do
+  test "invalid syntax raises errors" do
     Perspective.Core.ToDoPool.put!(%{
       id: "todo/abc-123",
       creator_id: "user/josh"
@@ -27,7 +27,7 @@ defmodule Perspective.Processor.RequestAuthorizer.Test do
       }
     }
 
-    assert expected.errors == error.errors
+    assert expected == error
   end
 
   test "a valid syntax returns the request" do
