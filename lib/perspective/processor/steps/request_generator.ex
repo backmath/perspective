@@ -1,13 +1,13 @@
-defmodule Perspective.RequestGenerator do
-  def from!(%{data: data, action: action}) do
+defmodule Perspective.Processor.RequestGenerator do
+  def generate(%{data: data, action: action}) do
     create_action(action, data)
   end
 
-  def from!(%{"data" => data, "action" => action}) do
-    from!(%{data: data, action: action})
+  def generate(%{"data" => data, "action" => action}) do
+    generate(%{data: data, action: action})
   end
 
-  def from!(abc) do
+  def generate(abc) do
     raise "The provided request had no matcher: #{abc}"
   end
 

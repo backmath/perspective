@@ -1,6 +1,7 @@
 defmodule Perspective.Processor do
-  def run(request, token) do
-    request
+  def run(data, token) do
+    data
+    |> generate_request()
     |> validate_syntax()
     |> authenticate_request(token)
     |> register_request()
@@ -10,6 +11,7 @@ defmodule Perspective.Processor do
     |> apply_to_the_event_chain()
   end
 
+  defp generate_request(data), do: Perspective.Processor.RequestGenerator.generate(data)
   defp validate_syntax(request), do: Perspective.Processor.SyntaxValidator.validate(request)
   defp authenticate_request(request, token), do: Perspective.Processor.RequestAuthenticator.authenticate(request, token)
   defp register_request(request), do: Perspective.RequestRegistry.register(request)

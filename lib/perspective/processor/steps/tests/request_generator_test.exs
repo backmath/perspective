@@ -1,4 +1,4 @@
-defmodule Perspective.RequestGenerator.Test do
+defmodule Perspective.Processor.RequestGenerator.Test do
   use ExUnit.Case, async: true
 
   test "generating a request from a struct" do
@@ -7,7 +7,7 @@ defmodule Perspective.RequestGenerator.Test do
         action: "Perspective.Core.AddToDo",
         data: %{}
       }
-      |> Perspective.RequestGenerator.from!()
+      |> Perspective.Processor.RequestGenerator.generate()
 
     assert %Perspective.Core.AddToDo{} = result
   end
