@@ -1,8 +1,8 @@
 defmodule Perspective.Authentication.DefaultAuthenticator do
-  @behaviour Perspective.Authenticator
+  @behaviour Perspective.RequestAuthenticator
 
-  @impl Perspective.Authenticator
-  def authenticate_request(request, _token) do
+  @impl Perspective.RequestAuthenticator
+  def authenticate(request, _token) do
     Map.put(request, :actor_id, "user/anonymous")
   end
 end

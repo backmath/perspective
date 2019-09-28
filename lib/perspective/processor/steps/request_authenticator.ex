@@ -1,10 +1,10 @@
-defmodule Perspective.Authentication do
+defmodule Perspective.Processor.RequestAuthenticator do
   use Perspective.Config
 
-  @behaviour Perspective.Authenticator
+  @behaviour Perspective.RequestAuthenticator
 
-  @impl Perspective.Authenticator
-  def authenticate_request(request, token) do
+  @impl Perspective.RequestAuthenticator
+  def authenticate(request, token) do
     # @todo: throw if misconfigured
     authentication_module = config(:module)
 
