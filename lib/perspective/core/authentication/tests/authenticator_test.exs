@@ -35,8 +35,7 @@ defmodule Perspective.Core.Authenticator.Test do
 
     request = Perspective.Core.AddToDo.new(%{})
 
-    assert %Perspective.Core.AddToDo{
-             errors: [:token_expired]
-           } = Perspective.Core.Authenticator.authenticate_request(request, token)
+    assert {:error, %Perspective.Authentication.TokenError{error: :token_expired}} =
+             Perspective.Core.Authenticator.authenticate_request(request, token)
   end
 end

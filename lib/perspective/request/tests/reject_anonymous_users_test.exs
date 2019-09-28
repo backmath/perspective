@@ -15,7 +15,7 @@ defmodule Perspective.ActionRequest.RejectAnonymousUsers.Test do
   end
 
   test "unspecfied authorizations fail by default" do
-    assert {:error, %Perspective.UnauthorizedUser{}} == Example.authorize_request(%Example{actor_id: "user/missing"})
+    assert {:error, %Perspective.Unauthorized{}} == Example.authorize_request(%Example{actor_id: "user/missing"})
     assert true = Perspective.ActionRequest.RequestAuthorizer.authorize_request(%Example{actor_id: "user/hello"})
   end
 end

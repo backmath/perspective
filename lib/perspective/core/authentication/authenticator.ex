@@ -14,7 +14,7 @@ defmodule Perspective.Core.Authenticator do
     Perspective.Core.Guardian.decode_and_verify(token)
     |> case do
       {:ok, claims} -> Perspective.Core.Guardian.resource_from_claims(claims)
-      {:error, error} -> {:error, error}
+      {:error, error} -> {:error, %Perspective.Authentication.TokenError{error: error}}
     end
   end
 
@@ -22,7 +22,7 @@ defmodule Perspective.Core.Authenticator do
     Map.put(request, :actor_id, actor.id)
   end
 
-  defp attach_to_request({:error, error}, request) do
-    Map.put(request, :errors, [error])
+  defp attach_to_request({:error, error}, _request) do
+    {:error, error}
   end
 end

@@ -19,15 +19,10 @@ defmodule Perspective.Processor.RequestAuthorizer.Test do
         |> Perspective.Processor.RequestAuthorizer.authorize()
       end
 
-    expected = %Perspective.InvalidSyntax{
-      errors: [{:error, :name, :presence, "must be present"}],
-      request: %Perspective.Core.AddToDo{
-        actor_id: "user/josh",
-        data: %{}
-      }
-    }
-
-    assert expected == error
+    assert %Perspective.Unauthorized{
+             errors: [%Perspective.Unauthorized{errors: nil, request: nil}],
+             request: %Perspective.Core.CompleteToDo{}
+           } = error
   end
 
   test "a valid syntax returns the request" do
