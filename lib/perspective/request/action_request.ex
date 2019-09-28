@@ -65,7 +65,7 @@ defmodule Perspective.ActionRequest do
       Module.register_attribute(__MODULE__, :domain_event_version, persist: true)
 
       Module.put_attribute(__MODULE__, :derive, Jason.Encoder)
-      Kernel.defstruct(id: "request/undefined", actor_id: nil, data: %{}, meta: %{}, errors: [])
+      Kernel.defstruct(id: "request/undefined", actor_id: nil, data: %{}, meta: %{})
 
       def new(actor_id \\ nil, data \\ %{}, meta \\ default_meta()) do
         %__MODULE__{

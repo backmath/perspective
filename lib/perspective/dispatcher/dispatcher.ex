@@ -1,7 +1,5 @@
 defmodule Perspective.Dispatcher do
   def dispatch(request) do
-    case Perspective.Processor.run(request) do
-      {:ok, action} -> {:ok, action}
-    end
+    Perspective.Processor.run(request)
   end
 end

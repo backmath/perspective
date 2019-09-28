@@ -8,13 +8,19 @@ defmodule Perspective.AuthorizeRequest do
     end
   end
 
-  defmacro authorize_request(action_request, stage \\ 10, block) do
+  defmacro authorize_request(action_request, stage, block) when is_integer(stage) do
     definition = build_function(action_request, block)
 
     quote bind_quoted: [definition: definition, stage: stage] do
       Module.register_attribute(__MODULE__, :"stage_#{stage}", persist: true, accumulate: true)
       Module.put_attribute(__MODULE__, :"stage_#{stage}", definition)
       Module.put_attribute(__MODULE__, :stages, stage)
+    end
+  end
+
+  defmacro authorize_request(action_request, block) do
+    quote do
+      authorize_request(unquote(action_request), 10, unquote(block))
     end
   end
 

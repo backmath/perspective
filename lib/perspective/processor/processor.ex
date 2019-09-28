@@ -9,10 +9,7 @@ defmodule Perspective.Processor do
   end
 
   defp validate_syntax(request) do
-    case Perspective.ActionRequest.SyntaxValidator.validate_syntax(request) do
-      [] -> request
-      errors -> reject(request, errors)
-    end
+    Perspective.Processor.SyntaxValidator.validate(request)
   end
 
   defp authorize_request(request) do
