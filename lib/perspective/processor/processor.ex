@@ -1,5 +1,5 @@
 defmodule Perspective.Processor do
-  def run(data, token) do
+  def run(data, token \\ "") do
     data
     |> generate_request()
     |> validate_syntax()
