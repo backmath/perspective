@@ -11,19 +11,19 @@ defmodule Perspective.ActionRequest.RejectAnonymousUsers do
     quote do
       import Perspective.AuthorizeRequest
 
-      Perspective.AuthorizeRequest.authorize_request %{actor_id: ""}, 0 do
+      Perspective.AuthorizeRequest.authorize %{actor_id: ""}, 0 do
         {:error, %Perspective.AnonymousUserRejected{}}
       end
 
-      Perspective.AuthorizeRequest.authorize_request %{actor_id: nil}, 0 do
+      Perspective.AuthorizeRequest.authorize %{actor_id: nil}, 0 do
         {:error, %Perspective.AnonymousUserRejected{}}
       end
 
-      Perspective.AuthorizeRequest.authorize_request %{actor_id: "user/anonymous"}, 0 do
+      Perspective.AuthorizeRequest.authorize %{actor_id: "user/anonymous"}, 0 do
         {:error, %Perspective.AnonymousUserRejected{}}
       end
 
-      Perspective.AuthorizeRequest.authorize_request %{}, 100 do
+      Perspective.AuthorizeRequest.authorize %{}, 100 do
         {:error, %Perspective.Unauthorized{}}
       end
     end

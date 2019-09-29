@@ -4,7 +4,7 @@ defmodule Perspective.ActionRequest.RejectAnonymousUsers.Test.Example do
 
   domain_event(Perspective.ActionRequest.RejectAnonymousUsers.Test.ExampleEvent, "1.0")
 
-  authorize_request(%{actor_id: "user/hello"}) do
+  authorize(%{actor_id: "user/hello"}) do
     true
   end
 end

@@ -1,8 +1,8 @@
 defprotocol Perspective.ActionRequest.RequestAuthorizer do
   @fallback_to_any true
-  def authorize_request(request)
+  def authorize(request)
 end
 
 defimpl Perspective.ActionRequest.RequestAuthorizer, for: Any do
-  def authorize_request(_request), do: []
+  def authorize(_request), do: []
 end

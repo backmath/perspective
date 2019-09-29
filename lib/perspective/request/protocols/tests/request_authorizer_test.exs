@@ -7,6 +7,6 @@ defmodule Perspective.ActionRequest.RequestAuthorizer.Test do
       domain_event(Perspective.ActionRequest.RequestAuthorizer.Test.DefaultExampleEvent, "1.0")
     end
 
-    assert [] == Perspective.ActionRequest.RequestAuthorizer.authorize_request(DefaultExample.new())
+    assert [] == Perspective.ActionRequest.RequestAuthorizer.authorize(DefaultExample.new())
   end
 end

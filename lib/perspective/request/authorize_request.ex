@@ -8,7 +8,7 @@ defmodule Perspective.AuthorizeRequest do
     end
   end
 
-  defmacro authorize_request(action_request, stage, block) when is_integer(stage) do
+  defmacro authorize(action_request, stage, block) when is_integer(stage) do
     definition = build_function(action_request, block)
 
     quote bind_quoted: [definition: definition, stage: stage] do
@@ -18,15 +18,15 @@ defmodule Perspective.AuthorizeRequest do
     end
   end
 
-  defmacro authorize_request(action_request, block) do
+  defmacro authorize(action_request, block) do
     quote do
-      authorize_request(unquote(action_request), 10, unquote(block))
+      authorize(unquote(action_request), 10, unquote(block))
     end
   end
 
   def build_function(action_request, block) do
     quote do
-      def authorize_request(unquote(action_request)), unquote(block)
+      def authorize(unquote(action_request)), unquote(block)
     end
     |> Macro.escape()
   end

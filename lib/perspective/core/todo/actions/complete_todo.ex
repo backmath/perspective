@@ -9,7 +9,7 @@ defmodule Perspective.Core.CompleteToDo do
     Vex.errors(data, todo_id: [presence: true])
   end
 
-  authorize_request(%{actor_id: actor_id, data: %{todo_id: todo_id}}) do
+  authorize(%{actor_id: actor_id, data: %{todo_id: todo_id}}) do
     %{creator_id: creator_id} = Perspective.Core.ToDoPool.get!(todo_id)
 
     unless creator_id == actor_id do

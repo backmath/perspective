@@ -23,11 +23,11 @@ defmodule Perspective.Core.AddUser do
     Vex.errors(struct(Data, data))
   end
 
-  authorize_request(%{actor_id: "user/anonymous"}) do
+  authorize(%{actor_id: "user/anonymous"}) do
     true
   end
 
-  authorize_request(%{actor_id: _}) do
+  authorize(%{actor_id: _}) do
     false
   end
 

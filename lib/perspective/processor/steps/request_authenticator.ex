@@ -5,10 +5,9 @@ defmodule Perspective.Processor.RequestAuthenticator do
 
   @impl Perspective.RequestAuthenticator
   def authenticate(request, token) do
-    # @todo: throw if misconfigured
     authentication_module = config(:module)
 
-    case authentication_module.authenticate_request(request, token) do
+    case authentication_module.authenticate(request, token) do
       {:error, error} -> raise error
       # Propbably must change
       %{errors: errors} -> raise errors

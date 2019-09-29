@@ -8,7 +8,7 @@ defmodule Perspective.Core.AddToDo do
     Vex.errors(data, name: [presence: true])
   end
 
-  authorize_request %{actor_id: _actor_id} do
+  authorize %{actor_id: _actor_id} do
     true
   end
 
