@@ -20,3 +20,8 @@ config :perspective, Perspective.Config.Test.SpecialOverride, test_config: :expe
 config :argon2_elixir,
   t_cost: 1,
   m_cost: 8
+
+# Special Configuration for test cases
+
+config :perspective, Perspective.Config.Test.Example, test_config: :expected_value
+config :perspective, Perspective.Config.Test.SpecialOverride, test_config: :expected_value
