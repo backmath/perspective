@@ -7,8 +7,7 @@ defmodule Perspective.ActionRequest.RequestAuthorizer.Test do
       domain_event(Perspective.ActionRequest.RequestAuthorizer.Test.DefaultExampleEvent, "1.0")
     end
 
-    assert {:error, %Perspective.Unauthorized{}} =
-             Perspective.ActionRequest.RequestAuthorizer.authorize(DefaultExample.new())
+    assert false == Perspective.ActionRequest.RequestAuthorizer.authorize(DefaultExample.new())
   end
 
   test "authorization with a specific actor_id" do
@@ -25,10 +24,6 @@ defmodule Perspective.ActionRequest.RequestAuthorizer.Test do
 
     request = Example.new("user/nope")
 
-    assert {:error,
-            %Perspective.Unauthorized{
-              errors: [],
-              request: request
-            }} == Perspective.ActionRequest.RequestAuthorizer.authorize(request)
+    assert false == Perspective.ActionRequest.RequestAuthorizer.authorize(request)
   end
 end

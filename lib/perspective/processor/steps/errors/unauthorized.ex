@@ -1,5 +1,5 @@
 defmodule Perspective.Unauthorized do
-  defexception [:errors, :request]
+  defexception errors: [], request: nil
 
   def exception(errors: errors, request: request) do
     %__MODULE__{errors: errors, request: request}
