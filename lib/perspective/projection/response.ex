@@ -1,4 +1,6 @@
 defmodule Perspective.ProjectionResponse do
+  import Perspective.StripElixir
+
   def channel_success(data, socket) do
     {:reply, {:ok, data}, socket}
   end
@@ -8,9 +10,9 @@ defmodule Perspective.ProjectionResponse do
   end
 
   defp serialize_error(%type{} = error) do
-    %{
-      type: String.replace("#{type}", ~r/^Elixir./, ""),
-      message: type.message(error)
-    }
+    Map.from_struct(error)
+    |> Map.put(:type, strip_elixir(type))
+    |> Map.put(:message, type.message(error))
+    |> Map.delete(:__exception__)
   end
 end
