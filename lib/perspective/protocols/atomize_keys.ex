@@ -12,7 +12,7 @@ defimpl Perspective.AtomizeKeys, for: Map do
     end
   end
 
-  defp atomize(value) when is_binary(value), do: String.to_atom(value)
+  defp atomize(value) when is_binary(value), do: String.to_existing_atom(value)
   defp atomize(value), do: value
 end
 
