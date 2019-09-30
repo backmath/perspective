@@ -5,6 +5,10 @@ defmodule Perspective.AuthorizeRequest do
       import Perspective.AuthorizeRequest
 
       Module.register_attribute(__MODULE__, :stages, persist: true, accumulate: true)
+
+      authorize(request, 100) do
+        {:error, %Perspective.Unauthorized{errors: [], request: request}}
+      end
     end
   end
 

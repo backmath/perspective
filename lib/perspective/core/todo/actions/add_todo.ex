@@ -1,6 +1,5 @@
 defmodule Perspective.Core.AddToDo do
   use Perspective.ActionRequest
-  use Perspective.ActionRequest.RejectAnonymousUsers
 
   domain_event(Perspective.Core.ToDoAdded, "1.0")
 

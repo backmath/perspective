@@ -4,5 +4,5 @@ defprotocol Perspective.ActionRequest.RequestAuthorizer do
 end
 
 defimpl Perspective.ActionRequest.RequestAuthorizer, for: Any do
-  def authorize(_request), do: []
+  def authorize(request), do: {:error, %Perspective.Unauthorized{request: request}}
 end

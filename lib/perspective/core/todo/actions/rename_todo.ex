@@ -1,6 +1,5 @@
 defmodule Perspective.Core.RenameToDo do
   use Perspective.ActionRequest
-  use Perspective.ActionRequest.RejectAnonymousUsers
 
   domain_event(Perspective.Core.ToDoRenamed, "1.0")
 

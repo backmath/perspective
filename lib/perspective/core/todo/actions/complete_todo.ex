@@ -1,7 +1,5 @@
 defmodule Perspective.Core.CompleteToDo do
   use Perspective.ActionRequest
-  use Perspective.ActionRequest.RejectAnonymousUsers
-  use Perspective.AuthorizeRequest
 
   domain_event(Perspective.Core.ToDoCompleted, "1.0")
 
