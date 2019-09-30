@@ -88,12 +88,8 @@ defmodule Perspective.ActionRequest do
     domain_event_name = Module.get_attribute(__CALLER__.module, :domain_event_name)
     domain_event_version = Module.get_attribute(__CALLER__.module, :domain_event_version)
 
-    unless domain_event_name do
-      raise "The action request #{__CALLER__.module} has not defined @domain_event_name"
-    end
-
-    unless domain_event_version do
-      raise "The action request #{__CALLER__.module} has not defined @domain_event_version"
+    unless domain_event_name || domain_event_version do
+      raise Perspective.ActionRequest.MissingOrInvalidDomainEvent, module: __CALLER__.module
     end
 
     Perspective.ActionRequest.DefineEvent.define(domain_event_name, __CALLER__)
