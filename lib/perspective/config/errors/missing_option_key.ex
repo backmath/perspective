@@ -1,5 +1,6 @@
 defmodule Perspective.Config.MissingOptionKey do
   defexception [:module, :config_key, :key]
+  import Perspective.StripElixir
 
   def exception(module: module, config_key: config_key, key: key) do
     %__MODULE__{
@@ -21,9 +22,5 @@ defmodule Perspective.Config.MissingOptionKey do
     config :perspective, #{strip_elixir(config_key)},
       #{key}: :data
     """
-  end
-
-  defp strip_elixir(module) do
-    String.replace("#{module}", ~r/^Elixir./, "")
   end
 end
