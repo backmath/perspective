@@ -15,12 +15,10 @@ defmodule Perspective.Config.Test do
     def absent_config, do: config(:absent_config)
   end
 
-  test "using Perspective.Config expects a configuration at compile time" do
-    assert_raise Perspective.Config.MissingConfigurationKey, fn ->
-      defmodule MissingConfiguration do
-        use Perspective.Config
-      end
-    end
+  defmodule MissingAllTogether do
+    use Perspective.Config
+
+    def absent_config, do: config(:absent_config_alltogether)
   end
 
   test "calling Perspective.Config.config expects the key to exists" do
@@ -30,6 +28,10 @@ defmodule Perspective.Config.Test do
 
     assert_raise Perspective.Config.MissingOptionKey, fn ->
       ExampleOverride.absent_config()
+    end
+
+    assert_raise Perspective.Config.MissingOptionKey, fn ->
+      MissingAllTogether.absent_config()
     end
   end
 
