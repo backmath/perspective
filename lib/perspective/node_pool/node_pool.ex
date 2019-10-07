@@ -15,29 +15,17 @@ defmodule Perspective.NodePool do
 
       def get!(node_id) do
         case get(node_id) do
-          {:ok, node} -> node
           {:error, error} -> raise error
+          node -> node
         end
       end
 
       def put(node) do
         call({:put, node})
-        |> case do
-          :ok -> {:ok, node}
-        end
       end
 
-      def put!(node_id) do
-        case put(node_id) do
-          {:ok, node} -> node
-        end
-      end
-
-      def delete(node) do
-        call({:delete, node})
-        |> case do
-          :ok -> {:ok, nil}
-        end
+      def delete(node_id) do
+        call({:delete, node_id})
       end
 
       def handle_call({:get, node_id}, _from, state) do
@@ -45,7 +33,7 @@ defmodule Perspective.NodePool do
           Map.get(state, node_id)
           |> case do
             nil -> {:error, %Perspective.NodePool.NodeNotFound{id: node_id, node_pool: unquote(calling_module)}}
-            node -> {:ok, node}
+            node -> node
           end
 
         {:reply, result, state}
@@ -56,8 +44,8 @@ defmodule Perspective.NodePool do
         {:reply, :ok, new_state}
       end
 
-      def handle_call({:delete, node}, _from, state) do
-        new_state = Map.delete(state, node.id)
+      def handle_call({:delete, node_id}, _from, state) do
+        new_state = Map.delete(state, node_id)
         {:reply, :ok, new_state}
       end
     end

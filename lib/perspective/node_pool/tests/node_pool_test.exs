@@ -11,25 +11,40 @@ defmodule Perspective.NodePool.Test do
     :ok
   end
 
-  test "can set, get a domain node" do
+  test "a node pool can set, get, and delete a domain node" do
     node = %{id: "abc-123", example: :node}
 
-    assert {:ok, node} == Example.put(node)
-    assert {:ok, node} == Example.get("abc-123")
+    assert :ok == Example.put(node)
+    assert node == Example.get("abc-123")
+
+    assert :ok == Example.delete("abc-123")
+    assert {:error, %Perspective.NodePool.NodeNotFound{id: "abc-123"}} = Example.get("abc-123")
   end
 
-  test "can delete a domain node" do
-    node = %{id: "abc-123", example: :node}
+  test "deleting a domain node is idempotent" do
+    assert {:error, %Perspective.NodePool.NodeNotFound{}} = Example.get("node/example")
 
-    assert {:ok, node} == Example.put(node)
+    assert :ok == Example.delete("node/missing")
+    assert :ok == Example.delete("node/missing")
+    assert :ok == Example.delete("node/missing")
 
-    assert {:ok, nil} == Example.delete(node)
+    assert {:error, %Perspective.NodePool.NodeNotFound{}} = Example.get("node/example")
+  end
+
+  test "putting a domain node is idempotent" do
+    node = %{id: "node/example"}
+
+    assert :ok == Example.put(node)
+    assert :ok == Example.put(node)
+    assert :ok == Example.put(node)
+
+    assert node == Example.get("node/example")
   end
 
   test "can put!, get! a domain node" do
     node = %{id: "abc-123", example: :node}
 
-    assert node == Example.put!(node)
+    Example.put(node)
     assert node == Example.get!("abc-123")
   end
 
@@ -42,8 +57,5 @@ defmodule Perspective.NodePool.Test do
   test "a missing domain node yields an error" do
     assert {:error, %Perspective.NodePool.NodeNotFound{id: "missing", node_pool: Perspective.NodePool.Test.Example}} ==
              Example.get("missing")
-  end
-
-  test "" do
   end
 end
