@@ -25,7 +25,7 @@ defmodule Perspective.ToDoReactor.Test do
       creator_id: "user/abc-123"
     }
 
-    assert {:ok, expected} == result
+    assert expected == result
   end
 
   test "reactor updates to Perspective.Core.ToDoRenamed" do
@@ -49,7 +49,7 @@ defmodule Perspective.ToDoReactor.Test do
       name: "Renamed todo"
     }
 
-    assert {:ok, expected} == result
+    assert expected == result
   end
 
   test "reactor updates to Perspective.Core.ToDoCompleted" do
@@ -73,6 +73,6 @@ defmodule Perspective.ToDoReactor.Test do
       name: "Example todo"
     }
 
-    assert {:ok, expected} == result
+    assert expected == result
   end
 end

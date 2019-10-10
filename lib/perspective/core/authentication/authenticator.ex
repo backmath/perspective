@@ -5,8 +5,8 @@ defmodule Perspective.Core.Authenticator do
     |> attach_to_request(request)
   end
 
-  defp retrieve_actor(""), do: {:ok, %Perspective.Core.User{id: "user/anonymous"}}
-  defp retrieve_actor(nil), do: {:ok, %Perspective.Core.User{id: "user/anonymous"}}
+  defp retrieve_actor(""), do: %Perspective.Core.User{id: "user/anonymous"}
+  defp retrieve_actor(nil), do: %Perspective.Core.User{id: "user/anonymous"}
   # User not found
   defp retrieve_actor({:error, error}), do: {:error, error}
 
@@ -18,11 +18,11 @@ defmodule Perspective.Core.Authenticator do
     end
   end
 
-  defp attach_to_request({:ok, actor}, request) do
-    Map.put(request, :actor_id, actor.id)
-  end
-
   defp attach_to_request({:error, error}, _request) do
     {:error, error}
+  end
+
+  defp attach_to_request(%{id: id}, request) do
+    Map.put(request, :actor_id, id)
   end
 end

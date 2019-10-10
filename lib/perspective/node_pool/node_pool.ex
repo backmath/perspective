@@ -13,13 +13,6 @@ defmodule Perspective.NodePool do
         call({:get, node_id})
       end
 
-      def get!(node_id) do
-        case get(node_id) do
-          {:error, error} -> raise error
-          node -> node
-        end
-      end
-
       def put(node) do
         call({:put, node})
       end

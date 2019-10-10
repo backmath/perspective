@@ -10,13 +10,13 @@ defmodule Perspective.Core.ToDo.Reactor do
   end
 
   update(%Perspective.Core.ToDoCompleted{data: data}, _state) do
-    Perspective.Core.ToDoPool.get!(data.todo_id)
+    Perspective.Core.ToDoPool.get(data.todo_id)
     |> Map.put(:completed, true)
     |> Perspective.Core.ToDoPool.put()
   end
 
   update(%Perspective.Core.ToDoRenamed{data: data}, _state) do
-    Perspective.Core.ToDoPool.get!(data.todo_id)
+    Perspective.Core.ToDoPool.get(data.todo_id)
     |> Map.put(:name, data.name)
     |> Perspective.Core.ToDoPool.put()
   end
