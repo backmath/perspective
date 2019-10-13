@@ -23,6 +23,13 @@ defmodule Perspective.NodePool do
         call({:get, node_id})
       end
 
+      def get!(node_id) do
+        case get(node_id) do
+          {:error, error} -> raise(error)
+          node -> node
+        end
+      end
+
       def put(node) do
         call({:put, node})
       end
@@ -36,7 +43,7 @@ defmodule Perspective.NodePool do
           Map.get(state, node_id)
           |> case do
             nil ->
-              {:error, %Perspective.NodePool.NodeNotFound{search: [:id, node_id], node_pool: unquote(calling_module)}}
+              {:error, %Perspective.NodePool.NodeNotFound{search: node_id, node_pool: unquote(calling_module)}}
 
             node ->
               node

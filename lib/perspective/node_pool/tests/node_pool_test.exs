@@ -22,7 +22,13 @@ defmodule Perspective.NodePool.Test do
     assert node == Example.get("abc-123")
 
     assert :ok == Example.delete("abc-123")
-    assert {:error, %Perspective.NodePool.NodeNotFound{search: [:id, "abc-123"]}} = Example.get("abc-123")
+    assert {:error, %Perspective.NodePool.NodeNotFound{search: "abc-123"}} = Example.get("abc-123")
+  end
+
+  test "get! throws a error" do
+    assert_raise(Perspective.NodePool.NodeNotFound, fn ->
+      Example.get!("node/missing")
+    end)
   end
 
   test "deleting a domain node is idempotent" do
@@ -75,8 +81,7 @@ defmodule Perspective.NodePool.Test do
   end
 
   test "a missing domain node yields an error" do
-    assert {:error,
-            %Perspective.NodePool.NodeNotFound{search: [:id, "missing"], node_pool: Perspective.NodePool.Test.Example}} ==
+    assert {:error, %Perspective.NodePool.NodeNotFound{search: "missing", node_pool: Perspective.NodePool.Test.Example}} ==
              Example.get("missing")
   end
 end
