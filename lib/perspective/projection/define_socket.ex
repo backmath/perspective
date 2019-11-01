@@ -10,11 +10,8 @@ defmodule Perspective.Projection.DefineSocket do
           Phoenix.Socket.channel(path, channel)
         end)
 
-        def connect(params, socket, connect_info) do
-          {:ok, socket}
-        end
-
-        def id(_socket), do: nil
+        defdelegate connect(params, socket, connect_info), to: reactor
+        defdelegate id(socket), to: reactor
       end
 
     Module.create(module_name, definition, Macro.Env.location(caller))
