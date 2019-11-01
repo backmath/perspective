@@ -13,7 +13,7 @@ defmodule Perspective.Test do
         password_confirmation: "[password]"
       }
     }
-    |> Perspective.call()
+    |> Perspective.call("user/anonymous")
 
     user_token =
       Perspective.TestSupport.call_repeatedly(fn ->

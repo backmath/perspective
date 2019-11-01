@@ -1,9 +1,8 @@
 defmodule Perspective.Processor do
-  def run(data, token \\ "") do
-    data
-    |> generate_request()
+  def run(data, actor_id) do
+    generate_request(data)
+    |> attach_actor_id(actor_id)
     |> validate_syntax()
-    |> authenticate_request(token)
     |> register_request()
     |> authorize_request()
     |> validate_semantics()
@@ -12,8 +11,8 @@ defmodule Perspective.Processor do
   end
 
   defp generate_request(data), do: Perspective.Processor.RequestGenerator.generate(data)
+  defp attach_actor_id(request, actor_id), do: Map.put(request, :actor_id, actor_id)
   defp validate_syntax(request), do: Perspective.Processor.SyntaxValidator.validate(request)
-  defp authenticate_request(request, token), do: Perspective.Processor.RequestAuthenticator.authenticate(request, token)
   defp register_request(request), do: Perspective.RequestRegistry.register(request)
   defp authorize_request(request), do: Perspective.Processor.RequestAuthorizer.authorize(request)
   defp validate_semantics(request), do: Perspective.Processor.SemanticValidator.validate(request)

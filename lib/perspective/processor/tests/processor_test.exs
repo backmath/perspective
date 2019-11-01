@@ -13,7 +13,7 @@ defmodule Perspective.Processor.Test do
         password_confirmation: "[password]"
       }
     }
-    |> Perspective.Processor.run()
+    |> Perspective.Processor.run("user/anonymous")
 
     user_token =
       Perspective.TestSupport.call_repeatedly(fn ->
@@ -21,7 +21,6 @@ defmodule Perspective.Processor.Test do
                "user/josh",
                "[password]"
              ) do
-          {:error, _} -> raise "user lookup and token generation failed"
           value -> value
         end
       end)
