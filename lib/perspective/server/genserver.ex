@@ -10,9 +10,7 @@ defmodule Perspective.GenServer do
       end
 
       def start_link(options) when is_list(options) or is_map(options) do
-        name = Perspective.ServerName.name(module(), options)
-        GenServer.start_link(module(), options, name: name)
-        # GenServer.start_link(module(), options, name: get_name_from_opts(options))
+        GenServer.start_link(module(), options, name: get_name_from_opts(options))
       end
 
       def start_link() do
