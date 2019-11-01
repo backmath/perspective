@@ -22,7 +22,7 @@ defmodule Perspective.Supervisor.Test do
   end
 
   test "a supervisor started without an app_id simply uses its own stringed name" do
-    Perspective.Supervisor.Test.Example.start_link(:ok)
+    Perspective.Supervisor.Test.Example.start_link()
 
     assert [] = Supervisor.which_children({:global, "Perspective.Supervisor.Test.Example"})
   end

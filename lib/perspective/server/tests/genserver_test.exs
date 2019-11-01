@@ -1,5 +1,6 @@
 defmodule Perspective.GenServer.Test do
   use ExUnit.Case, async: true
+  use Perspective.SetUniqueAppID
 
   defmodule Example do
     use Perspective.GenServer
@@ -77,6 +78,8 @@ defmodule Perspective.GenServer.Test do
   end
 
   test "use Perspective.GenServer.call without configuration gives a helpful error" do
+    Process.delete(:app_id)
+
     InitialStateExample.start_link(app_id: "com.perspectivelib.123")
 
     assert_raise(ArgumentError, fn ->

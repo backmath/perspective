@@ -5,8 +5,12 @@ defmodule Perspective.ServerReferences do
     Process.put(:module, module)
   end
 
-  defp name(module, options) do
-    Perspective.ServerName.name(module, options)
+  defp name(module, options) when is_list(options) do
+    Keyword.get(options, :name, Perspective.ServerName.name(module, options))
+  end
+
+  defp name(module, options) when is_map(options) do
+    Map.get(options, :name, Perspective.ServerName.name(module, options))
   end
 
   defp app_id(opts) when is_list(opts) do
@@ -21,5 +25,3 @@ defmodule Perspective.ServerReferences do
     nil
   end
 end
-
-# @todo Needs tests

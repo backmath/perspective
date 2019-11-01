@@ -10,8 +10,8 @@ defmodule Perspective.NodePool.Test do
     end
   end
 
-  setup context do
-    Example.start_link(context)
+  setup %{app_id: app_id} do
+    Example.start_link(app_id: app_id)
     :ok
   end
 

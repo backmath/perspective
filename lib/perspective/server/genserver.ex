@@ -9,10 +9,18 @@ defmodule Perspective.GenServer do
         {:ok, initial_state()}
       end
 
-      def start_link(options) do
+      def start_link(options) when is_list(options) or is_map(options) do
         name = Perspective.ServerName.name(module(), options)
-
         GenServer.start_link(module(), options, name: name)
+        # GenServer.start_link(module(), options, name: get_name_from_opts(options))
+      end
+
+      def start_link() do
+        start_link([])
+      end
+
+      def start_link(_) do
+        start_link([])
       end
 
       def initial_state do
@@ -43,6 +51,14 @@ defmodule Perspective.GenServer do
 
       defp module do
         unquote(__CALLER__.module)
+      end
+
+      defp get_name_from_opts(opts) when is_list(opts) do
+        Keyword.get(opts, :name, get_name(module()))
+      end
+
+      defp get_name_from_opts(opts) when is_map(opts) do
+        Map.get(opts, :name, get_name(module()))
       end
 
       defp get_name(module) when is_atom(module) do

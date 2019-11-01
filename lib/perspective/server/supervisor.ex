@@ -6,12 +6,20 @@ defmodule Perspective.Supervisor do
       @before_compile Perspective.Supervisor
       @children :nothing
 
-      def start_link(options) do
+      def start_link(options) when is_list(options) or is_map(options) do
         module = unquote(__CALLER__.module)
 
         name = Perspective.ServerName.name(module, options)
 
         Supervisor.start_link(module, options, name: name)
+      end
+
+      def start_link() do
+        start_link([])
+      end
+
+      def start_link(_) do
+        start_link([])
       end
 
       def init(args) do
