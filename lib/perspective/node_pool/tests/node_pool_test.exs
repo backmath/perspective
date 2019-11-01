@@ -1,6 +1,6 @@
 defmodule Perspective.NodePool.Test do
   use ExUnit.Case
-  use Perspective.SetUniqueAppID
+  use Perspective.BootAppPerTest
 
   defmodule Example do
     use Perspective.NodePool
@@ -83,5 +83,18 @@ defmodule Perspective.NodePool.Test do
   test "a missing domain node yields an error" do
     assert {:error, %Perspective.NodePool.NodeNotFound{search: "missing", node_pool: Perspective.NodePool.Test.Example}} ==
              Example.get("missing")
+  end
+
+  test "emitting events" do
+    Perspective.Notifications.subscribe(%Example.NodePut{})
+    Perspective.Notifications.subscribe(%Example.NodeDeleted{})
+
+    node = %{id: "abc-123", example: :node}
+
+    assert :ok == Example.put(node)
+    assert :ok == Example.delete("abc-123")
+
+    assert_receive %Example.NodePut{node: ^node}
+    assert_receive %Example.NodeDeleted{node_id: "abc-123"}
   end
 end

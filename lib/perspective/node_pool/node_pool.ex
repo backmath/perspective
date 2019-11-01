@@ -3,7 +3,6 @@ defmodule Perspective.NodePool do
     definition = definition(__CALLER__.module)
 
     quote bind_quoted: [definition: definition] do
-      # @before_compile Perspective.NodePool
       definition
     end
   end
@@ -14,6 +13,14 @@ defmodule Perspective.NodePool do
       use Perspective.NodePoolMacros.Index
 
       import Perspective.NodePool
+
+      defmodule NodePut do
+        defstruct [:node]
+      end
+
+      defmodule NodeDeleted do
+        defstruct [:node_id]
+      end
 
       initial_state do
         %{}
@@ -32,10 +39,12 @@ defmodule Perspective.NodePool do
 
       def put(node) do
         call({:put, node})
+        Perspective.Notifications.emit(%NodePut{node: node})
       end
 
       def delete(node_id) do
         call({:delete, node_id})
+        Perspective.Notifications.emit(%NodeDeleted{node_id: node_id})
       end
 
       def handle_call({:get, node_id}, _from, state) do
