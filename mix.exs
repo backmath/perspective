@@ -34,6 +34,7 @@ defmodule Perspective.MixProject do
     [
       {:argon2_elixir, "~> 2.0"},
       {:distillery, "~> 2.0"},
+      {:dialyxir, "~> 0.4", only: [:dev]},
       {:ex_crypto, "~> 0.10.0"},
       {:gen_stage, "~> 0.14"},
       {:guardian, "~> 1.0"},
