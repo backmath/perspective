@@ -29,6 +29,10 @@ defmodule Perspective.Reactor.TestReactor do
     defstruct data: nil
   end
 
+  defmodule StateUpdated do
+    defstruct event: nil
+  end
+
   initial_state do
     [:a]
   end
@@ -39,5 +43,10 @@ defmodule Perspective.Reactor.TestReactor do
 
   update(%ReverseReverse{} = _event, state) do
     Enum.reverse(state)
+  end
+
+  emit(event, _new_state, _old_state) do
+    data = %StateUpdated{event: event}
+    Perspective.Notifications.emit(data)
   end
 end

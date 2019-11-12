@@ -10,13 +10,23 @@ defmodule Perspective.Reactor do
 
       def initial_state, do: nil
 
-      defoverridable(initial_state: 0)
+      def emit(event, new_state, old_state) do
+        nil
+      end
+
+      defoverridable(initial_state: 0, emit: 3)
     end
   end
 
   defmacro initial_state(do: block) do
     quote do
       def initial_state, do: unquote(block)
+    end
+  end
+
+  defmacro emit(event, new_state, old_state, do: block) do
+    quote do
+      def emit(unquote(event), unquote(new_state), unquote(old_state)), do: unquote(block)
     end
   end
 
