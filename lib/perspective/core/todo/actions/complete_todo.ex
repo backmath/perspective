@@ -8,7 +8,7 @@ defmodule Perspective.Core.CompleteToDo do
   end
 
   authorize(%{actor_id: actor_id, data: %{todo_id: todo_id}}) do
-    %{creator_id: creator_id} = Perspective.Core.ToDoPool.get(todo_id)
+    %{creator_id: creator_id} = Perspective.Core.ToDos.find(todo_id)
 
     unless creator_id == actor_id do
       {:error, %Perspective.Unauthorized{}}

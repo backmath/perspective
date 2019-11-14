@@ -71,6 +71,14 @@ defmodule Perspective.Reactor do
       def update(event, _state) do
         raise Perspective.Reactor.UnsupportedEvent, reactor: unquote(calling_module), event: event
       end
+
+      def child_spec(opts) do
+        %{
+          id: unquote(calling_module),
+          start: {unquote(supervisor_name), :start_link, [opts]},
+          type: :worker
+        }
+      end
     end
   end
 end

@@ -3,9 +3,8 @@ defmodule Perspective.Core do
 
   children do
     [
-      Perspective.Core.UserPool,
-      Perspective.Core.ToDoPool,
-      Perspective.Core.ToDo.Reactor.Supervisor,
+      Perspective.Core.Users,
+      Perspective.Core.ToDos,
       Perspective.Core.AuthenticationVault.Supervisor
     ]
   end
