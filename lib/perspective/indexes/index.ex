@@ -12,8 +12,27 @@ defmodule Perspective.Index do
         %{}
       end
 
+      defmodule NotFound do
+        defexception [:id]
+
+        def exception(id) do
+          %__MODULE__{id: id}
+        end
+
+        def message(%{id: id}) do
+          "the index_key #{id} could not be found"
+        end
+      end
+
       def find(id) do
-        Map.get(data(), id, nil)
+        Map.get(data(), id, {:error, %NotFound{id: id}})
+      end
+
+      def find!(id) do
+        case find(id) do
+          {:error, error} -> raise error
+          data -> data
+        end
       end
 
       def preprocess_data(event, state) do

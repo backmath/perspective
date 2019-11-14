@@ -45,6 +45,6 @@ defmodule Perspective.Index.Test do
     assert false == Example.find("abc-456")
     assert nil == Example.find("abc-789")
     assert 7 == Example.find("num-123")
-    assert nil == Example.find("missing")
+    assert {:error, %Perspective.Index.Test.Example.NotFound{id: "missing"}} == Example.find("missing")
   end
 end
