@@ -48,6 +48,7 @@ defmodule Perspective.Reactor do
     Perspective.Reactor.DefineGenServer.define(calling_module, updateable_events, __CALLER__)
     Perspective.Reactor.DefineSupervisor.define(calling_module, __CALLER__)
 
+    supervisor_name = Perspective.Reactor.Names.server(calling_module)
     genserver_name = Perspective.Reactor.Names.server(calling_module)
 
     quote do
@@ -55,6 +56,8 @@ defmodule Perspective.Reactor do
       defdelegate data, to: unquote(genserver_name)
       defdelegate get, to: unquote(genserver_name), as: :state
       defdelegate send(event), to: unquote(genserver_name)
+      defdelegate start_link, to: unquote(supervisor_name)
+      defdelegate start_link(opts), to: unquote(supervisor_name)
 
       def updateable_events do
         unquote(updateable_events)
