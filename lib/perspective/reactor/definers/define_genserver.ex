@@ -39,11 +39,7 @@ defmodule Perspective.Reactor.DefineGenServer do
           IO.inspect(reason, label: "genserver terminated")
         end
 
-        defp broadcast(event, new_state, old_state) do
-          unquote(module).emit(event, new_state, old_state)
-        end
-
-        defp generate_updated_state(event, %Perspective.Reactor.State{data: original_data} = state) do
+        def generate_updated_state(event, %Perspective.Reactor.State{data: original_data} = state) do
           preprocessed_data = unquote(module).preprocess_data(event, original_data)
 
           updated_data = unquote(module).update(event, preprocessed_data)
@@ -51,6 +47,10 @@ defmodule Perspective.Reactor.DefineGenServer do
           postprocessed_data = unquote(module).postprocess_data(event, updated_data, original_data)
 
           Perspective.Reactor.State.update(state, postprocessed_data, event)
+        end
+
+        defp broadcast(event, new_state, old_state) do
+          unquote(module).emit(event, new_state, old_state)
         end
 
         defp subscribe_to(updateable_events) do

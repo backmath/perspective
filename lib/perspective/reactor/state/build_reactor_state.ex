@@ -21,8 +21,8 @@ defmodule Perspective.Reactor.BuildReactorState do
     Perspective.EventChain.since(last_event_processed)
     |> Stream.filter(fn %event_type{} -> Enum.member?(reactor_name.updateable_events, event_type) end)
     |> Enum.reduce(reactor_state, fn event, state ->
-      new_data = reactor_name.update(event, state.data)
-      Perspective.Reactor.State.update(state, new_data, event)
+      module = Perspective.Reactor.Names.server(reactor_name)
+      module.generate_updated_state(event, state)
     end)
   end
 
