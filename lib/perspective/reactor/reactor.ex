@@ -14,6 +14,11 @@ defmodule Perspective.Reactor do
         nil
       end
 
+      def preprocess_data(_event, original_data), do: original_data
+      def postprocess_data(_event, updated_data, original_data), do: updated_data
+
+      defoverridable(preprocess_data: 2, postprocess_data: 3)
+
       defoverridable(initial_state: 0, emit: 3)
     end
   end

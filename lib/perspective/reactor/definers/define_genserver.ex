@@ -43,10 +43,14 @@ defmodule Perspective.Reactor.DefineGenServer do
           unquote(module).emit(event, new_state, old_state)
         end
 
-        defp generate_updated_state(event, %Perspective.Reactor.State{data: data} = state) do
-          updated_data = unquote(module).update(event, data)
+        defp generate_updated_state(event, %Perspective.Reactor.State{data: original_data} = state) do
+          preprocessed_data = unquote(module).preprocess_data(event, original_data)
 
-          Perspective.Reactor.State.update(state, updated_data, event)
+          updated_data = unquote(module).update(event, preprocessed_data)
+
+          postprocessed_data = unquote(module).postprocess_data(event, updated_data, original_data)
+
+          Perspective.Reactor.State.update(state, postprocessed_data, event)
         end
 
         defp subscribe_to(updateable_events) do
