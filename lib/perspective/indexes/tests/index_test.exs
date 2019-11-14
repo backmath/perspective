@@ -46,5 +46,7 @@ defmodule Perspective.Index.Test do
     assert nil == Example.find("abc-789")
     assert 7 == Example.find("num-123")
     assert {:error, %Perspective.Index.Test.Example.NotFound{id: "missing"}} == Example.find("missing")
+
+    assert [true, false] = Example.find(["abc-123", "abc-456"]) |> Enum.to_list()
   end
 end

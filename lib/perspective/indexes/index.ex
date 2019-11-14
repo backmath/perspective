@@ -24,6 +24,10 @@ defmodule Perspective.Index do
         end
       end
 
+      def find(ids) when is_list(ids) do
+        Stream.map(ids, fn id -> find(id) end)
+      end
+
       def find(id) do
         Map.get(data(), id, {:error, %NotFound{id: id}})
       end
