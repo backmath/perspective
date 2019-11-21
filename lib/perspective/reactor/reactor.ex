@@ -10,7 +10,7 @@ defmodule Perspective.Reactor do
 
       def initial_state, do: nil
 
-      def emit(event, new_state, old_state) do
+      def broadcast(event, new_state, old_state) do
         nil
       end
 
@@ -19,7 +19,7 @@ defmodule Perspective.Reactor do
 
       defoverridable(preprocess_data: 2, postprocess_data: 3)
 
-      defoverridable(initial_state: 0, emit: 3)
+      defoverridable(initial_state: 0, broadcast: 3)
     end
   end
 
@@ -29,9 +29,9 @@ defmodule Perspective.Reactor do
     end
   end
 
-  defmacro emit(event, new_state, old_state, do: block) do
+  defmacro broadcast(event, new_state, old_state, do: block) do
     quote do
-      def emit(unquote(event), unquote(new_state), unquote(old_state)), do: unquote(block)
+      def broadcast(unquote(event), unquote(new_state), unquote(old_state)), do: unquote(block)
     end
   end
 

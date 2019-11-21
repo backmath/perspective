@@ -45,7 +45,7 @@ defmodule Perspective.Reactor.TestReactor do
     Enum.reverse(state)
   end
 
-  emit(event, _new_state, _old_state) do
+  broadcast(event, _new_state, _old_state) do
     data = %StateUpdated{event: event}
     Perspective.Notifications.emit(data)
   end

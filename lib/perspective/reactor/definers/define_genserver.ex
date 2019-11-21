@@ -50,7 +50,7 @@ defmodule Perspective.Reactor.DefineGenServer do
         end
 
         defp broadcast(event, new_state, old_state) do
-          unquote(module).emit(event, new_state, old_state)
+          unquote(module).broadcast(event, new_state, old_state)
         end
 
         defp subscribe_to(updateable_events) do
