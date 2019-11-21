@@ -30,6 +30,7 @@ defmodule Perspective.Index do
 
       def find(id) do
         Map.get(data(), id, {:error, %NotFound{id: id}})
+        |> transform_index()
       end
 
       def find!(id) do
@@ -49,13 +50,27 @@ defmodule Perspective.Index do
         Map.put(original_state, key, updated_state)
       end
 
-      broadcast(event, new_state, old_state) do
+      broadcast(event, %{data: data}, _old_state) do
         key = index_key(event)
-        data = Map.get(new_state, key, initial_value())
+
+        data =
+          Map.get(data, key, initial_value())
+          |> transform_index()
+
         broadcast_event = %Updated{data: data}
 
         Perspective.Notifications.emit(broadcast_event, key)
       end
+
+      def transform_index(error = {:error, _}) do
+        error
+      end
+
+      def transform_index(data) do
+        data
+      end
+
+      defoverridable(transform_index: 1)
     end
   end
 
@@ -82,6 +97,12 @@ defmodule Perspective.Index do
       update(unquote(event), unquote(state)) do
         unquote(block)
       end
+    end
+  end
+
+  defmacro transform_index(data, do: block) do
+    quote do
+      def transform_index(unquote(data)), do: unquote(block)
     end
   end
 
