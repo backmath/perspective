@@ -46,7 +46,14 @@ defmodule Perspective.Index.Test do
     assert nil == Example.find("abc-789")
     assert 7 == Example.find("num-123")
     assert {:error, %Perspective.Index.Test.Example.NotFound{id: "missing"}} == Example.find("missing")
+  end
 
-    assert [true, false] = Example.find(["abc-123", "abc-456"]) |> Enum.to_list()
+  test "reactor updates", context do
+    Example.start_link(context)
+    Perspective.Notifications.subscribe(%Example.Updated{}, "abc-123")
+
+    Perspective.Notifications.emit(%SomeEvent{some_id: "abc-123", data: true})
+
+    assert_receive %Example.Updated{}
   end
 end

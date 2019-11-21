@@ -24,8 +24,8 @@ defmodule Perspective.Index do
         end
       end
 
-      def find(ids) when is_list(ids) do
-        Stream.map(ids, fn id -> find(id) end)
+      defmodule Updated do
+        defstruct [:data]
       end
 
       def find(id) do
@@ -47,6 +47,14 @@ defmodule Perspective.Index do
       def postprocess_data(event, updated_state, original_state) do
         key = index_key(event)
         Map.put(original_state, key, updated_state)
+      end
+
+      broadcast(event, new_state, old_state) do
+        key = index_key(event)
+        data = Map.get(new_state, key, initial_value())
+        broadcast_event = %Updated{data: data}
+
+        Perspective.Notifications.emit(broadcast_event, key)
       end
     end
   end
