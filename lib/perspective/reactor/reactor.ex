@@ -10,16 +10,20 @@ defmodule Perspective.Reactor do
 
       def initial_state, do: nil
 
-      def broadcast(event, new_state, old_state) do
-        nil
-      end
-
       def preprocess_data(_event, original_data), do: original_data
       def postprocess_data(_event, updated_data, original_data), do: updated_data
 
-      defoverridable(preprocess_data: 2, postprocess_data: 3)
+      defoverridable(initial_state: 0, preprocess_data: 2, postprocess_data: 3)
 
-      defoverridable(initial_state: 0, broadcast: 3)
+      defmodule Updated do
+        defstruct [:data]
+      end
+
+      def broadcast(_event, new_state, _old_state) do
+        Perspective.Notifications.emit(%Updated{data: new_state})
+      end
+
+      defoverridable(broadcast: 3)
     end
   end
 

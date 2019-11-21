@@ -24,10 +24,6 @@ defmodule Perspective.Index do
         end
       end
 
-      defmodule Updated do
-        defstruct [:data]
-      end
-
       def find(id) do
         Map.get(data(), id, {:error, %NotFound{id: id}})
         |> transform_index()
@@ -57,7 +53,7 @@ defmodule Perspective.Index do
           Map.get(data, key, initial_value())
           |> transform_index()
 
-        broadcast_event = %Updated{data: data}
+        broadcast_event = %__MODULE__.Updated{data: data}
 
         Perspective.Notifications.emit(broadcast_event, key)
       end

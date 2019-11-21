@@ -19,10 +19,8 @@ defmodule Perspective.Projection.DefineBroadcaster do
         end
 
         defp subscribe_to_reactor_updates do
-          Perspective.Notifications.subscribe(
-            %Perspective.Reactor.StateUpdated{},
-            unquote(reactor)
-          )
+          event = struct(unquote(reactor).Updated)
+          Perspective.Notifications.subscribe(event)
         end
 
         defp broadcast_to_subscribers(event) do
