@@ -1,5 +1,5 @@
 defmodule Perspective.Reactor.API.Test do
-  use ExUnit.Case, async: true
+  use Perspective.TestCase
 
   defmodule ExampleEvent do
     defstruct data: :b

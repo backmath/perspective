@@ -1,6 +1,5 @@
 defmodule Perspective.Reactor.Test do
-  use ExUnit.Case, async: true
-  use Perspective.BootAppPerTest
+  use Perspective.TestCase
 
   setup context do
     {:ok, pid} = Perspective.Reactor.TestReactor.Supervisor.start_link(context)
