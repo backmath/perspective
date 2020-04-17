@@ -21,11 +21,11 @@ defmodule Perspective.Reactor.API.Test do
     use Perspective.Reactor
   end
 
-  test "initial_state macro generates module function correctly" do
+  test "calling initial_state macro generates a module function with the same body" do
     assert [:a] == Perspective.Reactor.API.Test.Example.initial_state()
   end
 
-  test "update macro generates correctly and yields expected value" do
+  test "calling update macro generates a module function with the same body" do
     assert [:b, :a] == Perspective.Reactor.API.Test.Example.update(%ExampleEvent{}, [:a])
   end
 
