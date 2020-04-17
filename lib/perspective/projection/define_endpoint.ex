@@ -15,7 +15,7 @@ defmodule Perspective.Projection.DefineEndpoint do
         def init(:supervisor, config) do
           app_id = Perspective.AppID.fetch_and_set()
 
-          Perspective.ServerReferences.store_process_references(__MODULE__, app_id: app_id)
+          Perspective.GenServer.References.store_process_references(__MODULE__, app_id: app_id)
 
           {:ok, config}
         end

@@ -5,7 +5,7 @@ defmodule Perspective.GenServer do
       import Perspective.GenServer
 
       def init(opts) do
-        Perspective.ServerReferences.store_process_references(module(), opts)
+        Perspective.GenServer.References.store_process_references(module(), opts)
         {:ok, initial_state()}
       end
 

@@ -18,7 +18,7 @@ defmodule Perspective.Application do
       end
 
       def start(%{app_id: app_id}) do
-        Perspective.ServerReferences.store_process_references(__MODULE__, app_id: app_id)
+        Perspective.GenServer.References.store_process_references(__MODULE__, app_id: app_id)
 
         Supervisor.start_link(all_children(), opts())
       end

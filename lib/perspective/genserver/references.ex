@@ -1,4 +1,4 @@
-defmodule Perspective.ServerReferences do
+defmodule Perspective.GenServer.References do
   def store_process_references(module, opts) do
     Process.put(:app_id, app_id(opts))
     Process.put(:name, name(module, opts))

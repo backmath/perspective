@@ -23,7 +23,7 @@ defmodule Perspective.Supervisor do
       end
 
       def init(args) do
-        Perspective.ServerReferences.store_process_references(unquote(__CALLER__.module), args)
+        Perspective.GenServer.References.store_process_references(unquote(__CALLER__.module), args)
 
         children()
         |> Perspective.ChildrenSpecs.set_app_id(app_id(args))
