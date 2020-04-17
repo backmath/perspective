@@ -67,7 +67,7 @@ defmodule Perspective.GenServer do
                 "\nYou called #{__MODULE__}.call/cast without setting the parent processes' app_id\n\nCall Process.put(:app_id, *process-id*)"
         end
 
-        Perspective.ServerName.name(module, app_id)
+        Perspective.GenServer.Names.name(module, app_id)
       end
     end
   end

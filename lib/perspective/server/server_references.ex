@@ -6,11 +6,11 @@ defmodule Perspective.ServerReferences do
   end
 
   defp name(module, options) when is_list(options) do
-    Keyword.get(options, :name, Perspective.ServerName.name(module, options))
+    Keyword.get(options, :name, Perspective.GenServer.Names.name(module, options))
   end
 
   defp name(module, options) when is_map(options) do
-    Map.get(options, :name, Perspective.ServerName.name(module, options))
+    Map.get(options, :name, Perspective.GenServer.Names.name(module, options))
   end
 
   defp app_id(opts) when is_list(opts) do

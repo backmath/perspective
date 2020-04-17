@@ -26,7 +26,7 @@ defmodule Perspective.EventChain.PageWriter do
   end
 
   def check_for_events do
-    Perspective.ServerName.name(__MODULE__)
+    Perspective.GenServer.Names.name(__MODULE__)
     |> GenServer.whereis()
     |> Process.send_after(:check_for_events, 50)
   end

@@ -22,7 +22,7 @@ defmodule Perspective.Notifications do
   def name do
     app_id = Perspective.AppID.fetch_and_set()
 
-    {:global, name} = Perspective.ServerName.name(Perspective.Notifications, app_id: app_id)
+    {:global, name} = Perspective.GenServer.Names.name(Perspective.Notifications, app_id: app_id)
 
     String.to_atom(name)
   end

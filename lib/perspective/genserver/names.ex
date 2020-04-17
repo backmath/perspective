@@ -1,4 +1,4 @@
-defmodule Perspective.ServerName do
+defmodule Perspective.GenServer.Names do
   def name(module) do
     app_id = Process.get(:app_id)
 

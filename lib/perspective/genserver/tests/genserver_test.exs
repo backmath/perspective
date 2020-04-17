@@ -40,7 +40,7 @@ defmodule Perspective.GenServer.Test do
     Process.put(:app_id, "com.perspectivelib")
     Example.start_link(app_id: "com.perspectivelib")
 
-    name = Perspective.ServerName.name(Example, "com.perspectivelib")
+    name = Perspective.GenServer.Names.name(Example, "com.perspectivelib")
 
     assert :hi! == GenServer.call(name, :hello)
   end
@@ -50,7 +50,7 @@ defmodule Perspective.GenServer.Test do
 
     Example.start_link(app_id: "com.perspectivelib")
 
-    name = Perspective.ServerName.name(Example, "com.perspectivelib")
+    name = Perspective.GenServer.Names.name(Example, "com.perspectivelib")
 
     assert nil == GenServer.call(name, :state)
   end
@@ -72,7 +72,7 @@ defmodule Perspective.GenServer.Test do
     result = InitialStateExample.call(:app_id)
     assert result == "com.perspectivelib.123"
 
-    name = Perspective.ServerName.name(InitialStateExample, "com.perspectivelib.123")
+    name = Perspective.GenServer.Names.name(InitialStateExample, "com.perspectivelib.123")
     result = InitialStateExample.call(:name)
     assert result == name
   end

@@ -42,7 +42,7 @@ defmodule Perspective.Application do
       end
 
       defp configured_name do
-        Process.get(:name, Perspective.ServerName.name(__MODULE__, app_id: configured_app_id()))
+        Process.get(:name, Perspective.GenServer.Names.name(__MODULE__, app_id: configured_app_id()))
       end
 
       defp opts do

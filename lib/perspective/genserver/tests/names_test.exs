@@ -1,4 +1,4 @@
-defmodule Perspective.ServerName.Test do
+defmodule Perspective.GenServer.Names.Test do
   use ExUnit.Case, async: true
 
   setup do
@@ -7,44 +7,44 @@ defmodule Perspective.ServerName.Test do
   end
 
   test "a generated server name without configured app_id simply returns the stringed module name" do
-    result = Perspective.ServerName.name(MyModule)
+    result = Perspective.GenServer.Names.name(MyModule)
 
     assert result == {:global, "MyModule"}
   end
 
   test "a generated server name with a configured app_id prepends app_id to a module name" do
     Process.put(:app_id, "com.app.set")
-    result = Perspective.ServerName.name(MyModule)
+    result = Perspective.GenServer.Names.name(MyModule)
 
     assert result == {:global, "com.app.set.MyModule"}
   end
 
   test "a generated server name with an empty app_id simply returns the stringed module name" do
-    result = Perspective.ServerName.name(MyModule, "")
+    result = Perspective.GenServer.Names.name(MyModule, "")
 
     assert result == {:global, "MyModule"}
   end
 
   test "a generated server name with a nil app_id simply returns the stringed module name" do
-    result = Perspective.ServerName.name(MyModule, nil)
+    result = Perspective.GenServer.Names.name(MyModule, nil)
 
     assert result == {:global, "MyModule"}
   end
 
   test "a generated server name prepends app_id to a module name" do
-    result = Perspective.ServerName.name(MyModule, "com.app.id")
+    result = Perspective.GenServer.Names.name(MyModule, "com.app.id")
 
     assert result == {:global, "com.app.id.MyModule"}
   end
 
   test "a generated server name with an app_id as a keyword argument" do
-    result = Perspective.ServerName.name(MyModule, app_id: "com.app.id")
+    result = Perspective.GenServer.Names.name(MyModule, app_id: "com.app.id")
 
     assert result == {:global, "com.app.id.MyModule"}
   end
 
   test "a generated server name with an provided name takes precedence over module name" do
-    result = Perspective.ServerName.name(MyModule, app_id: "com.app.id", name: "SomethingElse")
+    result = Perspective.GenServer.Names.name(MyModule, app_id: "com.app.id", name: "SomethingElse")
 
     assert result == {:global, "com.app.id.SomethingElse"}
   end
@@ -55,7 +55,7 @@ defmodule Perspective.ServerName.Test do
       something: :else
     ]
 
-    result = Perspective.ServerName.name(MyModule, opts)
+    result = Perspective.GenServer.Names.name(MyModule, opts)
 
     assert result == {:global, "com.app.id.MyModule"}
   end
@@ -66,7 +66,7 @@ defmodule Perspective.ServerName.Test do
       something: :else
     }
 
-    result = Perspective.ServerName.name(MyModule, opts)
+    result = Perspective.GenServer.Names.name(MyModule, opts)
 
     assert result == {:global, "com.app.id.MyModule"}
   end

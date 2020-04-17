@@ -9,7 +9,7 @@ defmodule Perspective.Supervisor do
       def start_link(options) when is_list(options) or is_map(options) do
         module = unquote(__CALLER__.module)
 
-        name = Perspective.ServerName.name(module, options)
+        name = Perspective.GenServer.Names.name(module, options)
 
         Supervisor.start_link(module, options, name: name)
       end
