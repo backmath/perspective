@@ -2,7 +2,7 @@
   "__perspective_struct__": "Perspective.Reactor.State",
   "data": {
     "__perspective_struct__": "Perspective.Reactor.TestExample.State",
-    "value": 77
+    "value": 42
   },
   "last_event_processed": null
 }

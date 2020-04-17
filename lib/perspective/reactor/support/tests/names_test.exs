@@ -5,19 +5,19 @@ defmodule Perspective.Reactor.Names.Test do
     defstruct [:id]
   end
 
-  test "supervisor generates correctly" do
+  test "reactor supervisors have standardized names" do
     assert Perspective.Reactor.Names.Test.Example.Supervisor == Perspective.Reactor.Names.supervisor(Example)
   end
 
-  test "backup_server generates correctly" do
+  test "reactor backup servers have standardized names" do
     assert Perspective.Reactor.Names.Test.Example.BackupServer == Perspective.Reactor.Names.backup_server(Example)
   end
 
-  test "server generates correctly" do
+  test "reactor servers have standardized names" do
     assert Perspective.Reactor.Names.Test.Example.Server == Perspective.Reactor.Names.server(Example)
   end
 
-  test "debouncer generates correctly" do
+  test "reactor debouncers have standardized names" do
     assert Perspective.Reactor.Names.Test.Example.BackupDebouncer == Perspective.Reactor.Names.backup_debouncer(Example)
   end
 end
