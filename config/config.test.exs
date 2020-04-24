@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :perspective, Perspective.Application, app_id: "com.perspective.test"
+config :perspective, Perspective.Application, app_id: "test.perspective.com"
 
 config :perspective, Perspective.EncryptionConfiguration.State,
   encryption_key: "example-encryption-key",
