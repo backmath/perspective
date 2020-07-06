@@ -3,7 +3,7 @@ defmodule Perspective.EncryptionSupervisor do
 
   children do
     [
-      {Perspective.EncryptionConfiguration, []}
+      Perspective.EncryptionConfiguration
     ]
   end
 end
