@@ -1,6 +1,5 @@
 defmodule Perspective.EventChain.PageBuffer.Test do
-  use ExUnit.Case, async: true
-  use Perspective.BootAppPerTest
+  use Perspective.TestCase
 
   setup do
     Perspective.EventChain.PageBuffer.clear()
