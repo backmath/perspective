@@ -2,15 +2,19 @@ defmodule Perspective.GenServer do
   defmacro __using__(_) do
     quote do
       use GenServer
+      use Perspective.IdentifierMacro
+      import Perspective.AppID
       import Perspective.GenServer
 
       def init(opts) do
-        Perspective.GenServer.References.store_process_references(module(), opts)
+        Perspective.GenServer.ProcessIdentifiers.store(module(), opts)
         {:ok, initial_state()}
       end
 
       def start_link(options) when is_list(options) or is_map(options) do
-        GenServer.start_link(module(), options, name: get_name_from_opts(options))
+        name = module().name(options)
+
+        GenServer.start_link(module(), options, name: name)
       end
 
       def start_link() do
@@ -37,37 +41,28 @@ defmodule Perspective.GenServer do
         {:reply, Process.get(:name), state}
       end
 
-      def call(data, timeout \\ 5000) do
-        GenServer.call(get_name(module()), data, timeout)
+      def call(id, data, timeout \\ 5000) do
+        name([id: id])
+        |> GenServer.call(data, timeout)
+      end
+
+      def cast(id, data) do
+        name([id: id])
+        |> GenServer.cast(data)
+      end
+
+      def call(data) do
+        call(nil, data)
       end
 
       def cast(data) do
-        GenServer.cast(get_name(module()), data)
+        cast(nil, data)
       end
 
-      defoverridable(initial_state: 0)
+      defoverridable(call: 3, initial_state: 0)
 
       defp module do
         unquote(__CALLER__.module)
-      end
-
-      defp get_name_from_opts(opts) when is_list(opts) do
-        Keyword.get(opts, :name, get_name(module()))
-      end
-
-      defp get_name_from_opts(opts) when is_map(opts) do
-        Map.get(opts, :name, get_name(module()))
-      end
-
-      defp get_name(module) when is_atom(module) do
-        app_id = Perspective.AppID.fetch_and_set()
-
-        if app_id == nil do
-          raise ArgumentError,
-                "\nYou called #{__MODULE__}.call/cast without setting the parent processes' app_id\n\nCall Process.put(:app_id, *process-id*)"
-        end
-
-        Perspective.GenServer.Names.name(module, app_id)
       end
     end
   end

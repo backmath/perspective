@@ -3,7 +3,7 @@ defmodule Perspective.Notifications.Supervisor do
 
   children do
     [
-      {Phoenix.PubSub.PG2, name: Perspective.Notifications.name()}
+      {Phoenix.PubSub.PG2, name: Perspective.Notifications.identifier()}
     ]
   end
 end

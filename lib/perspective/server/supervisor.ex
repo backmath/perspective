@@ -2,64 +2,53 @@ defmodule Perspective.Supervisor do
   defmacro __using__(_) do
     quote do
       use Supervisor
+      use Perspective.IdentifierMacro
       import Perspective.Supervisor
-      @before_compile Perspective.Supervisor
+
       @children :nothing
 
       def start_link(options) when is_list(options) or is_map(options) do
         module = unquote(__CALLER__.module)
 
-        name = Perspective.GenServer.Names.name(module, options)
+        name = module.name(options)
 
         Supervisor.start_link(module, options, name: name)
       end
 
       def start_link() do
+        validate_children()
         start_link([])
       end
 
       def start_link(_) do
+        validate_children()
         start_link([])
       end
 
       def init(args) do
-        Perspective.GenServer.References.store_process_references(unquote(__CALLER__.module), args)
+        Perspective.GenServer.ProcessIdentifiers.store(module(), args)
 
         children()
         |> Perspective.ChildrenSpecs.set_app_id(app_id(args))
         |> Supervisor.init(strategy: :one_for_one)
       end
 
-      defp app_id(args) when is_list(args) do
-        Keyword.get(args, :app_id, nil)
+      defp module do
+        unquote(__CALLER__.module)
       end
 
-      defp app_id(%{app_id: app_id}) do
-        app_id
-      end
-
-      defp app_id(_non_list) do
-        nil
+      defp validate_children do
+        case children() do
+          value when is_list(value) -> :ok
+          value -> raise Perspective.Supervisor.IncorrectConfiguration, "expected a list of tuples, received #{value}"
+        end
       end
     end
   end
 
   defmacro children(do: block) do
     quote do
-      @children unquote(block)
       def children, do: unquote(block)
-    end
-  end
-
-  defmacro __before_compile__(_) do
-    Module.get_attribute(__CALLER__.module, :children)
-    |> validate_children()
-  end
-
-  defp validate_children(children) do
-    case children do
-      value when is_list(value) -> :ok
-      value -> raise Perspective.Supervisor.IncorrectConfiguration, "expected a list of tuples, received #{value}"
     end
   end
 end

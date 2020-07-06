@@ -9,20 +9,11 @@ defmodule Perspective.GenServer.Test do
     end
   end
 
-  test "starting a genserver without a an app_id can be found" do
-    Process.put(:app_id, "")
-    {:ok, expected_pid} = Example.start_link(:ok)
-
-    actual_pid = GenServer.whereis({:global, "Perspective.GenServer.Test.Example"})
-
-    assert expected_pid == actual_pid
-  end
-
   test "starting a genserver with an options list containing app_id can be found" do
     Process.put(:app_id, "com.perspectivelib")
     {:ok, expected_pid} = Example.start_link(app_id: "com.perspectivelib")
 
-    actual_pid = GenServer.whereis({:global, "com.perspectivelib.Perspective.GenServer.Test.Example"})
+    actual_pid = GenServer.whereis({:global, "com.perspectivelib/Perspective.GenServer.Test.Example"})
 
     assert expected_pid == actual_pid
   end
@@ -31,7 +22,7 @@ defmodule Perspective.GenServer.Test do
     Process.put(:app_id, "com.perspectivelib")
     {:ok, expected_pid} = Example.start_link(%{app_id: "com.perspectivelib"})
 
-    actual_pid = GenServer.whereis({:global, "com.perspectivelib.Perspective.GenServer.Test.Example"})
+    actual_pid = GenServer.whereis({:global, "com.perspectivelib/Perspective.GenServer.Test.Example"})
 
     assert expected_pid == actual_pid
   end
@@ -40,7 +31,7 @@ defmodule Perspective.GenServer.Test do
     Process.put(:app_id, "com.perspectivelib")
     Example.start_link(app_id: "com.perspectivelib")
 
-    name = Perspective.GenServer.Names.name(Example, "com.perspectivelib")
+    name = Example.name()
 
     assert :hi! == GenServer.call(name, :hello)
   end
@@ -50,7 +41,7 @@ defmodule Perspective.GenServer.Test do
 
     Example.start_link(app_id: "com.perspectivelib")
 
-    name = Perspective.GenServer.Names.name(Example, "com.perspectivelib")
+    name = Example.name()
 
     assert nil == GenServer.call(name, :state)
   end
@@ -67,14 +58,12 @@ defmodule Perspective.GenServer.Test do
     Process.put(:app_id, "com.perspectivelib.123")
 
     InitialStateExample.start_link(app_id: "com.perspectivelib.123")
-    Process.put(:app_id, "com.perspectivelib.123")
 
     result = InitialStateExample.call(:app_id)
     assert result == "com.perspectivelib.123"
 
-    name = Perspective.GenServer.Names.name(InitialStateExample, "com.perspectivelib.123")
-    result = InitialStateExample.call(:name)
-    assert result == name
+    result = InitialStateExample.name()
+    assert result == {:global, "com.perspectivelib.123/Perspective.GenServer.Test.InitialStateExample"}
   end
 
   test "a genserver's initial state the result of initial_state(block)" do

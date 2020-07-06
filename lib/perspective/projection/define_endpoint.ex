@@ -13,9 +13,7 @@ defmodule Perspective.Projection.DefineEndpoint do
         plug(router)
 
         def init(:supervisor, config) do
-          app_id = Perspective.AppID.fetch_and_set()
-
-          Perspective.GenServer.References.store_process_references(__MODULE__, app_id: app_id)
+          Perspective.AppIDLookup.fetch_and_set()
 
           {:ok, config}
         end

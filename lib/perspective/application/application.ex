@@ -1,8 +1,10 @@
 defmodule Perspective.Application do
   defmacro __using__(_) do
     quote do
+      import Perspective.AppID
       import Perspective.Application
       use Perspective.Config, Perspective.Application
+      use Perspective.IdentifierMacro
       use Application
 
       def start do
@@ -18,7 +20,7 @@ defmodule Perspective.Application do
       end
 
       def start(%{app_id: app_id}) do
-        Perspective.GenServer.References.store_process_references(__MODULE__, app_id: app_id)
+        Perspective.GenServer.ProcessIdentifiers.store(__MODULE__, app_id: app_id)
 
         Supervisor.start_link(all_children(), opts())
       end
@@ -42,7 +44,7 @@ defmodule Perspective.Application do
       end
 
       defp configured_name do
-        Process.get(:name, Perspective.GenServer.Names.name(__MODULE__, app_id: configured_app_id()))
+        {:global, configured_app_id()}
       end
 
       defp opts do
