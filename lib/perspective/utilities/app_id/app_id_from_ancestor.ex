@@ -1,4 +1,4 @@
-defmodule Perspective.AncestralAppID do
+defmodule Perspective.AppIdFromAncestor do
   def find(pid) do
     ancestors(pid)
     |> Enum.reduce_while(nil, fn ancestor, _acc ->
@@ -9,17 +9,17 @@ defmodule Perspective.AncestralAppID do
     end)
   end
 
-  def ancestors(pid) when is_pid(pid) do
+  defp ancestors(pid) when is_pid(pid) do
     Process.info(pid)
     |> Keyword.get(:dictionary, [])
     |> Keyword.get(:"$ancestors", [])
   end
 
-  def app_id(pid) when is_pid(pid) do
+  defp app_id(pid) when is_pid(pid) do
     Process.info(pid)
     |> Keyword.get(:dictionary, [])
     |> Keyword.get(:app_id, nil)
   end
 
-  def app_id(_pid), do: nil
+  defp app_id(_pid), do: nil
 end

@@ -34,7 +34,7 @@ defmodule Perspective.GenServer do
       end
 
       def handle_call(:app_id, _from, state) do
-        {:reply, Process.get(:app_id), state}
+        {:reply, Perspective.AppID.app_id(), state}
       end
 
       def handle_call(:name, _from, state) do
