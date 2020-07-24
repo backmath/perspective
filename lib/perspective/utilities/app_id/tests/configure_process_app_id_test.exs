@@ -36,8 +36,6 @@ defmodule Perspective.ConfigureProcessAppId.Test do
 
     Application.put_env(:perspective, Perspective.Application, [])
 
-    Application.get_all_env(:perspective)
-
     assert_raise(Perspective.MissingAppIdConfiguration, fn ->
       Perspective.ConfigureProcessAppId.configure([])
     end)

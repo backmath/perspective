@@ -23,8 +23,6 @@ defmodule Perspective.Supervisor.Test do
 
   test "starting a supervisor can be found by the provided app_id", %{app_id: app_id} do
     Perspective.Supervisor.Test.Example.start_link()
-    |> elem(1)
-    |> Process.info()
 
     assert [] = Supervisor.which_children({:global, "#{app_id}/Perspective.Supervisor.Test.Example"})
   end

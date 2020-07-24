@@ -18,6 +18,7 @@ defmodule Perspective.LaunchANewInstancePerTest do
 
       setup %{app_id: app_id} do
         Perspective.Application.Supervisor.start_link(app_id: app_id)
+        Perspective.ConfigureProcessAppId.configure(app_id: app_id)
         :ok
       end
     end

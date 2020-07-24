@@ -3,7 +3,6 @@ defmodule Perspective.GenServer do
     quote do
       use GenServer
       use Perspective.IdentifierMacro
-      import Perspective.AppID
       import Perspective.GenServer
 
       def init(opts) do
@@ -34,7 +33,7 @@ defmodule Perspective.GenServer do
       end
 
       def handle_call(:app_id, _from, state) do
-        {:reply, Perspective.AppID.app_id(), state}
+        {:reply, Perspective.FetchProcessAppId.fetch(), state}
       end
 
       def handle_call(:name, _from, state) do
@@ -42,12 +41,12 @@ defmodule Perspective.GenServer do
       end
 
       def call(id, data, timeout \\ 5000) do
-        name([id: id])
+        name(id: id)
         |> GenServer.call(data, timeout)
       end
 
       def cast(id, data) do
-        name([id: id])
+        name(id: id)
         |> GenServer.cast(data)
       end
 

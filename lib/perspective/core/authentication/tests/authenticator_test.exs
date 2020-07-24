@@ -2,8 +2,9 @@ defmodule Perspective.Core.Authenticator.Test do
   use ExUnit.Case, async: true
   use Perspective.SetUniqueAppID
 
-  setup do
-    Perspective.Core.start()
+  setup(opts) do
+    Perspective.ConfigureProcessAppId.configure(opts)
+    Perspective.Core.start(opts)
     :ok
   end
 

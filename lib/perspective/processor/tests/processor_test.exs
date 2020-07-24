@@ -3,7 +3,7 @@ defmodule Perspective.Processor.Test do
   use Perspective.SetUniqueAppID
 
   test "example run", context do
-    Perspective.Core.start(context)
+    Perspective.Core.start(Map.to_list(context))
 
     %{
       action: "Perspective.Core.AddUser",

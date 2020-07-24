@@ -74,12 +74,4 @@ defmodule Perspective.GenServer.Test do
 
     assert :data == InitialStateExample.call(:state)
   end
-
-  test "use Perspective.GenServer.start_link without configuration gives a helpful error" do
-    Process.delete(:app_id)
-
-    assert_raise(ArgumentError, fn ->
-      InitialStateExample.start_link(app_id: "com.perspectivelib.123")
-    end)
-  end
 end

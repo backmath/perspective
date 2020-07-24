@@ -4,6 +4,7 @@ defmodule Perspective.ConfigureProcessAppId do
   def configure(opts) do
     opts
     |> app_id_from_opts()
+    |> nil_pipe(&app_id_from_current_process/0)
     |> nil_pipe(&app_id_from_ancestors/0)
     |> nil_pipe(&app_id_from_configuration/0)
     |> set()
@@ -11,6 +12,10 @@ defmodule Perspective.ConfigureProcessAppId do
 
   defp app_id_from_opts(opts) do
     Perspective.AppIdFromOpts.find(opts)
+  end
+
+  defp app_id_from_current_process do
+    Perspective.FetchProcessAppId.fetch()
   end
 
   defp app_id_from_ancestors do

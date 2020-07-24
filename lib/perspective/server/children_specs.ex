@@ -20,4 +20,8 @@ defmodule Perspective.ChildrenSpecs do
     # IO.inspect(whatever, label: "unhandled ChildrenSpec.set_app_id handler")
     whatever
   end
+
+  defp app_id do
+    Perspective.ConfigureProcessAppId
+  end
 end

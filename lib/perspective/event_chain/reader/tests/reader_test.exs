@@ -1,6 +1,5 @@
 defmodule Perspective.EventChain.Reader.Test do
-  use ExUnit.Case, async: true
-  use Perspective.BootAppPerTest
+  use Perspective.TestCase
 
   defmodule Example do
     defstruct [:id]

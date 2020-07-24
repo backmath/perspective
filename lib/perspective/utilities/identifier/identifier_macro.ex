@@ -1,7 +1,6 @@
 defmodule Perspective.IdentifierMacro do
   defmacro __using__(_) do
     quote do
-      import Perspective.AppID
       import Perspective.IdentifierMacro
 
       def path do
@@ -31,13 +30,15 @@ defmodule Perspective.IdentifierMacro do
       end
 
       defoverridable(path: 0, path: 1, name: 0, name: 1, uri: 0, uri: 1)
+
+      def app_id do
+        Perspective.FetchProcessAppId.fetch()
+      end
     end
   end
 
   defmacro path(state, do: block) do
     quote do
-      import Perspective.AppID
-
       def path(unquote(state)) do
         unquote(block)
       end

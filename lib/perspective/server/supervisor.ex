@@ -8,6 +8,8 @@ defmodule Perspective.Supervisor do
       @children :nothing
 
       def start_link(options) when is_list(options) or is_map(options) do
+        Perspective.ConfigureProcessAppId.configure(options)
+
         module = unquote(__CALLER__.module)
 
         name = module.name(options)
@@ -28,8 +30,10 @@ defmodule Perspective.Supervisor do
       def init(args) do
         Perspective.GenServer.ProcessIdentifiers.store(module(), args)
 
+        app_id = Perspective.FetchProcessAppId.fetch()
+
         children()
-        |> Perspective.ChildrenSpecs.set_app_id(app_id(args))
+        |> Perspective.ChildrenSpecs.set_app_id(app_id)
         |> Supervisor.init(strategy: :one_for_one)
       end
 

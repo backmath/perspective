@@ -1,28 +1,29 @@
 defmodule Perspective.Application do
   defmacro __using__(_) do
     quote do
-      import Perspective.AppID
       import Perspective.Application
       use Perspective.Config, Perspective.Application
       use Perspective.IdentifierMacro
       use Application
 
       def start do
-        start(app_id: configured_app_id())
+        start([])
       end
 
       def start(_type, _args) do
-        start(app_id: configured_app_id())
+        start([])
       end
 
       def start(opts) when is_list(opts) do
-        start(%{app_id: Keyword.get(opts, :app_id)})
-      end
+        app_id = Perspective.ConfigureProcessAppId.configure(opts)
 
-      def start(%{app_id: app_id}) do
         Perspective.GenServer.ProcessIdentifiers.store(__MODULE__, app_id: app_id)
 
         Supervisor.start_link(all_children(), opts())
+      end
+
+      def start(opts) when is_map(opts) do
+        start(Map.to_list(opts))
       end
 
       def all_children do
